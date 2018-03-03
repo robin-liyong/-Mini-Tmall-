@@ -1,0 +1,194 @@
+/*修改表单提示颜色*/
+input::-webkit-input-placeholder{
+    font-size: 12px;
+    color:#cccccc;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    font-size: 12px;
+    color:#cccccc;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    font-size: 12px;
+    color:#cccccc;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+    font-size: 12px;
+    color:#cccccc;
+}
+/*修改单选按钮样式*/
+input[type="radio"]+label::before{
+    content: "\a0";
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    width: 12px;
+    height: 12px;
+    margin-right: .4em;
+    border-radius: 50%;
+    border: 1px solid #cccccc;
+    text-indent: .15em;
+    line-height: 1;
+}
+input[type="radio"]:checked + label::before {
+    background-color: #ff7874;
+    background-clip: content-box;
+    padding: 2px;
+}
+input[type="radio"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+/*修改bootstrap-select下拉框样式*/
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    width: 80px;
+    margin: 0 20px 0 0;
+    bottom: 1px;
+}
+.btn.dropdown-toggle.btn-default{
+    font-size: 12px;
+    color:#666;
+    border-color: #e9ebef;
+    border-radius: 3px;
+}
+.btn-group-vertical>.btn, .btn-group>.btn{
+    height: 25px;
+    padding: 5px 12px 5px 5px;
+}
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+    position: relative;
+    bottom: 1px;
+}
+.bootstrap-select.btn-group .dropdown-toggle .caret{
+    color:#cccccc;
+}
+.dropdown-menu>li>a{
+    font-size: 14px;
+}
+/*自定义表单样式*/
+.frm_div{
+    margin-bottom: 20px;
+}
+.frm_group{
+    margin-bottom: 18px;
+}
+.frm_label{
+    font-size: 12px;
+    font-weight: normal;
+    color:#666;
+    margin: 0 4px 0 0;
+    text-align: right;
+}
+.frm_input{
+    outline: none;
+    padding: 5px;
+    color:#666;
+    margin: 0 20px 0 0;
+    height: 25px;
+    border-radius: 3px;
+    border: 1px solid #e9ebef;
+    font-size: 12px;
+}
+.frm_input:focus{
+    border: 1px solid #bbb;
+}
+.frm_num{
+     width: 80px;
+ }
+.frm_btn{
+    outline: none;
+    width: 70px;
+    height: 25px;
+    border-radius: 5px;
+    padding: 5px 18px;
+    border: 0;
+    color:white;
+    font-size: 12px;
+    background-color: #ff7874;
+    margin-right: 10px;
+}
+.frm_btn:hover{
+    background-color: #fe5874;
+}
+.frm_btn.frm_clear{
+    position: relative;
+    top:1px;
+    border: 1px solid #cccccc;
+    color:#666;
+    background-color: #ffffff;
+}
+.frm_btn.frm_clear:hover{
+    border: 1px solid #999999;
+}
+
+.data_count_div{
+    overflow: hidden;
+    width: 100%;
+    height: 30px;
+    padding: 3px 12px;
+    background-color: #FEF6F4;
+    border: 2px solid #F9ECEB;
+    margin-bottom: 20px;
+}
+.data_count_div>.icon{
+    width: 18px;
+    height: 18px;
+    fill: #FF7874;
+    vertical-align: middle;
+}
+.data_count_div>span{
+    font-size: 12px;
+    color:#666;
+}
+.data_count_div>.data_count_title{
+    padding-right: 5px;
+}
+.data_count_div>.data_count_value{
+    color:#ff7874;
+}
+.data_count_div>.data_count_unit{
+    padding-right: 20px;
+}
+
+.table_normal{
+    width: 100%;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.table_normal>thead{
+    border-top: 1px solid #F2F2F4;
+    background-color: #f5f6fb;
+}
+.table_normal tr{
+    border-bottom: 1px solid #F2F2F4;
+}
+.table_normal th{
+    padding: 12px 15px;
+    text-align: center; /*IE*/
+    text-align: -moz-center; /*Firefox*/
+    text-align: -webkit-center; /*Chrome*/
+}
+.table_normal td{
+    padding: 10px 15px;
+    color: #666666;
+    text-align: center; /*IE*/
+    text-align: -moz-center; /*Firefox*/
+    text-align: -webkit-center; /*Chrome*/
+}
+.table_normal td.td_success{
+    color:#8BB979;
+}
+.table_normal td.td_warn{
+    color:#FDD689;
+}
+.table_normal td.td_special{
+    color:#ff7874;
+}
+.table_normal td.td_special>a{
+    color: #ff7874;
+}
+.table_normal td.td_wait{
+    color: #90ABF4;
+}
+.table_normal td.td_error{
+    color:#ccc;
+}

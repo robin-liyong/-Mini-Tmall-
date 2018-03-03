@@ -1,0 +1,132 @@
+html,body,#div_home_main{
+    width: 100%;
+    height: 100%;
+}
+#div_home_main{
+    min-width: 1280px;
+    min-height: 700px;
+    overflow: auto;
+}
+/*通用类部分*/
+.text_info{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/*标题栏部分*/
+.nav_text{
+    font-size: 16px;
+    color:#444;
+}
+#div_home_main>#nav_main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: 1280px;
+    height: 57px;
+    background-color: #f5f6fb;
+    padding: 12px 35px;
+    border-bottom: 1px solid #e9ebef;
+    z-index: 1000;
+}
+#nav_main>.home_logo{
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    fill: #ff7874;
+}
+#nav_main>#txt_home_title{
+    position: relative;
+    top: 4px;
+}
+#nav_main>#txt_home_nickname{
+    float: right;
+    position: relative;
+    top:7px;
+    font-size: 14px;
+    color: #8a8a8a;
+    margin-right: 5px;
+}
+#nav_main>#img_home_profile_picture{
+    float: right;
+    margin: 0 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+
+}
+#nav_main>#i_nickname_slide{
+    cursor: pointer;
+    float: right;
+    position: relative;
+    top:14px;
+    width: 0;
+    height: 0;
+    border: 5px solid;
+    border-color: #8a8a8a transparent transparent transparent;
+}
+/*导航栏部分*/
+#div_home_main>#ul_home_menu{
+    position: fixed;
+    top: 57px;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f6fb;
+    border-right: 1px solid #e9ebef;
+    list-style: none;
+    z-index: 1000;
+}
+#ul_home_menu>.menu_li{
+    cursor: pointer;
+    width: 100%;
+    padding: 10px 50px 10px 20px;
+    border-left: 5px solid transparent;
+}
+.menu_li:hover{
+    background-color: rgba(217,219,232,0.5);
+}
+.menu_li>span{
+    font-size: 14px;
+    color: #8a8ba8;
+}
+.menu_li>.icon{
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 1px;
+    vertical-align: top;
+    margin-right: 8px;
+    fill: #cdd0cf;
+}
+.menu_li_select>.icon{
+    fill: #8a8ba8;
+}
+#ul_home_menu>.menu_li_select{
+    cursor: default;
+    background-color: #d9dbe8;
+    border-color: #ff7874;
+}
+/*ajax页面部分*/
+#div_home_main>#div_home_title{
+    position: fixed;
+    top:57px;
+    left: 200px;
+    width: 100%;
+    height: 40px;
+    background-color: #FDFDFF;
+    padding: 10px 50px 10px 20px;
+    border-bottom: 1px solid #e9ebef;
+    z-index: 1000;
+}
+#div_home_title>span{
+    color:#444;
+}
+#div_home_main>#div_home_context{
+    padding: 117px 20px 30px 220px;
+    min-height: 700px;
+}

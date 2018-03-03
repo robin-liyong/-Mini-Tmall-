@@ -1,0 +1,49 @@
+package com.xq.tmall.service.impl;
+
+import com.xq.tmall.dao.PropertyMapper;
+import com.xq.tmall.entity.Property;
+import com.xq.tmall.service.PropertyService;
+import com.xq.tmall.util.PageUtil;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service("propertyService")
+public class PropertyServiceImpl implements PropertyService{
+    private PropertyMapper propertyMapper;
+    @Resource(name = "propertyMapper")
+    public void setPropertyMapper(PropertyMapper propertyMapper) {
+        this.propertyMapper = propertyMapper;
+    }
+
+    @Override
+    public boolean add(Property property) {
+        return propertyMapper.insertOne(property)>0;
+    }
+
+    @Override
+    public boolean update(Property property) {
+        return propertyMapper.updateOne(property)>0;
+    }
+
+    @Override
+    public boolean deleteList(Integer[] property_id_list) {
+        return propertyMapper.deleteList(property_id_list)>0;
+    }
+
+    @Override
+    public List<Property> getList(Property property, PageUtil pageUtil) {
+        return propertyMapper.select(property,pageUtil);
+    }
+
+    @Override
+    public Property get(Integer property_id) {
+        return propertyMapper.selectOne(property_id);
+    }
+
+    @Override
+    public Integer getTotal(Property property) {
+        return propertyMapper.selectTotal(property);
+    }
+}
