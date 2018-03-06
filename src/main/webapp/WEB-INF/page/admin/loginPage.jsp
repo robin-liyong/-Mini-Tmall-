@@ -4,20 +4,6 @@
     <script src="${pageContext.request.contextPath}/res/js/admin/admin_login.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/admin_login.css"/>
     <title>Tmall 管理后台 - 登录</title>
-    <!--[if IE 8]>
-    <style type="text/css" rel="stylesheet">
-        #div_nav{
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000);
-        }
-        #div_nav>#txt_date,#div_nav>#txt_peel{
-            color:#ffffff;
-        }
-        #div_main>#div_content{
-            border-radius: 5px;
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);
-        }
-    </style>
-    <![endif]-->
 </head>
 <body>
 <div id="div_background">
