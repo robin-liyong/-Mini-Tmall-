@@ -18,8 +18,10 @@ $(function () {
         $(".menu_li_select").removeClass("menu_li_select");
         //设置当前li样式
         $(this).addClass("menu_li_select");
-        //设置标题栏文本
-        $("#div_home_title").find(">span").text($(this).children("span").text());
+        //设置文本
+        var title = $(this).children("span").text();
+        $("#div_home_title").find(">span").text(title);
+        document.title = "Tmall管理后台 - "+title;
         //ajax请求页面
         getPage(pageURL,null,false);
     });

@@ -10,7 +10,7 @@ public interface ProductService {
     boolean add(Product product);
     boolean update(Product product);
 
-    List<Product> getList(Product product, OrderUtil orderUtil, PageUtil pageUtil);
+    List<Product> getList(Product product, Byte[] product_isEnabled_array, OrderUtil orderUtil, PageUtil pageUtil);
     Product get(Integer product_Id);
     Integer getTotal(Product product);
 }

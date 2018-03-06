@@ -12,10 +12,10 @@
             //分类id
             var categoryId = $("#select_product_category").val();
             //产品状态
-            var status = $("input[type='radio'][name='lbl_product_isEnabled']:checked").val();
-            if (status === undefined) {
-                status = 1
-            }
+            var statusArray = [];
+            $("input[type='checkbox'][name='checkbox_product_isEnabled']:checked").each(function () {
+                statusArray.push($(this).val());
+            });
             //最低价
             var lowestPrice = $("#input_product_sale_place").val();
             //最高价
@@ -37,27 +37,27 @@
     </style>
 </head>
 <body>
-<div class="frm_div">
+<div class="frm_div text_info">
     <form id="form_product">
         <div class="frm_group">
             <label class="frm_label" id="lbl_product_name" for="input_product_name">产品名称</label>
             <input class="frm_input" id="input_product_name" type="text" maxlength="20"/>
             <label class="frm_label" id="lbl_product_category_id" for="select_product_category">产品类型</label>
             <select class="selectpicker" id="select_product_category" data-size="10">
-                <option value="0">请选择</option>
+                <option value="0">全部</option>
                 <c:forEach items="${requestScope.categoryList}" var="category">
                     <option value="${category.category_id}">${category.category_name}</option>
                 </c:forEach>
             </select>
         </div>
         <div class="frm_group_last">
-            <label class="frm_label" id="lbl_product_isEnabled" for="rdo_product_isEnabled_true">产品状态</label>
-            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_true" name="lbl_product_isEnabled" type="radio" value="1" checked>
-            <label class="frm_label" id="lbl_product_isEnabled_true" for="rdo_product_isEnabled_true">销售中</label>
-            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_false" name="lbl_product_isEnabled" type="radio" value="0">
-            <label class="frm_label" id="lbl_product_isEnabled_false" for="rdo_product_isEnabled_false">停售中</label>
-            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_special" name="lbl_product_isEnabled" type="radio" value="2">
-            <label class="frm_label" id="lbl_product_isEnabled_special" for="rdo_product_isEnabled_special">促销中</label>
+            <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="1">
+            <label class="frm_label" id="lbl_product_isEnabled_true" for="checkbox_product_isEnabled_true">销售中</label>
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="0">
+            <label class="frm_label" id="lbl_product_isEnabled_false" for="checkbox_product_isEnabled_false">停售中</label>
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2">
+            <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
 
             <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>
             <input class="frm_input frm_num"  id="input_product_sale_place" type="text" placeholder="最低价">
@@ -69,7 +69,7 @@
         </div>
     </form>
 </div>
-<div class="data_count_div">
+<div class="data_count_div text_info">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522">
             <path d="M401.976676 735.74897c-88.721671 0-172.124196-34.635845-234.843656-97.526197-62.724577-62.86784-97.271394-146.453537-97.271394-235.358379s34.546817-172.490539 97.276511-235.361449c62.715367-62.887282 146.117892-97.522104 234.838539-97.522104 88.719624 0 172.135452 34.633798 234.881518 97.522104 62.704111 62.875003 97.235578 146.4607 97.235578 235.361449 0 88.901773-34.530444 172.487469-97.231485 235.358379C574.112128 701.116195 490.6963 735.74897 401.976676 735.74897zM401.976676 121.204479c-75.012438 0-145.533584 29.290093-198.572568 82.474386-109.585861 109.834524-109.585861 288.539602-0.004093 398.36901 53.043077 53.188386 123.564223 82.47848 198.577684 82.47848 75.015507 0 145.553027-29.291117 198.620663-82.47848C710.126918 492.220514 710.126918 313.511343 600.593246 203.678866 547.530726 150.496619 476.992183 121.204479 401.976676 121.204479z" p-id="2523" fill="#FF7874">
             </path>

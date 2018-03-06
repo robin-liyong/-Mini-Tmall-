@@ -30,8 +30,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getList(Product product, OrderUtil orderUtil, PageUtil pageUtil) {
-        return productMapper.select(product, orderUtil, pageUtil);
+    public List<Product> getList(Product product, Byte[] product_isEnabled_array,OrderUtil orderUtil, PageUtil pageUtil) {
+        return productMapper.select(product, product_isEnabled_array, orderUtil, pageUtil);
     }
 
     @Override

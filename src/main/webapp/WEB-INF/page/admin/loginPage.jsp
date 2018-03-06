@@ -3,6 +3,7 @@
 <head>
     <script src="${pageContext.request.contextPath}/res/js/admin/admin_login.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/admin_login.css"/>
+    <title>Tmall 管理后台 - 登录</title>
     <!--[if IE 8]>
     <style type="text/css" rel="stylesheet">
         #div_nav{
@@ -17,7 +18,6 @@
         }
     </style>
     <![endif]-->
-    <title>Tmall 管理后台 - 登录</title>
 </head>
 <body>
 <div id="div_background">
@@ -49,7 +49,7 @@
             <form id="form_login">
                 <input type="text" class="form-control form_control" placeholder="用户名" id="input_username"/>
                 <input type="password" class="form-control form_control" placeholder="密码" id="input_password" autocomplete="on">
-                <span id="txt_error_msg">用户名或密码错误</span>
+                <span id="txt_error_msg"></span>
                 <input type="button" class="btn btn-danger" id="btn_login" value="登录"/>
             </form>
         </div>

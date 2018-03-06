@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="include/header.jsp" %>
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/admin_home.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/from_main.css"/>
-<script src="${pageContext.request.contextPath}/res/js/admin/admin_home.js"></script>
-<title>Tmall 管理后台 - 控制台</title>
+    <script src="${pageContext.request.contextPath}/res/js/admin/admin_home.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/admin_home.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/admin/admin_main.css"/>
+    <title>Tmall 管理后台 - 首页</title>
 </head>
 <body>
 <div id="div_home_main">

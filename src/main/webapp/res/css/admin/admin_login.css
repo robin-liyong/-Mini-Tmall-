@@ -115,13 +115,11 @@ html,body,#div_background{
     border: 1px solid #cccccc;
 }
 #div_content #txt_error_msg{
+    display: inline-block;
+    min-width: 10px;
+    min-height: 20px;
     float: right;
     position: relative;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    display: inline-block;
     color: #c33;
     opacity: 0;
     left: 20px;
