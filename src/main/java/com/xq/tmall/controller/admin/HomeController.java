@@ -84,7 +84,6 @@ public class HomeController {
     @ResponseBody
     @RequestMapping("admin/user_manage")
     public ModelAndView goUserManagePage(ModelAndView modelAndView){
-        System.out.println("111111");
         modelAndView.setViewName("/admin/include/userManagePage");
         return modelAndView;
     }
