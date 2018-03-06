@@ -7,6 +7,6 @@
     <span id="txt_home_title" class="nav_text">天猫数据管理后台</span>
     <i id="i_nickname_slide"></i>
     <span id="txt_home_nickname"><c:choose><c:when test="${requestScope.admin.admin_nickname != ''}">${requestScope.admin.admin_nickname}</c:when><c:otherwise>${requestScope.admin.admin_name}</c:otherwise></c:choose></span>
-    <img id="img_home_profile_picture" src="<c:choose><c:when test="${requestScope.admin.admin_profile_picture_src != ''}">${requestScope.admin.admin_profile_picture_src}</c:when><c:otherwise>${pageContext.request.contextPath}/res/images/admin/homePage/default_profile_picture-32x32.png</c:otherwise></c:choose>">
+    <img id="img_home_profile_picture" src="${requestScope.admin.admin_profile_picture_src}" onerror="this.src='${pageContext.request.contextPath}/res/images/admin/homePage/default_profile_picture-32x32.png'">
     <input id="admin_id" type="hidden" value="${requestScope.admin.admin_id}"/>
 </nav>
