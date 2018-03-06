@@ -36,6 +36,7 @@ html,body,#div_background{
     background-color: rgba(0,0,0,0.4);
     border-radius: 0 0 5px 5px;
     position: absolute;
+    z-index: 100;
 }
 #div_peelPanel>li{
     display: inline-block;
