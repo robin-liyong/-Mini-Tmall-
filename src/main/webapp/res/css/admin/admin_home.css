@@ -4,7 +4,7 @@ html,body,#div_home_main{
 }
 #div_home_main{
     min-width: 1280px;
-    min-height: 700px;
+    min-height: 650px;
     overflow: auto;
 }
 /*通用类部分*/
