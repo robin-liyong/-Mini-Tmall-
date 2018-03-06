@@ -7,7 +7,7 @@
           <element id="module-output" name="tmall" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.22" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.0.8" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.1.8" />
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.46" />
           <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" />
