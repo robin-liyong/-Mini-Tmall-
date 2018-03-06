@@ -104,13 +104,13 @@ html,body,#div_background{
     display: block;
     margin: 0 auto 40px;
 }
-#div_content .form-control{
+#div_content .form_control{
     height: 38px;
     margin: 20px 0;
     background-color: #9F9FA1;
     border: 1px solid #9F9FA1;
 }
-#div_content .form-control:focus{
+#div_content .form_control:focus{
     background-color: white;
     border: 1px solid #cccccc;
 }
@@ -134,15 +134,15 @@ html,body,#div_background{
     outline: none;
 }
 
-.form-control::-webkit-input-placeholder{
+.form_control::-webkit-input-placeholder{
     color:#444;
 }
-.form-control::-moz-placeholder{   /* Mozilla Firefox 19+ */
+.form_control::-moz-placeholder{   /* Mozilla Firefox 19+ */
     color:#444;
 }
-.form-control:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+.form_control:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
     color:#444;
 }
-.form-control:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+.form_control:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     color:#444;
 }

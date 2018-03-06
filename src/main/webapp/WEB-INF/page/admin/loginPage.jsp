@@ -46,10 +46,12 @@
         <div id="div_head"><p>tmall <span>管理后台</span></p></div>
         <div id="div_content">
             <img id="img_profile_picture" src="${pageContext.request.contextPath}/res/images/admin/loginPage/default_profile_picture-128x128.png"/>
-            <input type="text" class="form-control" placeholder="用户名" id="input_username"/>
-            <input type="password" class="form-control" placeholder="密码" id="input_password">
-            <span id="txt_error_msg">用户名或密码错误</span>
-            <input type="button" class="btn btn-danger" id="btn_login" value="登录"/>
+            <form id="form_login">
+                <input type="text" class="form-control form_control" placeholder="用户名" id="input_username"/>
+                <input type="password" class="form-control form_control" placeholder="密码" id="input_password" autocomplete="on">
+                <span id="txt_error_msg">用户名或密码错误</span>
+                <input type="button" class="btn btn-danger" id="btn_login" value="登录"/>
+            </form>
         </div>
     </div>
 </div>

@@ -33,7 +33,7 @@ function getPage(url,data,isChild) {
     }
     if(url !== null && url !== ""){
         $.ajax({
-            url: url,
+            url: "admin/"+url,
             type:"get",
             data: data,
             contentType: "text/html;charset=UTF-8",

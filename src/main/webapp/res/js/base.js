@@ -23,3 +23,31 @@ var cookieUtil = {
             cookieUtil.setCookie(name, "", -1);
         }
 };
+//样式统一工具
+var styleUtil = {
+    //显示表单验证错误提示
+    errorShow:
+        function errorShow(obj,text) {
+            obj.text(text);
+            if (obj.css("opacity") !== "1") {
+                obj.animate({
+                    left: "0",
+                    opacity: 1
+                }, 200);
+            } else {
+                obj.css("opacity", "0.5").animate({
+                    opacity: 1
+                }, 100);
+            }
+        },
+    //隐藏表单验证错误提示
+    errorHide:
+        function errorHide(obj) {
+            if(obj.css("opacity") !== "0"){
+                obj.animate({
+                    left: "20px",
+                    opacity: 0
+                }, 200);
+            }
+        }
+};

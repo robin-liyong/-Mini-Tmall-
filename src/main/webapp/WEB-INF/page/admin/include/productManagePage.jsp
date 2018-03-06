@@ -4,22 +4,22 @@
 <head>
     <script>
         //初始化下拉框
-        $('#product_category').selectpicker('refresh');
+        $('#select_product_category').selectpicker('refresh');
         //点击查询按钮时
         $("#btn_product_submit").click(function () {
             //产品名称
-            var productName = $("#product_name").val();
+            var productName = $("#input_product_name").val();
             //分类id
-            var categoryId = $("#product_category").val();
+            var categoryId = $("#select_product_category").val();
             //产品状态
             var status = $("input[type='radio'][name='lbl_product_isEnabled']:checked").val();
             if (status === undefined) {
                 status = 1
             }
             //最低价
-            var lowestPrice = $("#product_sale_place").val();
+            var lowestPrice = $("#input_product_sale_place").val();
             //最高价
-            var highestPrice = $("#product_place").val();
+            var highestPrice = $("#input_product_place").val();
         });
     </script>
     <style rel="stylesheet">
@@ -38,35 +38,36 @@
 </head>
 <body>
 <div class="frm_div">
-    <div class="frm_group">
-        <label class="frm_label" id="lbl_product_name" for="product_name">产品名称</label>
-        <input class="frm_input" id="product_name" type="text" maxlength="20"/>
+    <form id="form_product">
+        <div class="frm_group">
+            <label class="frm_label" id="lbl_product_name" for="input_product_name">产品名称</label>
+            <input class="frm_input" id="input_product_name" type="text" maxlength="20"/>
+            <label class="frm_label" id="lbl_product_category_id" for="select_product_category">产品类型</label>
+            <select class="selectpicker" id="select_product_category" data-size="10">
+                <option value="0">请选择</option>
+                <c:forEach items="${requestScope.categoryList}" var="category">
+                    <option value="${category.category_id}">${category.category_name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="frm_group_last">
+            <label class="frm_label" id="lbl_product_isEnabled" for="rdo_product_isEnabled_true">产品状态</label>
+            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_true" name="lbl_product_isEnabled" type="radio" value="1" checked>
+            <label class="frm_label" id="lbl_product_isEnabled_true" for="rdo_product_isEnabled_true">销售中</label>
+            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_false" name="lbl_product_isEnabled" type="radio" value="0">
+            <label class="frm_label" id="lbl_product_isEnabled_false" for="rdo_product_isEnabled_false">停售中</label>
+            <input class="frm_radio radio_isEnabled" id="rdo_product_isEnabled_special" name="lbl_product_isEnabled" type="radio" value="2">
+            <label class="frm_label" id="lbl_product_isEnabled_special" for="rdo_product_isEnabled_special">促销中</label>
 
-        <label class="frm_label" id="lbl_product_category_id" for="product_category">产品类型</label>
-        <select class="selectpicker" id="product_category" data-size="10">
-            <option value="0">请选择</option>
-            <c:forEach items="${requestScope.categoryList}" var="category">
-                <option value="${category.category_id}">${category.category_name}</option>
-            </c:forEach>
-    </select>
-    </div>
-    <div class="frm_group_last">
-        <label class="frm_label" id="lbl_product_isEnabled" for="product_isEnabled_true">产品状态</label>
-        <input class="frm_radio radio_isEnabled" id="product_isEnabled_true" name="lbl_product_isEnabled" type="radio" value="1" checked>
-        <label class="frm_label" id="lbl_product_isEnabled_true" for="product_isEnabled_true">销售中</label>
-        <input class="frm_radio radio_isEnabled" id="product_isEnabled_false" name="lbl_product_isEnabled" type="radio" value="0">
-        <label class="frm_label" id="lbl_product_isEnabled_false" for="product_isEnabled_false">停售中</label>
-        <input class="frm_radio radio_isEnabled" id="product_isEnabled_special" name="lbl_product_isEnabled" type="radio" value="2">
-        <label class="frm_label" id="lbl_product_isEnabled_special" for="product_isEnabled_special">促销中</label>
+            <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>
+            <input class="frm_input frm_num"  id="input_product_sale_place" type="text" placeholder="最低价">
+            <span id="text_cut">—</span>
+            <input class="frm_input frm_num"  id="input_product_place" type="text" placeholder="最高价">
 
-        <label class="frm_label"  id="lbl_product_sale_place" for="product_sale_place">金额</label>
-        <input class="frm_input frm_num"  id="product_sale_place" type="text" placeholder="最低价">
-        <span id="text_cut">—</span>
-        <input class="frm_input frm_num"  id="product_place" type="text" placeholder="最高价">
-
-        <input class="frm_btn" id="btn_product_submit" type="button" value="查询"/>
-        <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
-    </div>
+            <input class="frm_btn" id="btn_product_submit" type="button" value="查询"/>
+            <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
+        </div>
+    </form>
 </div>
 <div class="data_count_div">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522">
