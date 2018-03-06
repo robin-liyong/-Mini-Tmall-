@@ -61,7 +61,7 @@ public class HomeController {
         //获取产品分类列表
         List<Category> categoryList = categoryService.getList(null,null);
         //获取产品列表
-        List<Product> productList = productService.getList(null,null,new PageUtil(1,10));
+        List<Product> productList = productService.getList(null,null,null,new PageUtil(1,10));
         //获取产品总数量
         Integer productCount = productService.getTotal(null);
         modelAndView.addObject("categoryList",categoryList);
