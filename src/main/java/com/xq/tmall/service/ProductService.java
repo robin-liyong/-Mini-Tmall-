@@ -12,5 +12,5 @@ public interface ProductService {
 
     List<Product> getList(Product product, Byte[] product_isEnabled_array, OrderUtil orderUtil, PageUtil pageUtil);
     Product get(Integer product_Id);
-    Integer getTotal(Product product);
+    Integer getTotal(Product product,Byte[] product_isEnabled_array);
 }

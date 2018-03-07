@@ -5,6 +5,10 @@
     <script>
         //初始化下拉框
         $('#select_product_category').selectpicker('refresh');
+
+        /******
+         * event
+         ******/
         //点击查询按钮时
         $("#btn_product_submit").click(function () {
             //产品名称
@@ -20,6 +24,30 @@
             var lowestPrice = $("#input_product_sale_place").val();
             //最高价
             var highestPrice = $("#input_product_place").val();
+
+            //ajax请求数据
+            $.ajax({
+                url: "admin/product_manage/search",
+                type:"get",
+                data: {
+                    "product_name":productName,
+                    "product_category.category_id":categoryId,
+                    "product_sale_price":lowestPrice,
+                    "product_price":highestPrice,
+                    "product_isEnabled_array":statusArray
+                },
+                traditional:true,
+                dataType: "json",
+                success : function (data) {
+                    alert(data);
+                },
+                beforeSend: function () {
+
+                },
+                error: function () {
+
+                }
+            });
         });
     </script>
     <style rel="stylesheet">
@@ -52,11 +80,11 @@
         </div>
         <div class="frm_group_last">
             <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
-            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="1">
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="1" checked>
             <label class="frm_label" id="lbl_product_isEnabled_true" for="checkbox_product_isEnabled_true">销售中</label>
-            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="0">
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
             <label class="frm_label" id="lbl_product_isEnabled_false" for="checkbox_product_isEnabled_false">停售中</label>
-            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2">
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2" checked>
             <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
 
             <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>

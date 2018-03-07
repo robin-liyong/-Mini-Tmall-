@@ -20,31 +20,35 @@ public class PropertyValue {
         return propertyValue_id;
     }
 
-    public void setPropertyValue_id(Integer propertyValue_id) {
+    public PropertyValue setPropertyValue_id(Integer propertyValue_id) {
         this.propertyValue_id = propertyValue_id;
+        return this;
     }
 
     public String getPropertyValue_value() {
         return propertyValue_value;
     }
 
-    public void setPropertyValue_value(String propertyValue_value) {
+    public PropertyValue setPropertyValue_value(String propertyValue_value) {
         this.propertyValue_value = propertyValue_value;
+        return this;
     }
 
     public Property getPropertyValue_property() {
         return propertyValue_property;
     }
 
-    public void setPropertyValue_property(Property propertyValue_property) {
+    public PropertyValue setPropertyValue_property(Property propertyValue_property) {
         this.propertyValue_property = propertyValue_property;
+        return this;
     }
 
     public Product getPropertyValue_product() {
         return propertyValue_product;
     }
 
-    public void setPropertyValue_product(Product propertyValue_product) {
+    public PropertyValue setPropertyValue_product(Product propertyValue_product) {
         this.propertyValue_product = propertyValue_product;
+        return this;
     }
 }

@@ -1,5 +1,8 @@
 package com.xq.tmall.controller.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
@@ -7,8 +10,11 @@ import com.xq.tmall.service.AdminService;
 import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.service.ProductService;
 import com.xq.tmall.util.PageUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +28,7 @@ import java.util.Map;
  */
 @Controller
 public class HomeController {
-
+    private Logger logger = LogManager.getLogger(this.getClass());
     @Resource(name = "adminService")
     private AdminService adminService;
     @Resource(name = "categoryService")
@@ -63,7 +69,7 @@ public class HomeController {
         //获取产品列表
         List<Product> productList = productService.getList(null,null,null,new PageUtil(1,10));
         //获取产品总数量
-        Integer productCount = productService.getTotal(null);
+        Integer productCount = productService.getTotal(null,null);
         modelAndView.addObject("categoryList",categoryList);
         modelAndView.addObject("productList",productList);
         modelAndView.addObject("productCount",productCount);
@@ -72,6 +78,22 @@ public class HomeController {
         return modelAndView;
     }
 
+    //ajax请求产品管理页面-按条件查询产品
+    @ResponseBody
+    @RequestMapping("admin/product_manage/search")
+    public String getProductBySearch(Product product, @RequestParam("product_isEnabled_array") Byte[] product_isEnabled_array){
+        //如果产品状态全选或全部选，则忽略该条件
+        product_isEnabled_array = product_isEnabled_array.length == 3 || product_isEnabled_array.length == 0 ? null : product_isEnabled_array;
+        //按条件获取产品列表
+        List<Product> productList = productService.getList(product,product_isEnabled_array,null,new PageUtil(1,10));
+        //按条件获取产品总数量
+        Integer productCount = productService.getTotal(product,product_isEnabled_array);
+
+        JSONObject object = new JSONObject();
+        object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
+        object.put("productCount",productCount);
+        return object.toJSONString();
+    }
     //ajax请求分类管理页面
     @ResponseBody
     @RequestMapping("admin/category_manage")

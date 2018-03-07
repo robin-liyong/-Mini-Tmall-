@@ -45,87 +45,98 @@ public class User {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
+    public User setUser_id(Integer user_id) {
         this.user_id = user_id;
+        return this;
     }
 
     public String getUser_name() {
         return user_name;
     }
 
-    public void setUser_name(String user_name) {
+    public User setUser_name(String user_name) {
         this.user_name = user_name;
+        return this;
     }
 
     public String getUser_nickname() {
         return user_nickname;
     }
 
-    public void setUser_nickname(String user_nickname) {
+    public User setUser_nickname(String user_nickname) {
         this.user_nickname = user_nickname;
+        return this;
     }
 
     public String getUser_password() {
         return user_password;
     }
 
-    public void setUser_password(String user_password) {
+    public User setUser_password(String user_password) {
         this.user_password = user_password;
+        return this;
     }
 
     public String getUser_realname() {
         return user_realname;
     }
 
-    public void setUser_realname(String user_realname) {
+    public User setUser_realname(String user_realname) {
         this.user_realname = user_realname;
+        return this;
     }
 
     public Byte getUser_gender() {
         return user_gender;
     }
 
-    public void setUser_gender(Byte user_gender) {
+    public User setUser_gender(Byte user_gender) {
         this.user_gender = user_gender;
+        return this;
     }
 
     public Date getUser_birthday() {
         return user_birthday;
     }
 
-    public void setUser_birthday(Date user_birthday) {
+    public User setUser_birthday(Date user_birthday) {
         this.user_birthday = user_birthday;
+        return this;
     }
 
     public Address getUser_address() {
         return user_address;
     }
 
-    public void setUser_address(Address user_address) {
+    public User setUser_address(Address user_address) {
         this.user_address = user_address;
+        return this;
     }
 
     public Address getUser_homeplace() {
         return user_homeplace;
     }
 
-    public void setUser_homeplace(Address user_homeplace) {
+    public User setUser_homeplace(Address user_homeplace) {
         this.user_homeplace = user_homeplace;
+        return this;
     }
 
     public String getUser_profile_picture_src() {
         return user_profile_picture_src;
     }
 
-    public void setUser_profile_picture_src(String user_profile_picture_src) {
+    public User setUser_profile_picture_src(String user_profile_picture_src) {
         this.user_profile_picture_src = user_profile_picture_src;
+        return this;
     }
 
     public List<Review> getReviewList() {
         return reviewList;
     }
 
-    public void setReviewList(List<Review> reviewList) {
+    public User setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+        return this;
     }
 }

@@ -58,40 +58,45 @@ public class Product {
         return product_id;
     }
 
-    public void setProduct_id(Integer product_id) {
+    public Product setProduct_id(Integer product_id) {
         this.product_id = product_id;
+        return this;
     }
 
     public String getProduct_name() {
         return product_name;
     }
 
-    public void setProduct_name(String product_name) {
+    public Product setProduct_name(String product_name) {
         this.product_name = product_name;
+        return this;
     }
 
     public String getProduct_title() {
         return product_title;
     }
 
-    public void setProduct_title(String product_title) {
+    public Product setProduct_title(String product_title) {
         this.product_title = product_title;
+        return this;
     }
 
     public Double getProduct_price() {
         return product_price;
     }
 
-    public void setProduct_price(Double product_price) {
+    public Product setProduct_price(Double product_price) {
         this.product_price = product_price;
+        return this;
     }
 
     public Double getProduct_sale_price() {
         return product_sale_price;
     }
 
-    public void setProduct_sale_price(Double product_sale_price) {
+    public Product setProduct_sale_price(Double product_sale_price) {
         this.product_sale_price = product_sale_price;
+        return this;
     }
 
     public String getProduct_create_date() {
@@ -99,16 +104,18 @@ public class Product {
         return time.format(product_create_date);
     }
 
-    public void setProduct_create_date(Date product_create_date) {
+    public Product setProduct_create_date(Date product_create_date) {
         this.product_create_date = product_create_date;
+        return this;
     }
 
     public Category getProduct_category() {
         return product_category;
     }
 
-    public void setProduct_category(Category product_category) {
+    public Product setProduct_category(Category product_category) {
         this.product_category = product_category;
+        return this;
     }
 
     public String getProduct_isEnabled() {
@@ -122,63 +129,71 @@ public class Product {
         }
     }
 
-    public void setProduct_isEnabled(Byte product_isEnabled) {
+    public Product setProduct_isEnabled(Byte product_isEnabled) {
         this.product_isEnabled = product_isEnabled;
+        return this;
     }
 
     public List<ProductImage> getSingleProductImageList() {
         return singleProductImageList;
     }
 
-    public void setSingleProductImageList(List<ProductImage> singleProductImageList) {
+    public Product setSingleProductImageList(List<ProductImage> singleProductImageList) {
         this.singleProductImageList = singleProductImageList;
+        return this;
     }
 
-    public List<ProductImage> getdetailProductImageList() {
+    public List<ProductImage> getDetailProductImageList() {
         return detailProductImageList;
     }
 
-    public void setdetailProductImageList(List<ProductImage> detailProductImageList) {
+    public Product setDetailProductImageList(List<ProductImage> detailProductImageList) {
         this.detailProductImageList = detailProductImageList;
+        return this;
     }
 
     public List<PropertyValue> getPropertyValueList() {
         return propertyValueList;
     }
 
-    public void setPropertyValueList(List<PropertyValue> propertyValueList) {
+    public Product setPropertyValueList(List<PropertyValue> propertyValueList) {
         this.propertyValueList = propertyValueList;
+        return this;
     }
 
     public List<Review> getReviewList() {
         return reviewList;
     }
 
-    public void setReviewList(List<Review> reviewList) {
+    public Product setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+        return this;
     }
 
     public List<ProductOrderItem> getProductOrderItemList() {
         return productOrderItemList;
     }
 
-    public void setProductOrderItemList(List<ProductOrderItem> productOrderItemList) {
+    public Product setProductOrderItemList(List<ProductOrderItem> productOrderItemList) {
         this.productOrderItemList = productOrderItemList;
+        return this;
     }
 
     public Integer getProduct_sale_count() {
         return product_sale_count;
     }
 
-    public void setProduct_sale_count(Integer product_sale_count) {
+    public Product setProduct_sale_count(Integer product_sale_count) {
         this.product_sale_count = product_sale_count;
+        return this;
     }
 
     public Integer getProduct_review_count() {
         return product_review_count;
     }
 
-    public void setProduct_review_count(Integer product_review_count) {
+    public Product setProduct_review_count(Integer product_review_count) {
         this.product_review_count = product_review_count;
+        return this;
     }
 }

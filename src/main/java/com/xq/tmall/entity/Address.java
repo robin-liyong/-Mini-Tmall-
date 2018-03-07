@@ -18,23 +18,26 @@ public class Address {
         return address_areaId;
     }
 
-    public void setAddress_areaId(String address_areaId) {
+    public Address setAddress_areaId(String address_areaId) {
         this.address_areaId = address_areaId;
+        return this;
     }
 
     public String getAddress_name() {
         return address_name;
     }
 
-    public void setAddress_name(String address_name) {
+    public Address setAddress_name(String address_name) {
         this.address_name = address_name;
+        return this;
     }
 
     public Address getAddress_regionId() {
         return address_regionId;
     }
 
-    public void setAddress_regionId(Address address_regionId) {
+    public Address setAddress_regionId(Address address_regionId) {
         this.address_regionId = address_regionId;
+        return this;
     }
 }

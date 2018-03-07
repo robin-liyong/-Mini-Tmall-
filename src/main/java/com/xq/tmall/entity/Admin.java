@@ -30,39 +30,44 @@ public class Admin {
         return admin_id;
     }
 
-    public void setAdmin_id(Integer admin_id) {
+    public Admin setAdmin_id(Integer admin_id) {
         this.admin_id = admin_id;
+        return this;
     }
 
     public String getAdmin_name() {
         return admin_name;
     }
 
-    public void setAdmin_name(String admin_name) {
+    public Admin setAdmin_name(String admin_name) {
         this.admin_name = admin_name;
+        return this;
     }
 
     public String getAdmin_nickname() {
         return admin_nickname;
     }
 
-    public void setAdmin_nickname(String admin_nickname) {
+    public Admin setAdmin_nickname(String admin_nickname) {
         this.admin_nickname = admin_nickname;
+        return this;
     }
 
     public String getAdmin_password() {
         return admin_password;
     }
 
-    public void setAdmin_password(String admin_password) {
+    public Admin setAdmin_password(String admin_password) {
         this.admin_password = admin_password;
+        return this;
     }
 
     public String getAdmin_profile_picture_src() {
         return admin_profile_picture_src;
     }
 
-    public void setAdmin_profile_picture_src(String admin_profile_picture_src) {
+    public Admin setAdmin_profile_picture_src(String admin_profile_picture_src) {
         this.admin_profile_picture_src = admin_profile_picture_src;
+        return this;
     }
 }

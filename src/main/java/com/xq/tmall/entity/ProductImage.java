@@ -21,31 +21,35 @@ public class ProductImage {
         return productImage_id;
     }
 
-    public void setProductImage_id(Integer productImage_id) {
+    public ProductImage setProductImage_id(Integer productImage_id) {
         this.productImage_id = productImage_id;
+        return this;
     }
 
     public Byte getProductImage_type() {
         return productImage_type;
     }
 
-    public void setProductImage_type(Byte productImage_type) {
+    public ProductImage setProductImage_type(Byte productImage_type) {
         this.productImage_type = productImage_type;
+        return this;
     }
 
     public String getProductImage_src() {
         return productImage_src;
     }
 
-    public void setProductImage_src(String productImage_src) {
+    public ProductImage setProductImage_src(String productImage_src) {
         this.productImage_src = productImage_src;
+        return this;
     }
 
     public Product getProductImage_product() {
         return productImage_product;
     }
 
-    public void setProductImage_product(Product productImage_product) {
+    public ProductImage setProductImage_product(Product productImage_product) {
         this.productImage_product = productImage_product;
+        return this;
     }
 }

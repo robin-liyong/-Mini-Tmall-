@@ -56,111 +56,125 @@ public class ProductOrder {
         return productOrder_id;
     }
 
-    public void setProductOrder_id(Integer productOrder_id) {
+    public ProductOrder setProductOrder_id(Integer productOrder_id) {
         this.productOrder_id = productOrder_id;
+        return this;
     }
 
     public String getProductOrder_code() {
         return productOrder_code;
     }
 
-    public void setProductOrder_code(String productOrder_code) {
+    public ProductOrder setProductOrder_code(String productOrder_code) {
         this.productOrder_code = productOrder_code;
+        return this;
     }
 
     public Address getProductOrder_address() {
         return productOrder_address;
     }
 
-    public void setProductOrder_address(Address productOrder_address) {
+    public ProductOrder setProductOrder_address(Address productOrder_address) {
         this.productOrder_address = productOrder_address;
+        return this;
     }
 
     public String getProductOrder_detail_address() {
         return productOrder_detail_address;
     }
 
-    public void setProductOrder_detail_address(String productOrder_detail_address) {
+    public ProductOrder setProductOrder_detail_address(String productOrder_detail_address) {
         this.productOrder_detail_address = productOrder_detail_address;
+        return this;
     }
 
     public String getProductOrder_post() {
         return productOrder_post;
     }
 
-    public void setProductOrder_post(String productOrder_post) {
+    public ProductOrder setProductOrder_post(String productOrder_post) {
         this.productOrder_post = productOrder_post;
+        return this;
     }
 
     public String getProductOrder_receiver() {
         return productOrder_receiver;
     }
 
-    public void setProductOrder_receiver(String productOrder_receiver) {
+    public ProductOrder setProductOrder_receiver(String productOrder_receiver) {
         this.productOrder_receiver = productOrder_receiver;
+        return this;
     }
 
     public String getProductOrder_mobile() {
         return productOrder_mobile;
     }
 
-    public void setProductOrder_mobile(String productOrder_mobile) {
+    public ProductOrder setProductOrder_mobile(String productOrder_mobile) {
         this.productOrder_mobile = productOrder_mobile;
+        return this;
     }
 
     public String getProductOrder_userMessage() {
         return productOrder_userMessage;
     }
 
-    public void setProductOrder_userMessage(String productOrder_userMessage) {
+    public ProductOrder setProductOrder_userMessage(String productOrder_userMessage) {
         this.productOrder_userMessage = productOrder_userMessage;
+        return this;
     }
 
     public Date getProductOrder_pay_date() {
         return productOrder_pay_date;
     }
 
-    public void setProductOrder_pay_date(Date productOrder_pay_date) {
+    public ProductOrder setProductOrder_pay_date(Date productOrder_pay_date) {
         this.productOrder_pay_date = productOrder_pay_date;
+        return this;
     }
 
     public Date getProductOrder_delivery_date() {
         return productOrder_delivery_date;
     }
 
-    public void setProductOrder_delivery_date(Date productOrder_delivery_date) {
+    public ProductOrder setProductOrder_delivery_date(Date productOrder_delivery_date) {
         this.productOrder_delivery_date = productOrder_delivery_date;
+        return this;
     }
 
     public Date getProductOrder_confirm_date() {
         return productOrder_confirm_date;
     }
 
-    public void setProductOrder_confirm_date(Date productOrder_confirm_date) {
+    public ProductOrder setProductOrder_confirm_date(Date productOrder_confirm_date) {
         this.productOrder_confirm_date = productOrder_confirm_date;
+        return this;
     }
 
     public Byte getProductOrder_status() {
         return productOrder_status;
     }
 
-    public void setProductOrder_status(Byte productOrder_status) {
+    public ProductOrder setProductOrder_status(Byte productOrder_status) {
         this.productOrder_status = productOrder_status;
+        return this;
     }
 
     public User getProductOrder_user() {
         return productOrder_user;
     }
 
-    public void setProductOrder_user(User productOrder_user) {
+    public ProductOrder setProductOrder_user(User productOrder_user) {
         this.productOrder_user = productOrder_user;
+        return this;
     }
 
     public List<ProductOrderItem> getProductOrderItemList() {
         return productOrderItemList;
     }
 
-    public void setProductOrderItemList(List<ProductOrderItem> productOrderItemList) {
+    public ProductOrder setProductOrderItemList(List<ProductOrderItem> productOrderItemList) {
         this.productOrderItemList = productOrderItemList;
+        return this;
     }
 }

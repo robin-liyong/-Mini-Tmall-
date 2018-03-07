@@ -19,23 +19,26 @@ public class Category {
         return category_id;
     }
 
-    public void setCategory_id(Integer category_id) {
+    public Category setCategory_id(Integer category_id) {
         this.category_id = category_id;
+        return this;
     }
 
     public String getCategory_name() {
         return category_name;
     }
 
-    public void setCategory_name(String category_name) {
+    public Category setCategory_name(String category_name) {
         this.category_name = category_name;
+        return this;
     }
 
     public String getCategory_image_src() {
         return category_image_src;
     }
 
-    public void setCategory_image_src(String category_image_src) {
+    public Category setCategory_image_src(String category_image_src) {
         this.category_image_src = category_image_src;
+        return this;
     }
 }

@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Integer getTotal(Product product) {
-        return productMapper.selectTotal(product);
+    public Integer getTotal(Product product,Byte[] product_isEnabled_array) {
+        return productMapper.selectTotal(product,product_isEnabled_array);
     }
 }

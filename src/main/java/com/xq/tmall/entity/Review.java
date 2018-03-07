@@ -31,39 +31,44 @@ public class Review {
         return review_id;
     }
 
-    public void setReview_id(Integer review_id) {
+    public Review setReview_id(Integer review_id) {
         this.review_id = review_id;
+        return this;
     }
 
     public String getReview_content() {
         return review_content;
     }
 
-    public void setReview_content(String review_content) {
+    public Review setReview_content(String review_content) {
         this.review_content = review_content;
+        return this;
     }
 
     public Date getReview_createDate() {
         return review_createDate;
     }
 
-    public void setReview_createDate(Date review_createDate) {
+    public Review setReview_createDate(Date review_createDate) {
         this.review_createDate = review_createDate;
+        return this;
     }
 
     public User getReview_user() {
         return review_user;
     }
 
-    public void setReview_user(User review_user) {
+    public Review setReview_user(User review_user) {
         this.review_user = review_user;
+        return this;
     }
 
     public Product getReview_product() {
         return review_product;
     }
 
-    public void setReview_product(Product review_product) {
+    public Review setReview_product(Product review_product) {
         this.review_product = review_product;
+        return this;
     }
 }

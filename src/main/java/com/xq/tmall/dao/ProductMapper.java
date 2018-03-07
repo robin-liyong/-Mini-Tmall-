@@ -13,5 +13,5 @@ public interface ProductMapper {
 
     List<Product> select(@Param("product") Product product,@Param("product_isEnabled_array") Byte[] product_isEnabled_array, @Param("orderUtil") OrderUtil orderUtil, @Param("pageUtil") PageUtil pageUtil);
     Product selectOne(@Param("product_id") Integer product_Id);
-    Integer selectTotal(@Param("product") Product product);
+    Integer selectTotal(@Param("product") Product product,@Param("product_isEnabled_array") Byte[] product_isEnabled_array);
 }
