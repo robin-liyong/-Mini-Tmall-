@@ -23,7 +23,7 @@ public class LoginController {
         return "admin/loginPage";
     }
 
-    //异步登陆验证
+    //登陆验证-AJAX
     @ResponseBody
     @RequestMapping(value = "admin/login/{username}",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String checkLogin(HttpSession session, @PathVariable String username, @RequestParam String password) {
@@ -40,9 +40,9 @@ public class LoginController {
         return object.toJSONString();
     }
 
-    //异步获取头像
+    //按用户名获取管理员头像-AJAX
     @ResponseBody
-    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "admin/login/profile_picture/{username}",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
     public String getAdminProfilePicture(@PathVariable("username") String username){
         //根据用户名获取管理员信息
         Admin admin = adminService.get(username,null);

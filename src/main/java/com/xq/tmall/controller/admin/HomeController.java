@@ -14,9 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -54,35 +54,91 @@ public class HomeController {
         return "admin/homePage";
     }
 
-    //ajax请求首页管理页面
-    @ResponseBody
-    @RequestMapping(value = "admin/home_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goHomeManagePage(ModelAndView modelAndView){
-        modelAndView.setViewName("/admin/include/homeManagePage");
-        return modelAndView;
+    //转到首页管理页
+    @RequestMapping("admin/home")
+    public String goHomeManagePage(HttpSession session,Map<String, Object> map){
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
+        return "admin/include/homeManagePage";
     }
 
-    //ajax请求产品管理页面
-    @ResponseBody
-    @RequestMapping(value = "admin/product_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goProductManagePage(ModelAndView modelAndView) {
+    //转到产品管理页
+    @RequestMapping("admin/product")
+    public String goProductManagePage(HttpSession session,Map<String, Object> map) {
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
         //获取产品分类列表
         List<Category> categoryList = categoryService.getList(null,null);
         //获取产品列表
         List<Product> productList = productService.getList(null,null,null,new PageUtil(1,10));
         //获取产品总数量
         Integer productCount = productService.getTotal(null,null);
-        modelAndView.addObject("categoryList",categoryList);
-        modelAndView.addObject("productList",productList);
-        modelAndView.addObject("productCount",productCount);
-
-        modelAndView.setViewName("/admin/include/productManagePage");
-        return modelAndView;
+        map.put("categoryList",categoryList);
+        map.put("productList",productList);
+        map.put("productCount",productCount);
+        
+        return "admin/include/productManagePage";
     }
 
-    //ajax请求产品管理页面-按条件查询产品
+    //转到分类管理页
+    @RequestMapping("admin/category")
+    public String goCategoryManagePage(HttpSession session,Map<String, Object> map){
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
+        return "admin/include/categoryManagePage";
+    }
+
+    //转到用户管理页
+    @RequestMapping("admin/user")
+    public String goUserManagePage(HttpSession session,Map<String, Object> map){
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
+        return "admin/include/userManagePage";
+    }
+
+    //转到订单管理页
+    @RequestMapping("admin/order")
+    public String goProductOrderManagePage(HttpSession session,Map<String, Object> map){
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
+        return "admin/include/productOrderManagePage";
+    }
+
+    //转到账户管理页
+    @RequestMapping("admin/account")
+    public String goAccountManagePage(HttpSession session,Map<String, Object> map){
+        //获取id
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            //重定向至登录页
+            return "redirect:/admin/login";
+        }
+        return "admin/include/accountManagePage";
+    }
+
+    //按多条件查询产品-AJAX
     @ResponseBody
-    @RequestMapping(value = "admin/product_manage/search",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "admin/product/search",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
     public String getProductBySearch(Product product, @RequestParam(value = "product_isEnabled_array",required = false) Byte[] product_isEnabled_array) throws UnsupportedEncodingException {
         //如果产品状态全选，则忽略该条件
         if(product_isEnabled_array != null) {
@@ -101,36 +157,5 @@ public class HomeController {
         object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
         object.put("productCount", productCount);
         return object.toJSONString();
-    }
-    //ajax请求分类管理页面
-    @ResponseBody
-    @RequestMapping(value = "admin/category_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goCategoryManagePage(ModelAndView modelAndView){
-        modelAndView.setViewName("/admin/include/categoryManagePage");
-        return modelAndView;
-    }
-
-    //ajax请求用户管理页面
-    @ResponseBody
-    @RequestMapping(value = "admin/user_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goUserManagePage(ModelAndView modelAndView){
-        modelAndView.setViewName("/admin/include/userManagePage");
-        return modelAndView;
-    }
-
-    //ajax请求订单管理界面
-    @ResponseBody
-    @RequestMapping(value = "admin/order_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goProductOrderManagePage(ModelAndView modelAndView){
-        modelAndView.setViewName("/admin/include/productOrderManagePage");
-        return modelAndView;
-    }
-
-    //ajax请求账户管理页面
-    @ResponseBody
-    @RequestMapping(value = "admin/account_manage",produces = "text/html;charset=utf-8")
-    public ModelAndView goAccountManagePage(ModelAndView modelAndView){
-        modelAndView.setViewName("/admin/include/accountManagePage");
-        return modelAndView;
     }
 }

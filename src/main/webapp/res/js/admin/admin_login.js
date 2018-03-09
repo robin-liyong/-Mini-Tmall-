@@ -46,7 +46,6 @@ $(function () {
             url: "login/"+username,
             type:"post",
             data: {"password":password},
-            dataType:"json",
             success:function (data) {
                 if (data.success) {
                     cookieUtil.setCookie("username", username, 30);
@@ -110,7 +109,7 @@ function initialData() {
 //获取用户头像
 function getUserProfilePicture(username) {
     if(username !== null && username !== ""){
-        $.getJSON('login/'+username,null,function (data) {
+        $.getJSON("login/profile_picture/"+username,null,function (data) {
             if(data.success){
                 if(data.srcString !== null){
                     $("#img_profile_picture").attr("src",data.srcString);

@@ -26,7 +26,7 @@
             var highestPrice = $("#input_product_place").val();
             //ajax请求数据
             $.ajax({
-                url: "admin/product_manage/search",
+                url: "admin/product/search",
                 type:"get",
                 data: {
                     "product_name":encodeURI(productName),
