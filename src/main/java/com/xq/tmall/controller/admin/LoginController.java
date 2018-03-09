@@ -20,12 +20,12 @@ public class LoginController {
     //转到登录页
     @RequestMapping("admin/login")
     public String goToPage(){
-        return "/admin/loginPage";
+        return "admin/loginPage";
     }
 
     //异步登陆验证
     @ResponseBody
-    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.POST)
+    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String checkLogin(HttpSession session, @PathVariable String username, @RequestParam String password) {
         //根据用户名和密码获取管理员信息
         Admin admin = adminService.login(username,password);
@@ -42,7 +42,7 @@ public class LoginController {
 
     //异步获取头像
     @ResponseBody
-    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.GET)
+    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
     public String getAdminProfilePicture(@PathVariable("username") String username){
         //根据用户名获取管理员信息
         Admin admin = adminService.get(username,null);

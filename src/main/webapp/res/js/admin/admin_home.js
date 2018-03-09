@@ -1,6 +1,6 @@
 $(function () {
     //默认ajax页面为首页
-    var pageURL = $(".menu_li_select").eq(0).attr("data-toggle");
+    var pageURL = $(".menu_li_select").first().attr("data-toggle");
     getPage(pageURL,null,false);
 
     /******

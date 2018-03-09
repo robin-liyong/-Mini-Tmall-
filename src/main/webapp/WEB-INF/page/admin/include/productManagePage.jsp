@@ -17,29 +17,56 @@
             var categoryId = $("#select_product_category").val();
             //产品状态
             var statusArray = [];
-            $("input[type='checkbox'][name='checkbox_product_isEnabled']:checked").each(function () {
+            $(".radio_isEnabled:checked").each(function () {
                 statusArray.push($(this).val());
             });
             //最低价
             var lowestPrice = $("#input_product_sale_place").val();
             //最高价
             var highestPrice = $("#input_product_place").val();
-
             //ajax请求数据
             $.ajax({
                 url: "admin/product_manage/search",
                 type:"get",
                 data: {
-                    "product_name":productName,
+                    "product_name":encodeURI(productName),
                     "product_category.category_id":categoryId,
                     "product_sale_price":lowestPrice,
                     "product_price":highestPrice,
                     "product_isEnabled_array":statusArray
                 },
                 traditional:true,
-                dataType: "json",
                 success : function (data) {
-                    alert(data);
+                    var table = $("#table_product_list");
+                    var tbody = table.children("tbody").first();
+                    //清空原有数据
+                    tbody.empty();
+                    if(data.productList.length>0){
+                        //设置相关样式
+                        for(var i in data.productList){
+                            var isEnabledClass;
+                            switch (data.productList[i].product_isEnabled){
+                                case "停售中":
+                                    isEnabledClass = "td_error";
+                                    break;
+                                case "促销中":
+                                    isEnabledClass = "td_special";
+                                    break;
+                                default:
+                                    isEnabledClass = "td_success";
+                                    break;
+                            }
+                            //设置小数显示
+                            var product_price = data.productList[i].product_price.toFixed(1);
+                            var product_sale_price = data.productList[i].product_sale_price.toFixed(1);
+                            //追加查询数据
+                            tbody.append(
+                                "<tr><td>"+data.productList[i].product_name+"</td><td>"+data.productList[i].product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+data.productList[i].product_create_date+"<td class='"+isEnabledClass+"'>"+data.productList[i].product_isEnabled+"</td><td class='td_special'><a href='#'>详情</a></td><td hidden>"+data.productList[i].product_id+"</td></tr>"
+                            );
+                            //设置统计数据
+                            $(".data_count_value").first().text(data.productCount);
+                        }
+                    }
                 },
                 beforeSend: function () {
 

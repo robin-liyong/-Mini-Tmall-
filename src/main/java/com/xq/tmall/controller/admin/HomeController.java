@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -49,12 +51,12 @@ public class HomeController {
         Admin admin = adminService.get(null,Integer.parseInt(o.toString()));
         map.put("admin",admin);
 
-        return "/admin/homePage";
+        return "admin/homePage";
     }
 
     //ajax请求首页管理页面
     @ResponseBody
-    @RequestMapping("admin/home_manage")
+    @RequestMapping(value = "admin/home_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goHomeManagePage(ModelAndView modelAndView){
         modelAndView.setViewName("/admin/include/homeManagePage");
         return modelAndView;
@@ -62,7 +64,7 @@ public class HomeController {
 
     //ajax请求产品管理页面
     @ResponseBody
-    @RequestMapping("admin/product_manage")
+    @RequestMapping(value = "admin/product_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goProductManagePage(ModelAndView modelAndView) {
         //获取产品分类列表
         List<Category> categoryList = categoryService.getList(null,null);
@@ -80,23 +82,29 @@ public class HomeController {
 
     //ajax请求产品管理页面-按条件查询产品
     @ResponseBody
-    @RequestMapping("admin/product_manage/search")
-    public String getProductBySearch(Product product, @RequestParam("product_isEnabled_array") Byte[] product_isEnabled_array){
-        //如果产品状态全选或全部选，则忽略该条件
-        product_isEnabled_array = product_isEnabled_array.length == 3 || product_isEnabled_array.length == 0 ? null : product_isEnabled_array;
+    @RequestMapping(value = "admin/product_manage/search",produces = "application/json;charset=utf-8")
+    public String getProductBySearch(Product product, @RequestParam(value = "product_isEnabled_array",required = false) Byte[] product_isEnabled_array) throws UnsupportedEncodingException {
+        //如果产品状态全选，则忽略该条件
+        if(product_isEnabled_array != null) {
+            product_isEnabled_array = product_isEnabled_array.length >= 3 ? null : product_isEnabled_array;
+        }
+        //解决中文乱码
+        if(product.getProduct_name() != null && !product.getProduct_name().equals("")){
+            product.setProduct_name(URLDecoder.decode(product.getProduct_name(),"UTF-8"));
+        }
         //按条件获取产品列表
-        List<Product> productList = productService.getList(product,product_isEnabled_array,null,new PageUtil(1,10));
+        List<Product> productList = productService.getList(product, product_isEnabled_array, null, new PageUtil(1, 10));
         //按条件获取产品总数量
-        Integer productCount = productService.getTotal(product,product_isEnabled_array);
+        Integer productCount = productService.getTotal(product, product_isEnabled_array);
 
         JSONObject object = new JSONObject();
         object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
-        object.put("productCount",productCount);
+        object.put("productCount", productCount);
         return object.toJSONString();
     }
     //ajax请求分类管理页面
     @ResponseBody
-    @RequestMapping("admin/category_manage")
+    @RequestMapping(value = "admin/category_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goCategoryManagePage(ModelAndView modelAndView){
         modelAndView.setViewName("/admin/include/categoryManagePage");
         return modelAndView;
@@ -104,7 +112,7 @@ public class HomeController {
 
     //ajax请求用户管理页面
     @ResponseBody
-    @RequestMapping("admin/user_manage")
+    @RequestMapping(value = "admin/user_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goUserManagePage(ModelAndView modelAndView){
         modelAndView.setViewName("/admin/include/userManagePage");
         return modelAndView;
@@ -112,7 +120,7 @@ public class HomeController {
 
     //ajax请求订单管理界面
     @ResponseBody
-    @RequestMapping("admin/order_manage")
+    @RequestMapping(value = "admin/order_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goProductOrderManagePage(ModelAndView modelAndView){
         modelAndView.setViewName("/admin/include/productOrderManagePage");
         return modelAndView;
@@ -120,7 +128,7 @@ public class HomeController {
 
     //ajax请求账户管理页面
     @ResponseBody
-    @RequestMapping("admin/account_manage")
+    @RequestMapping(value = "admin/account_manage",produces = "text/html;charset=utf-8")
     public ModelAndView goAccountManagePage(ModelAndView modelAndView){
         modelAndView.setViewName("/admin/include/accountManagePage");
         return modelAndView;
