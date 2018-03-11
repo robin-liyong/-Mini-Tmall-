@@ -24,6 +24,11 @@
             var lowestPrice = $("#input_product_sale_place").val();
             //最高价
             var highestPrice = $("#input_product_place").val();
+            //校验数据合法性
+            if((lowestPrice !== "" && isNaN(lowestPrice)) || (highestPrice !== "" && isNaN(highestPrice))){
+                styleUtil.errorShow($('#text_product_msg'),"产品金额格式有误！");
+                return;
+            }
             //ajax请求数据
             $.ajax({
                 url: "admin/product/search",
@@ -76,6 +81,15 @@
                 }
             });
         });
+        //获得表单元素焦点时
+        $(".frm_input,.frm_radio").focus(function () {
+            styleUtil.errorHide($("#text_product_msg"));
+        });
+        //点击重置按钮时
+        $("#btn_clear").click(function () {
+            $("#form_product")[0].reset();
+            select.val(0).selectpicker("refresh");
+        });
     </script>
     <style rel="stylesheet">
         #text_cut{
@@ -96,14 +110,15 @@
     <form id="form_product">
         <div class="frm_group">
             <label class="frm_label" id="lbl_product_name" for="input_product_name">产品名称</label>
-            <input class="frm_input" id="input_product_name" type="text" maxlength="20"/>
+            <input class="frm_input" id="input_product_name" type="text" maxlength="50"/>
             <label class="frm_label" id="lbl_product_category_id" for="select_product_category">产品类型</label>
-            <select class="selectpicker" id="select_product_category" data-size="10">
+            <select class="selectpicker" id="select_product_category" data-size="8">
                 <option value="0">全部</option>
                 <c:forEach items="${requestScope.categoryList}" var="category">
                     <option value="${category.category_id}">${category.category_name}</option>
                 </c:forEach>
             </select>
+            <span class="frm_error_msg" id="text_product_msg"></span>
         </div>
         <div class="frm_group_last">
             <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
@@ -115,9 +130,9 @@
             <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
 
             <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>
-            <input class="frm_input frm_num"  id="input_product_sale_place" type="text" placeholder="最低价">
+            <input class="frm_input frm_num"  id="input_product_sale_place" type="text" placeholder="最低价" maxlength="10">
             <span id="text_cut">—</span>
-            <input class="frm_input frm_num"  id="input_product_place" type="text" placeholder="最高价">
+            <input class="frm_input frm_num"  id="input_product_place" type="text" placeholder="最高价" maxlength="10">
 
             <input class="frm_btn" id="btn_product_submit" type="button" value="查询"/>
             <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>

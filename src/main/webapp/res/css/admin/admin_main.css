@@ -69,13 +69,10 @@ input[type="checkbox"] {
 /*自定义表单样式*/
 .frm_error_msg{
     font-size: 12px;
-    display: inline-block;
-    min-width: 10px;
-    min-height: 15px;
     position: relative;
     color: #c33;
-    opacity: 0;
     left: 20px;
+    opacity: 0;
 }
 .frm_div{
     margin-bottom: 20px;
