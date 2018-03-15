@@ -16,6 +16,23 @@ public class User {
     private String user_profile_picture_src;
     private List<Review> reviewList;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "user_id=" + user_id +
+                ", user_name='" + user_name + '\'' +
+                ", user_nickname='" + user_nickname + '\'' +
+                ", user_password='" + user_password + '\'' +
+                ", user_realname='" + user_realname + '\'' +
+                ", user_gender=" + user_gender +
+                ", user_birthday=" + user_birthday +
+                ", user_address=" + user_address +
+                ", user_homeplace=" + user_homeplace +
+                ", user_profile_picture_src='" + user_profile_picture_src + '\'' +
+                ", reviewList=" + reviewList +
+                '}';
+    }
+
     public User() {
     }
 

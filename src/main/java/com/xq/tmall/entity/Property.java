@@ -11,6 +11,16 @@ public class Property {
     public Property() {
     }
 
+    @Override
+    public String toString() {
+        return "Property{" +
+                "property_id=" + property_id +
+                ", property_name='" + property_name + '\'' +
+                ", property_category=" + property_category +
+                ", propertyValueList=" + propertyValueList +
+                '}';
+    }
+
     public Property(Integer property_id, String property_name, Category property_category, List<PropertyValue> propertyValueList) {
         this.property_id = property_id;
         this.property_name = property_name;

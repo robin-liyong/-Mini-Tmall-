@@ -8,6 +8,15 @@ public class Address {
     public Address() {
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "address_areaId='" + address_areaId + '\'' +
+                ", address_name='" + address_name + '\'' +
+                ", address_regionId=" + address_regionId +
+                '}';
+    }
+
     public Address(String address_areaId, String address_name, Address address_regionId) {
         this.address_areaId = address_areaId;
         this.address_name = address_name;

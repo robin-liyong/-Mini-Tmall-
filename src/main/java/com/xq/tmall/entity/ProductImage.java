@@ -10,6 +10,16 @@ public class ProductImage {
 
     }
 
+    @Override
+    public String toString() {
+        return "ProductImage{" +
+                "productImage_id=" + productImage_id +
+                ", productImage_type=" + productImage_type +
+                ", productImage_src='" + productImage_src + '\'' +
+                ", productImage_product=" + productImage_product +
+                '}';
+    }
+
     public ProductImage(Integer productImage_id, Byte productImage_type, String productImage_src, Product productImage_product) {
         this.productImage_id = productImage_id;
         this.productImage_type = productImage_type;

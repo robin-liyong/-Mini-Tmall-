@@ -7,6 +7,17 @@ public class Admin {
     private String admin_password;
     private String admin_profile_picture_src;
 
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "admin_id=" + admin_id +
+                ", admin_name='" + admin_name + '\'' +
+                ", admin_nickname='" + admin_nickname + '\'' +
+                ", admin_password='" + admin_password + '\'' +
+                ", admin_profile_picture_src='" + admin_profile_picture_src + '\'' +
+                '}';
+    }
+
     public Admin(){
 
     }

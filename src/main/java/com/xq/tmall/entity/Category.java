@@ -9,6 +9,15 @@ public class Category {
 
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "category_id=" + category_id +
+                ", category_name='" + category_name + '\'' +
+                ", category_image_src='" + category_image_src + '\'' +
+                '}';
+    }
+
     public Category(Integer category_id, String category_name, String category_image_src) {
         this.category_id = category_id;
         this.category_name = category_name;

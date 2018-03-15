@@ -12,6 +12,17 @@ public class Review {
     public Review() {
     }
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "review_id=" + review_id +
+                ", review_content='" + review_content + '\'' +
+                ", review_createDate=" + review_createDate +
+                ", review_user=" + review_user +
+                ", review_product=" + review_product +
+                '}';
+    }
+
     public Review(Integer review_id, String review_content, User review_user, Product review_product) {
         this.review_id = review_id;
         this.review_content = review_content;

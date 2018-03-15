@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
+import com.xq.tmall.entity.ProductOrder;
 import com.xq.tmall.service.AdminService;
 import com.xq.tmall.service.CategoryService;
+import com.xq.tmall.service.ProductOrderService;
 import com.xq.tmall.service.ProductService;
 import com.xq.tmall.util.PageUtil;
 import org.apache.logging.log4j.LogManager;
@@ -37,19 +39,18 @@ public class HomeController {
     private CategoryService categoryService;
     @Resource(name = "productService")
     private ProductService productService;
+    @Resource(name="productOrderService")
+    private ProductOrderService productOrderService;
 
     //转到后台主页
     @RequestMapping("admin")
     public String goToPage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
-        }
+        Object o=isLogin(session);
+        if (o==null){
+            return "redirect:admin/login";
 
+        }
         logger.info("获取管理员信息");
         Admin admin = adminService.get(null,Integer.parseInt(o.toString()));
         map.put("admin",admin);
@@ -62,12 +63,9 @@ public class HomeController {
     @RequestMapping("admin/home")
     public String goHomeManagePage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
 
         logger.info("转到首页管理页");
@@ -78,12 +76,9 @@ public class HomeController {
     @RequestMapping("admin/product")
     public String goProductManagePage(HttpSession session,Map<String, Object> map) {
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
 
         logger.info("获取产品种类列表");
@@ -104,12 +99,9 @@ public class HomeController {
     @RequestMapping("admin/category")
     public String goCategoryManagePage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
 
         logger.info("转到分类管理页");
@@ -120,12 +112,9 @@ public class HomeController {
     @RequestMapping("admin/user")
     public String goUserManagePage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
 
         logger.info("转到用户管理页");
@@ -136,13 +125,14 @@ public class HomeController {
     @RequestMapping("admin/order")
     public String goProductOrderManagePage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
+
+        logger.info("获取前10条订单信息列表");
+        List<ProductOrder> productOrderList=productOrderService.getList(null,null,new PageUtil(1,10));
+        map.put("productOrderList",productOrderList);
 
         logger.info("转到订单管理页");
         return "admin/include/productOrderManagePage";
@@ -152,13 +142,14 @@ public class HomeController {
     @RequestMapping("admin/account")
     public String goAccountManagePage(HttpSession session,Map<String, Object> map){
         logger.info("验证管理权限");
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return "redirect:/admin/login";
-        } else {
-            logger.info("权限验证成功，管理员ID：",o);
+        Object o=isLogin(session);
+        if (o==null){
+            return null;
         }
+
+        logger.info("获取登录的管理员信息");
+        Admin admin = adminService.get(null,Integer.parseInt(o.toString()));
+        map.put("admin",admin);
 
         logger.info("转到账户管理页");
         return "admin/include/accountManagePage";
@@ -186,5 +177,15 @@ public class HomeController {
         object.put("productCount", productCount);
 
         return object.toJSONString();
+    }
+    //验证权限
+    public  Object isLogin(HttpSession session){
+        Object o = session.getAttribute("adminId");
+        if(o==null){
+            logger.info("无管理权限，返回管理员登陆页");
+        } else {
+            logger.info("权限验证成功，管理员ID：{}",o);
+        }
+        return o;
     }
 }

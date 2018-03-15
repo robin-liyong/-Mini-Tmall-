@@ -12,6 +12,28 @@ public class Product {
     private Double product_price;
     private Double product_sale_price;
     private Date product_create_date;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "product_id=" + product_id +
+                ", product_name='" + product_name + '\'' +
+                ", product_title='" + product_title + '\'' +
+                ", product_price=" + product_price +
+                ", product_sale_price=" + product_sale_price +
+                ", product_create_date=" + product_create_date +
+                ", product_category=" + product_category +
+                ", product_isEnabled=" + product_isEnabled +
+                ", propertyValueList=" + propertyValueList +
+                ", singleProductImageList=" + singleProductImageList +
+                ", detailProductImageList=" + detailProductImageList +
+                ", reviewList=" + reviewList +
+                ", productOrderItemList=" + productOrderItemList +
+                ", product_sale_count=" + product_sale_count +
+                ", product_review_count=" + product_review_count +
+                '}';
+    }
+
     private Category product_category;
     private Byte product_isEnabled;
     private List<PropertyValue> propertyValueList;

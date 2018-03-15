@@ -13,6 +13,27 @@ public class ProductOrder {
     private String productOrder_mobile;
     private String productOrder_userMessage;
     private Date productOrder_pay_date;
+
+    @Override
+    public String toString() {
+        return "ProductOrder{" +
+                "productOrder_id=" + productOrder_id +
+                ", productOrder_code='" + productOrder_code + '\'' +
+                ", productOrder_address=" + productOrder_address +
+                ", productOrder_detail_address='" + productOrder_detail_address + '\'' +
+                ", productOrder_post='" + productOrder_post + '\'' +
+                ", productOrder_receiver='" + productOrder_receiver + '\'' +
+                ", productOrder_mobile='" + productOrder_mobile + '\'' +
+                ", productOrder_userMessage='" + productOrder_userMessage + '\'' +
+                ", productOrder_pay_date=" + productOrder_pay_date +
+                ", productOrder_delivery_date=" + productOrder_delivery_date +
+                ", productOrder_confirm_date=" + productOrder_confirm_date +
+                ", productOrder_status=" + productOrder_status +
+                ", productOrder_user=" + productOrder_user +
+                ", productOrderItemList=" + productOrderItemList +
+                '}';
+    }
+
     private Date productOrder_delivery_date;
     private Date productOrder_confirm_date;
     private Byte productOrder_status;

@@ -11,6 +11,18 @@ public class ProductOrderItem {
     public ProductOrderItem() {
     }
 
+    @Override
+    public String toString() {
+        return "ProductOrderItem{" +
+                "productOrderItem_id=" + productOrderItem_id +
+                ", productOrderItem_number=" + productOrderItem_number +
+                ", productOrderItem_price=" + productOrderItem_price +
+                ", productOrderItem_product=" + productOrderItem_product +
+                ", productOrderItem_order=" + productOrderItem_order +
+                ", productOrderItem_user=" + productOrderItem_user +
+                '}';
+    }
+
     public ProductOrderItem(Integer productOrderItem_id, Short productOrderItem_number, Double productOrderItem_price, Product productOrderItem_product, User productOrderItem_user) {
         this.productOrderItem_id = productOrderItem_id;
         this.productOrderItem_number = productOrderItem_number;
