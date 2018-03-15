@@ -23,7 +23,11 @@ $(function () {
         $("#div_home_title").find(">span").text(title);
         document.title = "Tmall管理后台 - "+title;
         //ajax请求页面
-        getPage(pageURL,null,false);
+        var isHome = null;
+        if(pageURL === "/"){
+            isHome = {"goHomeByAjax" : true};
+        }
+        getPage(pageURL,isHome,false);
     });
 });
 //页面切换
@@ -35,7 +39,7 @@ function getPage(url,data,isChild) {
     }
     if(url !== null && url !== ""){
         $.ajax({
-            url: "admin/"+url,
+            url: "admin"+url,
             type:"get",
             data: data,
             contentType: "text/html;charset=UTF-8",

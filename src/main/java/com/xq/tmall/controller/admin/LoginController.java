@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 /**
- * 管理员登录页
+ * 后台管理-登录页
  */
 @Controller
 public class LoginController {
@@ -20,14 +20,14 @@ public class LoginController {
     @Resource(name = "adminService")
     private AdminService adminService;
 
-    //转到管理员登录页
+    //转到后台管理-登录页
     @RequestMapping("admin/login")
     public String goToPage(){
-        logger.info("转到管理员登录页");
+        logger.info("转到后台管理-登录页");
         return "admin/loginPage";
     }
 
-    //登陆验证-AJAX
+    //登陆验证-ajax
     @ResponseBody
     @RequestMapping(value = "admin/login/{username}",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String checkLogin(HttpSession session, @PathVariable String username, @RequestParam String password) {
@@ -47,7 +47,7 @@ public class LoginController {
         return object.toJSONString();
     }
 
-    //按用户名获取管理员头像路径-AJAX
+    //获取管理员头像路径-ajax
     @ResponseBody
     @RequestMapping(value = "admin/login/profile_picture/{username}",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
     public String getAdminProfilePicture(@PathVariable("username") String username){

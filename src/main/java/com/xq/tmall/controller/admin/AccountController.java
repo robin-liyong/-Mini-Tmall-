@@ -6,39 +6,35 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
- * 后台管理-主页
+ * 后台管理-账户页
  */
 @Controller
-public class HomeController {
+public class AccountController {
     private Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
     @Resource(name = "adminService")
     private AdminService adminService;
 
-    //转到后台管理-主页
-    @RequestMapping("admin")
-    public String goToPage(HttpSession session,Map<String, Object> map,@RequestParam(value = "goHomeByAjax",required = false)boolean goHomeByAjax){
+    //转到后台管理-账户页
+    @RequestMapping("admin/account")
+    public String goToPage(HttpSession session, Map<String, Object> map){
         logger.info("验证管理权限");
         Object o=isLogin(session);
         if (o==null){
-            return "redirect:admin/login";
+            return null;
         }
-        logger.info("获取管理员信息");
+
+        logger.info("获取登录的管理员账户信息");
         Admin admin = adminService.get(null,Integer.parseInt(o.toString()));
         map.put("admin",admin);
 
-        if(goHomeByAjax){
-            logger.info("转到后台管理-主页-ajax方式");
-            return "admin/include/homeManagePage";
-        }
-        logger.info("转到后台管理-主页");
-        return "admin/homePage";
+        logger.info("转到后台管理-账户页");
+        return "admin/include/accountManagePage";
     }
 
     //验证权限
