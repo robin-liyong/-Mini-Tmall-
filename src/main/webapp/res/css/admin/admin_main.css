@@ -173,32 +173,24 @@ input[type="checkbox"] {
 }
 .table_normal th{
     padding: 12px 15px;
-    text-align: center; /*IE*/
-    text-align: -moz-center; /*Firefox*/
-    text-align: -webkit-center; /*Chrome*/
+    color:#333333;
 }
 .table_normal td{
     padding: 10px 15px;
     color: #666666;
-    text-align: center; /*IE*/
-    text-align: -moz-center; /*Firefox*/
-    text-align: -webkit-center; /*Chrome*/
 }
-.table_normal td.td_success{
+.table_normal span.td_success{
     color:#8BB979;
 }
-.table_normal td.td_warn{
-    color:#FDD689;
+.table_normal span.td_warn{
+    color:#fdd689;
 }
-.table_normal td.td_special{
+.table_normal span.td_special,.table_normal span.td_special>a{
     color:#ff7874;
 }
-.table_normal td.td_special>a{
-    color: #ff7874;
-}
-.table_normal td.td_wait{
+.table_normal span.td_wait{
     color: #90ABF4;
 }
-.table_normal td.td_error{
+.table_normal span.td_error{
     color:#ccc;
 }

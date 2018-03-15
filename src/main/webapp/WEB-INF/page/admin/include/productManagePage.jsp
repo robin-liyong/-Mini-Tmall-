@@ -50,15 +50,19 @@
                         //设置相关样式
                         for(var i in data.productList){
                             var isEnabledClass;
+                            var isEnabled;
                             switch (data.productList[i].product_isEnabled){
-                                case "停售中":
-                                    isEnabledClass = "td_error";
+                                case 0:
+                                    isEnabledClass = "td_success";
+                                    isEnabled = "销售中";
                                     break;
-                                case "促销中":
-                                    isEnabledClass = "td_special";
+                                case 2:
+                                    isEnabledClass = "td_warn";
+                                    isEnabled = "促销中";
                                     break;
                                 default:
-                                    isEnabledClass = "td_success";
+                                    isEnabledClass = "td_error";
+                                    isEnabled = "停售中";
                                     break;
                             }
                             //设置小数显示
@@ -66,7 +70,7 @@
                             var product_sale_price = data.productList[i].product_sale_price.toFixed(1);
                             //追加查询数据
                             tbody.append(
-                                "<tr><td>"+data.productList[i].product_name+"</td><td>"+data.productList[i].product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+data.productList[i].product_create_date+"<td class='"+isEnabledClass+"'>"+data.productList[i].product_isEnabled+"</td><td class='td_special'><a href='#'>详情</a></td><td hidden>"+data.productList[i].product_id+"</td></tr>"
+                                "<tr><td>"+data.productList[i].product_name+"</td><td>"+data.productList[i].product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+data.productList[i].product_create_date+"<td><span class='"+isEnabledClass+"'>"+isEnabled+"</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>"+data.productList[i].product_id+"</td></tr>"
                             );
                             //设置统计数据
                             $(".data_count_value").first().text(data.productCount);
@@ -122,9 +126,9 @@
         </div>
         <div class="frm_group_last">
             <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
-            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="1" checked>
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
             <label class="frm_label" id="lbl_product_isEnabled_true" for="checkbox_product_isEnabled_true">销售中</label>
-            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
+            <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="1" checked>
             <label class="frm_label" id="lbl_product_isEnabled_false" for="checkbox_product_isEnabled_false">停售中</label>
             <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2" checked>
             <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
@@ -172,11 +176,14 @@
             <td>${product.product_price}</td>
             <td>${product.product_sale_price}</td>
             <td>${product.product_create_date}</td>
-            <td<c:choose>
-                <c:when test="${product.product_isEnabled == '停售中'}">class="td_error"</c:when>
-                <c:when test="${product.product_isEnabled == '促销中'}">class="td_wait"</c:when>
-                <c:otherwise>class="td_success"</c:otherwise></c:choose>>${product.product_isEnabled}</td>
-            <td class="td_special"><a href="#">详情</a></td>
+            <td>
+                <c:choose>
+                    <c:when test="${product.product_isEnabled==0}"><span class="td_success">销售中</span></c:when>
+                    <c:when test="${product.product_isEnabled==2}"><span class="td_warn">促销中</span></c:when>
+                    <c:otherwise><span class="td_error">停售中</span></c:otherwise>
+                </c:choose>
+            </td>
+            <td><span class="td_special"><a href="#">详情</a></span></td>
             <td hidden>${product.product_id}</td>
         </tr>
     </c:forEach>

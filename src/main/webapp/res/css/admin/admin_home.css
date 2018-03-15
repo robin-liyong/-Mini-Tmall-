@@ -3,9 +3,7 @@ html,body,#div_home_main{
     height: 100%;
 }
 #div_home_main{
-    min-width: 1280px;
-    min-height: 650px;
-    overflow: auto;
+    min-width: 1000px;
 }
 /*通用类部分*/
 .text_info{
@@ -24,7 +22,7 @@ html,body,#div_home_main{
     top: 0;
     left: 0;
     width: 100%;
-    min-width: 1280px;
+    min-width: 1000px;
     height: 57px;
     background-color: #f5f6fb;
     padding: 12px 35px;
@@ -126,6 +124,6 @@ html,body,#div_home_main{
     color:#444;
 }
 #div_home_main>#div_home_context{
-    padding: 117px 20px 30px 220px;
+    padding: 117px 25px 30px 225px;
     min-height: 700px;
 }

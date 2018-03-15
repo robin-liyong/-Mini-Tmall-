@@ -118,15 +118,8 @@ public class Product {
         return this;
     }
 
-    public String getProduct_isEnabled() {
-        switch (product_isEnabled){
-            case 0:
-                return "停售中";
-            case 1:
-                return "销售中";
-            default:
-                return "促销中";
-        }
+    public Byte getProduct_isEnabled() {
+        return this.product_isEnabled;
     }
 
     public Product setProduct_isEnabled(Byte product_isEnabled) {
