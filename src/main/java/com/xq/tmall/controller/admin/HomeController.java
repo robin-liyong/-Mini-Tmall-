@@ -3,14 +3,8 @@ package com.xq.tmall.controller.admin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.xq.tmall.entity.Admin;
-import com.xq.tmall.entity.Category;
-import com.xq.tmall.entity.Product;
-import com.xq.tmall.entity.ProductOrder;
-import com.xq.tmall.service.AdminService;
-import com.xq.tmall.service.CategoryService;
-import com.xq.tmall.service.ProductOrderService;
-import com.xq.tmall.service.ProductService;
+import com.xq.tmall.entity.*;
+import com.xq.tmall.service.*;
 import com.xq.tmall.util.PageUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +35,8 @@ public class HomeController {
     private ProductService productService;
     @Resource(name="productOrderService")
     private ProductOrderService productOrderService;
+    @Resource(name="userService")
+    private UserService userService;
 
     //转到后台主页
     @RequestMapping("admin")
@@ -105,6 +101,8 @@ public class HomeController {
         }
 
         logger.info("转到分类管理页");
+        List<Category> categoryList = categoryService.getList(null,null);
+        map.put("categoryList",categoryList);
         return "admin/include/categoryManagePage";
     }
 
@@ -117,6 +115,10 @@ public class HomeController {
             return null;
         }
 
+        logger.info("获取前十条用户信息");
+        List<User> userList = userService.getList(null,new PageUtil(1,10));
+
+        map.put("userList",userList);
         logger.info("转到用户管理页");
         return "admin/include/userManagePage";
     }
