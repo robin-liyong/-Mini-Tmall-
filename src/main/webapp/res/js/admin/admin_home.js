@@ -45,9 +45,35 @@ function getPage(url,data,isChild) {
             contentType: "text/html;charset=UTF-8",
             success : function (data) {
                 $("#div_home_context_main").html(data);
+
+                /******
+                 * event
+                 ******/
+                //获得表单元素焦点时
+                $(".frm_input,.frm_radio").focus(function () {
+                    styleUtil.errorHide($("#text_product_msg"));
+                });
+                //点击table中的全选框时
+                $("#cbx_select_all").click(function () {
+                    if($(this).prop("checked")){
+                        $("td>.cbx_select").prop("checked",true);
+                    } else {
+                        $("td>.cbx_select").prop("checked",false);
+                    }
+                    styleUtil.errorHide($("#text_tools_msg"));
+                });
+                //点击tbody中的选框时
+                $("td>.cbx_select").click(function () {
+                    styleUtil.errorHide($("#text_tools_msg"));
+                });
+                //点击重置按钮时
+                $('#btn_clear').click(function () {
+                    $(".form_main")[0].reset();
+                    $(".selectpicker").selectpicker("refresh");
+                });
             },
             beforeSend: function () {
-
+                $(".loader").css("display","block");
             },
             error: function () {
 

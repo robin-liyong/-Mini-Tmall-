@@ -6,6 +6,7 @@ var cookieUtil = {
             var date = new Date();
             date.setDate(date.getDate() + days);
             document.cookie = name + "=" + decodeURI(value) + ";expires=" + date.toUTCString();
+            return this;
         },
     //获取Cookie
     getCookie:
@@ -21,6 +22,7 @@ var cookieUtil = {
     removeCookie:
         function removeCookie(name) {
             cookieUtil.setCookie(name, "", -1);
+            return this;
         }
 };
 //样式统一工具
@@ -39,6 +41,7 @@ var styleUtil = {
                     opacity: 1
                 }, 100);
             }
+            return this;
         },
     //隐藏表单验证错误提示
     errorHide:
@@ -49,5 +52,6 @@ var styleUtil = {
                     opacity: 0
                 }, 200);
             }
+            return this;
         }
 };

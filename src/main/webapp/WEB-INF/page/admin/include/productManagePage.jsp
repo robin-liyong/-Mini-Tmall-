@@ -11,43 +11,43 @@
          ******/
         //点击查询按钮时
         $("#btn_product_submit").click(function () {
-            //产品名称
-            var productName = $("#input_product_name").val();
-            //分类id
-            var categoryId = $("#select_product_category").val();
-            //产品状态
-            var statusArray = [];
+            var product_name = $.trim($("#input_product_name").val());
+            var category_id = $("#select_product_category").val();
+            //产品状态数组
+            var status_array = [];
             $(".radio_isEnabled:checked").each(function () {
-                statusArray.push($(this).val());
+                status_array.push($(this).val());
             });
-            //最低价
-            var lowestPrice = $("#input_product_sale_place").val();
-            //最高价
-            var highestPrice = $("#input_product_place").val();
+            var lowest_price = $.trim($("#input_product_sale_place").val());
+            var highest_price = $.trim($("#input_product_place").val());
             //校验数据合法性
-            if((lowestPrice !== "" && isNaN(lowestPrice)) || (highestPrice !== "" && isNaN(highestPrice))){
+            if((lowest_price !== "" && isNaN(lowest_price)) || (highest_price !== "" && isNaN(highest_price))){
                 styleUtil.errorShow($('#text_product_msg'),"产品金额格式有误！");
                 return;
             }
+            var url = "admin/product/search";
+            if(product_name === "" && category_id == 0 && (status_array.length <= 0 || status_array.length >= 3) && lowest_price === "" && highest_price === "") {
+                url = "admin/product/searchAll";
+            }
             //ajax请求数据
             $.ajax({
-                url: "admin/product/search",
+                url: url,
                 type:"get",
                 data: {
-                    "product_name":encodeURI(productName),
-                    "product_category.category_id":categoryId,
-                    "product_sale_price":lowestPrice,
-                    "product_price":highestPrice,
-                    "product_isEnabled_array":statusArray
+                    "product_name":encodeURI(product_name),
+                    "product_category.category_id":category_id,
+                    "product_sale_price":lowest_price,
+                    "product_price":highest_price,
+                    "product_isEnabled_array":status_array
                 },
                 traditional:true,
                 success : function (data) {
+                    $("#btn_product_submit").val("查询");
                     var table = $("#table_product_list");
                     var tbody = table.children("tbody").first();
                     //清空原有数据
                     tbody.empty();
                     if(data.productList.length>0){
-                        //设置相关样式
                         for(var i in data.productList){
                             var isEnabledClass;
                             var isEnabled;
@@ -65,34 +65,78 @@
                                     isEnabled = "停售中";
                                     break;
                             }
-                            //设置小数显示
                             var product_price = data.productList[i].product_price.toFixed(1);
                             var product_sale_price = data.productList[i].product_sale_price.toFixed(1);
-                            //追加查询数据
-                            tbody.append(
-                                "<tr><td>"+data.productList[i].product_name+"</td><td>"+data.productList[i].product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+data.productList[i].product_create_date+"<td><span class='"+isEnabledClass+"'>"+isEnabled+"</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>"+data.productList[i].product_id+"</td></tr>"
-                            );
-                            //设置统计数据
+                            var product_id = data.productList[i].product_id;
+                            var product_name = data.productList[i].product_name;
+                            var product_title = data.productList[i].product_title;
+                            var product_create_date = data.productList[i].product_create_date;
+                            //显示产品数据
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_"+product_id+"'><label for='cbx_product_select_"+product_id+"'></label></td><td>"+product_name+"</td><td>"+product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+product_create_date+"<td><span class='"+isEnabledClass+"'>"+isEnabled+"</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>"+product_id+"</td></tr>");
+                            //显示产品统计数据
                             $(".data_count_value").first().text(data.productCount);
                         }
                     }
                 },
                 beforeSend: function () {
-
+                    $("#btn_product_submit").val("查询中...");
                 },
                 error: function () {
 
                 }
             });
         });
-        //获得表单元素焦点时
-        $(".frm_input,.frm_radio").focus(function () {
-            styleUtil.errorHide($("#text_product_msg"));
-        });
-        //点击重置按钮时
-        $("#btn_clear").click(function () {
-            $("#form_product")[0].reset();
-            select.val(0).selectpicker("refresh");
+        //点击刷新按钮时
+        $("#btn_product_refresh").click(function () {
+            //ajax请求数据
+            $.ajax({
+                url: "admin/product/searchAll",
+                type: "get",
+                data: null,
+                success: function (data) {
+                    $("#btn_product_refresh").val("刷新产品列表");
+                    var table = $("#table_product_list");
+                    var tbody = table.children("tbody").first();
+                    //清空原有数据
+                    tbody.empty();
+                    if (data.productList.length > 0) {
+                        for (var i in data.productList) {
+                            var isEnabledClass;
+                            var isEnabled;
+                            switch (data.productList[i].product_isEnabled) {
+                                case 0:
+                                    isEnabledClass = "td_success";
+                                    isEnabled = "销售中";
+                                    break;
+                                case 2:
+                                    isEnabledClass = "td_warn";
+                                    isEnabled = "促销中";
+                                    break;
+                                default:
+                                    isEnabledClass = "td_error";
+                                    isEnabled = "停售中";
+                                    break;
+                            }
+                            var product_price = data.productList[i].product_price.toFixed(1);
+                            var product_sale_price = data.productList[i].product_sale_price.toFixed(1);
+                            var product_id = data.productList[i].product_id;
+                            var product_name = data.productList[i].product_name;
+                            var product_title = data.productList[i].product_title;
+                            var product_create_date = data.productList[i].product_create_date;
+                            //显示产品数据
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td>" + product_name + "</td><td>" + product_title + "</td><td>" + product_price + "</td><td>" + product_sale_price + "</td><td>" + product_create_date + "<td><span class='" + isEnabledClass + "'>" + isEnabled + "</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + product_id + "</td></tr>");
+                            //显示产品统计数据
+                            $(".data_count_value").first().text(data.productCount);
+                        }
+                    }
+                },
+                beforeSend: function () {
+                    $("#btn_product_refresh").val("刷新列表中...");
+                },
+                error: function () {
+
+                }
+            });
         });
     </script>
     <style rel="stylesheet">
@@ -111,7 +155,7 @@
 </head>
 <body>
 <div class="frm_div text_info">
-    <form id="form_product">
+    <form id="form_product" class="form_main">
         <div class="frm_group">
             <label class="frm_label" id="lbl_product_name" for="input_product_name">产品名称</label>
             <input class="frm_input" id="input_product_name" type="text" maxlength="50"/>
@@ -124,7 +168,7 @@
             </select>
             <span class="frm_error_msg" id="text_product_msg"></span>
         </div>
-        <div class="frm_group_last">
+        <div class="frm_group">
             <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
             <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
             <label class="frm_label" id="lbl_product_isEnabled_true" for="checkbox_product_isEnabled_true">销售中</label>
@@ -140,6 +184,11 @@
 
             <input class="frm_btn" id="btn_product_submit" type="button" value="查询"/>
             <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
+        </div>
+        <div class="frm_group_last">
+            <input class="frm_btn frm_add" id="btn_product_add" type="button" value="添加一件产品"/>
+            <input class="frm_btn frm_refresh" id="btn_product_refresh" type="button" value="刷新产品列表"/>
+            <span class="frm_error_msg" id="text_tools_msg"></span>
         </div>
     </form>
 </div>
@@ -158,19 +207,21 @@
 <table class="table_normal" id="table_product_list">
     <thead>
     <tr>
+        <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
         <th>产品名称</th>
         <th>产品标题</th>
         <th>原价</th>
         <th>促销价</th>
         <th>创建时间</th>
         <th>上架状态</th>
-        <th>产品详情</th>
+        <th>操作</th>
         <th hidden>产品ID</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${requestScope.productList}" var="product">
         <tr>
+            <td><input type="checkbox" class="cbx_select" id="cbx_product_select_${product.product_id}"><label for="cbx_product_select_${product.product_id}"></label></td>
             <td>${product.product_name}</td>
             <td>${product.product_title}</td>
             <td>${product.product_price}</td>
@@ -184,7 +235,7 @@
                 </c:choose>
             </td>
             <td><span class="td_special"><a href="#">详情</a></span></td>
-            <td hidden>${product.product_id}</td>
+            <td hidden><span class="product_id">${product.product_id}</span></td>
         </tr>
     </c:forEach>
     </tbody>

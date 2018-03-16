@@ -59,7 +59,9 @@
         <span>首页</span>
     </div>
     <div id="div_home_context">
-        <div id="div_home_context_main"></div>
+        <div id="div_home_context_main">
+            <div class="loader">Loading...</div>
+        </div>
     </div>
 </div>
 </body>
