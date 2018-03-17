@@ -194,8 +194,6 @@ input[type="checkbox"] {
 }
 .table_normal tr{
     border-bottom: 1px solid #F2F2F4;
-}
-.table_normal tbody>tr{
     cursor: pointer;
 }
 .table_normal tbody>tr:hover{
@@ -204,6 +202,13 @@ input[type="checkbox"] {
 .table_normal th{
     padding: 12px 15px;
     color:#333333;
+}
+.table_normal th:hover{
+    background-color: rgb(235,235,235);
+}
+.table_normal th:first-child,.table_normal th:last-child{
+    cursor: default;
+    background-color: transparent;
 }
 .table_normal td{
     padding: 10px 15px;

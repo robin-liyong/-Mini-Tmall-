@@ -23,11 +23,7 @@ $(function () {
         $("#div_home_title").find(">span").text(title);
         document.title = "Tmall管理后台 - "+title;
         //ajax请求页面
-        var isHome = null;
-        if(pageURL === "/"){
-            isHome = {"goHomeByAjax" : true};
-        }
-        getPage(pageURL,isHome,false);
+        getPage(pageURL,null,false);
     });
 });
 //页面切换
@@ -45,32 +41,42 @@ function getPage(url,data,isChild) {
             contentType: "text/html;charset=UTF-8",
             success : function (data) {
                 $("#div_home_context_main").html(data);
-
-                /******
-                 * event
-                 ******/
-                //获得表单元素焦点时
-                $(".frm_input,.frm_radio").focus(function () {
-                    styleUtil.errorHide($("#text_product_msg"));
-                });
-                //点击table中的全选框时
-                $("#cbx_select_all").click(function () {
-                    if($(this).prop("checked")){
-                        $("td>.cbx_select").prop("checked",true);
-                    } else {
-                        $("td>.cbx_select").prop("checked",false);
-                    }
-                    styleUtil.errorHide($("#text_tools_msg"));
-                });
-                //点击tbody中的选框时
-                $("td>.cbx_select").click(function () {
-                    styleUtil.errorHide($("#text_tools_msg"));
-                });
-                //点击重置按钮时
-                $('#btn_clear').click(function () {
-                    $(".form_main")[0].reset();
-                    $(".selectpicker").selectpicker("refresh");
-                });
+                if(!isChild){
+                    /******
+                     * event
+                     ******/
+                    //获得表单元素焦点时
+                    $(".frm_input,.frm_radio").focus(function () {
+                        styleUtil.errorHide($("#text_product_msg"));
+                    });
+                    //点击table中的全选框时
+                    $("#cbx_select_all").click(function () {
+                        if($(this).prop("checked")){
+                            $("td>.cbx_select").prop("checked",true);
+                        } else {
+                            $("td>.cbx_select").prop("checked",false);
+                        }
+                        styleUtil.errorHide($("#text_tools_msg"));
+                    });
+                    //点击table中的选框时
+                    $("td>.cbx_select").click(function () {
+                        styleUtil.errorHide($("#text_tools_msg"));
+                    });
+                    //点击table中的数据时
+                    $("tbody>tr").click(function () {
+                        var checkbox = $(this).find(".cbx_select").first();
+                        if(checkbox.prop("checked")){
+                            checkbox.prop("checked",false);
+                        } else {
+                            checkbox.prop("checked",true);
+                        }
+                    });
+                    //点击重置按钮时
+                    $('#btn_clear').click(function () {
+                        $(".form_main")[0].reset();
+                        $(".selectpicker").selectpicker("refresh");
+                    });
+                }
             },
             beforeSend: function () {
                 $(".loader").css("display","block");

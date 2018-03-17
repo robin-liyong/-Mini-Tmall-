@@ -1,6 +1,6 @@
 package com.xq.tmall.util;
 
-public final class OrderUtil {
+public  class OrderUtil {
     //排序字段
     private String orderBy;
     //倒序排序
@@ -10,6 +10,7 @@ public final class OrderUtil {
         this.orderBy = orderBy;
         this.isDesc = false;
     }
+
     public OrderUtil(String orderBy,boolean isDesc) {
         this.orderBy = orderBy;
         this.isDesc = isDesc;

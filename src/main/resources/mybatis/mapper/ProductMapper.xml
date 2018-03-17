@@ -44,7 +44,7 @@
     <select id="select" resultMap="productMap">
         SELECT product_id,product_name,product_title,product_price,product_sale_price,product_create_date,product_isEnabled,product_category_id
         <if test="orderUtil != null">
-            <if test='orderUtil.orderBy = "product_sale_count"'>
+            <if test='orderUtil.orderBy == "product_sale_count"'>
             ,(SELECT SUM(productOrderItem_number) FROM productOrderItem WHERE productOrderItem_product_id = product_id) AS #{orderUtil.orderBy}
             </if>
         </if>
@@ -56,14 +56,15 @@
                 <if test="product.product_sale_price != null">and product_sale_price &gt;= #{product.product_sale_price}</if>
                 <if test="product.product_category.category_id != null">and product_category_id = #{product.product_category.category_id}</if>
             </if>
-            <if test="product_isEnabled_array != null">and product_isEnabled IN
+            <if test="product_isEnabled_array != null">
+                and product_isEnabled IN
                 <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
         </where>
         <if test="orderUtil != null">
-            ORDER BY #{orderUtil.orderBy}<if test="orderUtil.isDesc"> desc</if>
+            ORDER BY ${orderUtil.orderBy}<if test="orderUtil.isDesc">desc </if>
         </if>
         <if test="pageUtil != null">
             LIMIT #{pageUtil.index},#{pageUtil.count}

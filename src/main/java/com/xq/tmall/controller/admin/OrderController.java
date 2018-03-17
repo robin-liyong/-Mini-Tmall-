@@ -22,12 +22,12 @@ public class OrderController {
     @Resource(name="productOrderService")
     private ProductOrderService productOrderService;
 
-    //转到后台管理-订单页
+    //转到后台管理-订单页-ajax
     @RequestMapping("admin/order")
     public String goToPage(HttpSession session, Map<String, Object> map){
-        logger.info("验证管理权限");
-        Object o=isLogin(session);
-        if (o==null){
+        logger.info("检查管理员权限");
+        Object adminId = checkAdmin(session);
+        if(adminId == null){
             return null;
         }
 
@@ -35,18 +35,18 @@ public class OrderController {
         List<ProductOrder> productOrderList=productOrderService.getList(null,null,new PageUtil(1,10));
         map.put("productOrderList",productOrderList);
 
-        logger.info("转到后台管理-订单页");
+        logger.info("转到后台管理-订单页-ajax方式");
         return "admin/include/productOrderManagePage";
     }
 
-    //验证权限
-    private Object isLogin(HttpSession session){
+    //检查管理员权限
+    private Object checkAdmin(HttpSession session){
         Object o = session.getAttribute("adminId");
         if(o==null){
             logger.info("无管理权限，返回管理员登陆页");
-        } else {
-            logger.info("权限验证成功，管理员ID：{}",o);
+            return null;
         }
+        logger.info("权限验证成功，管理员ID：{}",o);
         return o;
     }
 }

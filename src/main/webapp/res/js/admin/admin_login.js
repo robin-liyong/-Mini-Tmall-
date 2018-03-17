@@ -47,6 +47,7 @@ $(function () {
             type:"post",
             data: {"password":password},
             success:function (data) {
+                $("#btn_login").val("登录");
                 if (data.success) {
                     cookieUtil.setCookie("username", username, 30);
                     location.href = "/tmall/admin";
@@ -55,7 +56,7 @@ $(function () {
                 }
             },
             beforeSend:function () {
-
+                $("#btn_login").val("登录中...");
             },
             error:function (data) {
 

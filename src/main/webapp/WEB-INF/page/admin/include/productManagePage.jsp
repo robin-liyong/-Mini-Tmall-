@@ -4,6 +4,15 @@
 <head>
     <script>
         $(function () {
+            var dataList = {
+                "product_name": null,
+                "category_id": null,
+                "product_sale_price": null,
+                "product_price": null,
+                "product_isEnabled_array": null,
+                "orderBy": null,
+                "isDesc": true
+            };
             //刷新下拉框
             $('#select_product_category').selectpicker('refresh');
             /******
@@ -26,18 +35,41 @@
                     return;
                 }
                 //封装数据
-                var data = {
-                    "product_name": encodeURI(product_name),
-                    "category_id": category_id,
-                    "product_sale_price": lowest_price,
-                    "product_price": highest_price,
-                    "product_isEnabled_array": status_array
-                };
-                getData("admin/product/search",data,true,$(this),"查询数据中...","查询");
+                dataList.product_name = encodeURI(product_name);
+                dataList.category_id = category_id;
+                dataList.product_sale_price = lowest_price;
+                dataList.product_price = highest_price;
+                dataList.product_isEnabled_array = status_array;
+                //清除排序
+                dataList.orderBy = null;
+                dataList.desc = true;
+
+                getData("admin/product/search",dataList,true,$(this),"查询数据中...","查询");
             });
             //点击刷新按钮时
             $("#btn_product_refresh").click(function () {
-                getData("admin/product/search",null,false,$(this),"刷新列表中...","刷新产品列表");
+                //清除排序
+                dataList.orderBy = null;
+                dataList.desc = true;
+
+                getData("admin/product/search",dataList,true,$(this),"刷新列表中...","刷新产品列表");
+            });
+            //点击th排序时
+            $("th.product_info").click(function () {
+                if($("tbody>tr").length <= 1){
+                    return;
+                }
+                var orderData = $(this).attr("data-toggle");
+                //获取排序字段
+                dataList.orderBy = orderData.substring(0,orderData.lastIndexOf('_'));
+                //是否倒序
+                dataList.isDesc = orderData.substring(orderData.lastIndexOf('_')+1) === "desc";
+                if(dataList.isDesc){
+                    $(this).attr("data-toggle",dataList.orderBy+"_asc");
+                } else {
+                    $(this).attr("data-toggle",dataList.orderBy+"_desc");
+                }
+                getData("admin/product/search",dataList,true);
             });
         });
         //获取产品数据
@@ -48,7 +80,9 @@
                 data: data,
                 traditional: isTraditional,
                 success: function (data) {
-                    btnObject.val(successMsg);
+                    if(btnObject != null){
+                        btnObject.val(successMsg);
+                    }
                     var table = $("#table_product_list");
                     var tbody = table.children("tbody").first();
                     //清空原有数据
@@ -85,7 +119,9 @@
                     }
                 },
                 beforeSend: function () {
-                    btnObject.val(sendMsg);
+                    if(btnObject != null){
+                        btnObject.val(sendMsg);
+                    }
                 },
                 error: function () {
 
@@ -159,17 +195,17 @@
     <span class="data_count_unit">件</span>
 </div>
 <table class="table_normal" id="table_product_list">
-    <thead>
+    <thead class="text_info">
     <tr>
         <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-        <th>产品名称</th>
-        <th>产品标题</th>
-        <th>原价</th>
-        <th>促销价</th>
-        <th>创建时间</th>
-        <th>上架状态</th>
-        <th>操作</th>
+        <th class="product_info" data-toggle="product_name_desc">产品名称</th>
+        <th class="product_info" data-toggle="product_title_desc">产品标题</th>
+        <th class="product_info" data-toggle="product_price_desc">原价</th>
+        <th class="product_info" data-toggle="product_sale_price_desc">促销价</th>
+        <th class="product_info" data-toggle="product_create_date_desc">创建时间</th>
+        <th class="product_info" data-toggle="product_isEnabled_desc">上架状态</th>
         <th hidden>产品ID</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -188,8 +224,8 @@
                     <c:otherwise><span class="td_error">停售中</span></c:otherwise>
                 </c:choose>
             </td>
-            <td><span class="td_special"><a href="#">详情</a></span></td>
             <td hidden><span class="product_id">${product.product_id}</span></td>
+            <td><span class="td_special"><a href="#">详情</a></span></td>
         </tr>
     </c:forEach>
     </tbody>
