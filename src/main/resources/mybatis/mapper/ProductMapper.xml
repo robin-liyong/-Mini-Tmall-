@@ -51,10 +51,10 @@
         FROM product
         <where>
             <if test="product != null">
-                <if test="product.product_name != null and product.product_name != ''">product_name LIKE concat('%',#{product.product_name},'%')</if>
+                <if test="product.product_name != null">product_name LIKE concat('%',#{product.product_name},'%')</if>
                 <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
                 <if test="product.product_sale_price != null">and product_sale_price &gt;= #{product.product_sale_price}</if>
-                <if test="product.product_category.category_id != null and product.product_category.category_id != 0">and product_category_id = #{product.product_category.category_id}</if>
+                <if test="product.product_category.category_id != null">and product_category_id = #{product.product_category.category_id}</if>
             </if>
             <if test="product_isEnabled_array != null">and product_isEnabled IN
                 <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator="," close=")">
@@ -79,10 +79,10 @@
         SELECT COUNT(product_id) FROM product
         <where>
             <if test="product != null">
-                <if test="product.product_name != null and product.product_name != ''">product_name LIKE concat('%',#{product.product_name},'%')</if>
+                <if test="product.product_name != null">product_name LIKE concat('%',#{product.product_name},'%')</if>
                 <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
                 <if test="product.product_sale_price != null">and product_sale_price &gt;= #{product.product_sale_price}</if>
-                <if test="product.product_category.category_id != null and product.product_category.category_id != 0">and product_category_id = #{product.product_category.category_id}</if>
+                <if test="product.product_category.category_id != null">and product_category_id = #{product.product_category.category_id}</if>
             </if>
             <if test="product_isEnabled_array != null">and product_isEnabled IN
                 <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator="," close=")">

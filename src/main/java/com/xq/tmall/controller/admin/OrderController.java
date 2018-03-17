@@ -40,7 +40,7 @@ public class OrderController {
     }
 
     //验证权限
-    public Object isLogin(HttpSession session){
+    private Object isLogin(HttpSession session){
         Object o = session.getAttribute("adminId");
         if(o==null){
             logger.info("无管理权限，返回管理员登陆页");

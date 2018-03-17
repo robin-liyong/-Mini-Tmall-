@@ -12,6 +12,17 @@ public class Product {
     private Double product_price;
     private Double product_sale_price;
     private Date product_create_date;
+    private Category product_category;
+    private Byte product_isEnabled;
+    private List<PropertyValue> propertyValueList;
+    private List<ProductImage> singleProductImageList;
+    private List<ProductImage> detailProductImageList;
+    private List<Review> reviewList;
+    private List<ProductOrderItem> productOrderItemList;
+    //销量数
+    private Integer product_sale_count;
+    //评价数
+    private Integer product_review_count;
 
     @Override
     public String toString() {
@@ -33,18 +44,6 @@ public class Product {
                 ", product_review_count=" + product_review_count +
                 '}';
     }
-
-    private Category product_category;
-    private Byte product_isEnabled;
-    private List<PropertyValue> propertyValueList;
-    private List<ProductImage> singleProductImageList;
-    private List<ProductImage> detailProductImageList;
-    private List<Review> reviewList;
-    private List<ProductOrderItem> productOrderItemList;
-    //销量数
-    private Integer product_sale_count;
-    //评价数
-    private Integer product_review_count;
 
     public Product(){
 

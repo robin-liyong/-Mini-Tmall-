@@ -3,98 +3,52 @@
 <html>
 <head>
     <script>
-        //初始化下拉框
-        $('#select_product_category').selectpicker('refresh');
-
-        /******
-         * event
-         ******/
-        //点击查询按钮时
-        $("#btn_product_submit").click(function () {
-            var product_name = $.trim($("#input_product_name").val());
-            var category_id = $("#select_product_category").val();
-            //产品状态数组
-            var status_array = [];
-            $(".radio_isEnabled:checked").each(function () {
-                status_array.push($(this).val());
-            });
-            var lowest_price = $.trim($("#input_product_sale_place").val());
-            var highest_price = $.trim($("#input_product_place").val());
-            //校验数据合法性
-            if((lowest_price !== "" && isNaN(lowest_price)) || (highest_price !== "" && isNaN(highest_price))){
-                styleUtil.errorShow($('#text_product_msg'),"产品金额格式有误！");
-                return;
-            }
-            var url = "admin/product/search";
-            if(product_name === "" && category_id == 0 && (status_array.length <= 0 || status_array.length >= 3) && lowest_price === "" && highest_price === "") {
-                url = "admin/product/searchAll";
-            }
-            //ajax请求数据
-            $.ajax({
-                url: url,
-                type:"get",
-                data: {
-                    "product_name":encodeURI(product_name),
-                    "product_category.category_id":category_id,
-                    "product_sale_price":lowest_price,
-                    "product_price":highest_price,
-                    "product_isEnabled_array":status_array
-                },
-                traditional:true,
-                success : function (data) {
-                    $("#btn_product_submit").val("查询");
-                    var table = $("#table_product_list");
-                    var tbody = table.children("tbody").first();
-                    //清空原有数据
-                    tbody.empty();
-                    if(data.productList.length>0){
-                        for(var i in data.productList){
-                            var isEnabledClass;
-                            var isEnabled;
-                            switch (data.productList[i].product_isEnabled){
-                                case 0:
-                                    isEnabledClass = "td_success";
-                                    isEnabled = "销售中";
-                                    break;
-                                case 2:
-                                    isEnabledClass = "td_warn";
-                                    isEnabled = "促销中";
-                                    break;
-                                default:
-                                    isEnabledClass = "td_error";
-                                    isEnabled = "停售中";
-                                    break;
-                            }
-                            var product_price = data.productList[i].product_price.toFixed(1);
-                            var product_sale_price = data.productList[i].product_sale_price.toFixed(1);
-                            var product_id = data.productList[i].product_id;
-                            var product_name = data.productList[i].product_name;
-                            var product_title = data.productList[i].product_title;
-                            var product_create_date = data.productList[i].product_create_date;
-                            //显示产品数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_"+product_id+"'><label for='cbx_product_select_"+product_id+"'></label></td><td>"+product_name+"</td><td>"+product_title+"</td><td>"+product_price+"</td><td>"+product_sale_price+"</td><td>"+product_create_date+"<td><span class='"+isEnabledClass+"'>"+isEnabled+"</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>"+product_id+"</td></tr>");
-                            //显示产品统计数据
-                            $(".data_count_value").first().text(data.productCount);
-                        }
-                    }
-                },
-                beforeSend: function () {
-                    $("#btn_product_submit").val("查询中...");
-                },
-                error: function () {
-
+        $(function () {
+            //刷新下拉框
+            $('#select_product_category').selectpicker('refresh');
+            /******
+             * event
+             ******/
+            //点击查询按钮时
+            $("#btn_product_submit").click(function () {
+                var product_name = $.trim($("#input_product_name").val());
+                var category_id = parseInt($("#select_product_category").val());
+                var lowest_price = $.trim($("#input_product_sale_place").val());
+                var highest_price = $.trim($("#input_product_place").val());
+                //产品状态数组
+                var status_array = [];
+                $(".radio_isEnabled:checked").each(function () {
+                    status_array.push($(this).val());
+                });
+                //校验数据合法性
+                if( isNaN(lowest_price) || isNaN(highest_price) ){
+                    styleUtil.errorShow($('#text_product_msg'),"金额输入格式有误！");
+                    return;
                 }
+                //封装数据
+                var data = {
+                    "product_name": encodeURI(product_name),
+                    "category_id": category_id,
+                    "product_sale_price": lowest_price,
+                    "product_price": highest_price,
+                    "product_isEnabled_array": status_array
+                };
+                getData("admin/product/search",data,true,$(this),"查询数据中...","查询");
+            });
+            //点击刷新按钮时
+            $("#btn_product_refresh").click(function () {
+                getData("admin/product/search",null,false,$(this),"刷新列表中...","刷新产品列表");
             });
         });
-        //点击刷新按钮时
-        $("#btn_product_refresh").click(function () {
-            //ajax请求数据
+        //获取产品数据
+        function getData(url,data,isTraditional,btnObject,sendMsg,successMsg) {
             $.ajax({
-                url: "admin/product/searchAll",
+                url: url,
                 type: "get",
-                data: null,
+                data: data,
+                traditional: isTraditional,
                 success: function (data) {
-                    $("#btn_product_refresh").val("刷新产品列表");
+                    btnObject.val(successMsg);
                     var table = $("#table_product_list");
                     var tbody = table.children("tbody").first();
                     //清空原有数据
@@ -131,13 +85,13 @@
                     }
                 },
                 beforeSend: function () {
-                    $("#btn_product_refresh").val("刷新列表中...");
+                    btnObject.val(sendMsg);
                 },
                 error: function () {
 
                 }
             });
-        });
+        }
     </script>
     <style rel="stylesheet">
         #text_cut{
