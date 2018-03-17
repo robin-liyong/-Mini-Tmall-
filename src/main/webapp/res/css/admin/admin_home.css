@@ -31,9 +31,6 @@ html,body,#div_home_main{
 }
 #nav_main>.home_logo{
     vertical-align: middle;
-    width: 32px;
-    height: 32px;
-    fill: #ff7874;
 }
 #nav_main>#txt_home_title{
     position: relative;
@@ -50,8 +47,6 @@ html,body,#div_home_main{
 #nav_main>#img_home_profile_picture{
     float: right;
     margin: 0 12px;
-    width: 32px;
-    height: 32px;
     border-radius: 32px;
 }
 #nav_main>#i_nickname_slide{
@@ -92,13 +87,11 @@ html,body,#div_home_main{
     color: #8a8ba8;
 }
 .menu_li>.icon{
-    width: 16px;
-    height: 16px;
+    fill: #cdd0cf;
     position: relative;
     top: 1px;
     vertical-align: top;
     margin-right: 8px;
-    fill: #cdd0cf;
 }
 .menu_li_select>.icon{
     fill: #8a8ba8;

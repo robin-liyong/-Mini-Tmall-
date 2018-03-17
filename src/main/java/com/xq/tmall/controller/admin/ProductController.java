@@ -12,10 +12,7 @@ import com.xq.tmall.util.PageUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -60,50 +57,51 @@ public class ProductController {
 
     //按条件查询产品-AJAX
     @ResponseBody
-    @RequestMapping(value = "admin/product/search", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public String getProductBySearch(@RequestParam(value = "product_name", required = false) String product_name,
-                                     @RequestParam(value = "category_id", required = false) Integer category_id,
-                                     @RequestParam(value = "product_sale_price", required = false) Double product_sale_price,
-                                     @RequestParam(value = "product_price", required = false) Double product_price,
-                                     @RequestParam(value = "product_isEnabled_array", required = false) Byte[] product_isEnabled_array,
-                                     @RequestParam(value = "orderBy",required = false) String orderBy,
-                                     @RequestParam(value = "isDesc",required = false) Boolean isDesc) throws UnsupportedEncodingException {
-        try {
-            //移除不必要条件
-            if (product_isEnabled_array != null && (product_isEnabled_array.length <= 0 || product_isEnabled_array.length >=3)) {
-                product_isEnabled_array = null;
-            }
-            if (category_id != null && category_id == 0) {
-                category_id = null;
-            }
-            //解决中文乱码：URLDecoder.decode(String,"UTF-8");
-            if (product_name != null) {
-                product_name = product_name.equals("") ? null : URLDecoder.decode(product_name, "UTF-8");
-            }
-            //封装数据
-            Product product = new Product()
-                    .setProduct_name(product_name)
-                    .setProduct_category(new Category().setCategory_id(category_id))
-                    .setProduct_price(product_price)
-                    .setProduct_sale_price(product_sale_price);
-            //排序
-            OrderUtil orderUtil = null;
-            if (orderBy != null && !orderBy.equals("")) {
-                orderUtil = new OrderUtil(orderBy, isDesc);
-            }
-            JSONObject object = new JSONObject();
-            logger.info("按条件获取前10条产品列表");
-            List<Product> productList = productService.getList(product, product_isEnabled_array, orderUtil, new PageUtil(1, 10));
-            object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
-            logger.info("按条件获取产品总数量");
-            Integer productCount = productService.getTotal(product, product_isEnabled_array);
-            object.put("productCount", productCount);
-
-            return object.toJSONString();
-        } catch (Exception e){
-            e.printStackTrace();
+    @RequestMapping(value = "admin/product/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String getProductBySearch(@RequestParam(required = false) String product_name/* 产品名称 */,
+                                     @RequestParam(required = false) Integer category_id/* 产品类型ID */,
+                                     @RequestParam(required = false) Double product_sale_price/* 产品最低价 */,
+                                     @RequestParam(required = false) Double product_price/* 产品最高价 */,
+                                     @RequestParam(required = false) Byte[] product_isEnabled_array/* 产品状态数组 */,
+                                     @RequestParam(required = false) String orderBy/* 排序字段 */,
+                                     @RequestParam(required = false,defaultValue = "true") Boolean isDesc/* 是否倒序 */,
+                                     @PathVariable Integer index/* 页数 */,
+                                     @PathVariable Integer count/* 行数 */) throws UnsupportedEncodingException {
+        //移除不必要条件
+        if (product_isEnabled_array != null && (product_isEnabled_array.length <= 0 || product_isEnabled_array.length >=3)) {
+            product_isEnabled_array = null;
         }
-        return null;
+        if (category_id != null && category_id == 0) {
+            category_id = null;
+        }
+        if (product_name != null) {
+            //如果为非空字符串则解决中文乱码：URLDecoder.decode(String,"UTF-8");
+            product_name = product_name.equals("") ? null : URLDecoder.decode(product_name, "UTF-8");
+        }
+        if(orderBy != null && orderBy.equals("")){
+            orderBy = null;
+        }
+        //封装查询条件
+        Product product = new Product()
+                .setProduct_name(product_name)
+                .setProduct_category(new Category().setCategory_id(category_id))
+                .setProduct_price(product_price)
+                .setProduct_sale_price(product_sale_price);
+        OrderUtil orderUtil = null;
+        if (orderBy != null) {
+            logger.info("根据{}排序，是否倒序:{}",orderBy,isDesc);
+            orderUtil = new OrderUtil(orderBy, isDesc);
+        }
+
+        JSONObject object = new JSONObject();
+        logger.info("按条件获取第{}页的{}条产品",index,count);
+        List<Product> productList = productService.getList(product, product_isEnabled_array, orderUtil, new PageUtil(index, count));
+        object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
+        logger.info("按条件获取产品总数量");
+        Integer productCount = productService.getTotal(product, product_isEnabled_array);
+        object.put("productCount", productCount);
+
+        return object.toJSONString();
     }
 
     //检查管理员权限

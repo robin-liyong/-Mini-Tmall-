@@ -62,15 +62,6 @@ function getPage(url,data,isChild) {
                     $("td>.cbx_select").click(function () {
                         styleUtil.errorHide($("#text_tools_msg"));
                     });
-                    //点击table中的数据时
-                    $("tbody>tr").click(function () {
-                        var checkbox = $(this).find(".cbx_select").first();
-                        if(checkbox.prop("checked")){
-                            checkbox.prop("checked",false);
-                        } else {
-                            checkbox.prop("checked",true);
-                        }
-                    });
                     //点击重置按钮时
                     $('#btn_clear').click(function () {
                         $(".form_main")[0].reset();
@@ -85,5 +76,14 @@ function getPage(url,data,isChild) {
 
             }
         });
+    }
+}
+//tbody中tr的单击样式
+function trDataStyle(obj) {
+    var checkbox = obj.find(".cbx_select").first();
+    if(checkbox.prop("checked")){
+        checkbox.prop("checked",false);
+    } else {
+        checkbox.prop("checked",true);
     }
 }
