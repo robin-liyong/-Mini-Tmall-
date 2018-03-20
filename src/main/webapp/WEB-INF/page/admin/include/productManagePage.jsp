@@ -78,6 +78,8 @@
         });
         //获取产品数据
         function getData(url,data,isTraditional,btnObject,sendMsg,successMsg) {
+            var table = $("#table_product_list");
+            var tbody = table.children("tbody").first();
             $.ajax({
                 url: url,
                 type: "get",
@@ -87,13 +89,13 @@
                     if(btnObject != null){
                         btnObject.val(successMsg);
                     }
-                    var table = $("#table_product_list");
-                    var tbody = table.children("tbody").first();
-                    //清空原有数据
-                    tbody.empty();
-                    //解绑事件
-                    tbody.children("tr").unbind("click");
+                    tbody.css("display","table-row-group");
+                    $(".loader").css("display","none");
                     if (data.productList.length > 0) {
+                        //清空原有数据
+                        tbody.empty();
+                        //解绑事件
+                        tbody.children("tr").unbind("click");
                         for (var i in data.productList) {
                             var isEnabledClass;
                             var isEnabled;
@@ -132,6 +134,7 @@
                     if(btnObject != null){
                         btnObject.val(sendMsg);
                     }
+                    $(".loader").css("display","block");
                 },
                 error: function () {
 
@@ -240,5 +243,6 @@
     </c:forEach>
     </tbody>
 </table>
+<div class="loader"></div>
 </body>
 </html>

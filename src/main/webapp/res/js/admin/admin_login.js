@@ -43,7 +43,7 @@ $(function () {
             return;
         }
         $.ajax({
-            url: "login/"+username,
+            url: "/tmall/admin/login/"+username,
             type:"post",
             data: {"password":password},
             success:function (data) {
@@ -110,7 +110,7 @@ function initialData() {
 //获取用户头像
 function getUserProfilePicture(username) {
     if(username !== null && username !== ""){
-        $.getJSON("login/profile_picture/"+username,null,function (data) {
+        $.getJSON("/tmall/admin/login/profile_picture/"+username,null,function (data) {
             if(data.success){
                 if(data.srcString !== null){
                     $("#img_profile_picture").attr("src",data.srcString);
@@ -119,5 +119,5 @@ function getUserProfilePicture(username) {
             }
         });
     }
-    $("#img_profile_picture").attr("src","../res/images/admin/loginPage/default_profile_picture-128x128.png");
+    $("#img_profile_picture").attr("src","/tmall/res/images/admin/loginPage/default_profile_picture-128x128.png");
 }
