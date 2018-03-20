@@ -44,7 +44,7 @@
                 dataList.orderBy = null;
                 dataList.isDesc = true;
 
-                getData("admin/product/1/10",dataList,true,$(this),"查询中...","查询");
+                getData("admin/product/1/10",dataList,true);
             });
             //点击刷新按钮时
             $("#btn_product_refresh").click(function () {
@@ -52,7 +52,7 @@
                 dataList.orderBy = null;
                 dataList.isDesc = true;
 
-                getData("admin/product/1/10",null,false,$(this),"刷新列表中...","刷新产品列表");
+                getData("admin/product/1/10",null,false);
             });
             //点击th排序时
             $("th.product_info").click(function () {
@@ -77,7 +77,7 @@
             });
         });
         //获取产品数据
-        function getData(url,data,isTraditional,btnObject,sendMsg,successMsg) {
+        function getData(url,data,isTraditional) {
             var table = $("#table_product_list");
             var tbody = table.children("tbody").first();
             $.ajax({
@@ -86,14 +86,10 @@
                 data: data,
                 traditional: isTraditional,
                 success: function (data) {
-                    if(btnObject != null){
-                        btnObject.val(successMsg);
-                    }
-                    tbody.css("display","table-row-group");
+                    //清空原有数据
+                    tbody.empty();
                     $(".loader").css("display","none");
                     if (data.productList.length > 0) {
-                        //清空原有数据
-                        tbody.empty();
                         //解绑事件
                         tbody.children("tr").unbind("click");
                         for (var i in data.productList) {
@@ -131,9 +127,6 @@
                     }
                 },
                 beforeSend: function () {
-                    if(btnObject != null){
-                        btnObject.val(sendMsg);
-                    }
                     $(".loader").css("display","block");
                 },
                 error: function () {
