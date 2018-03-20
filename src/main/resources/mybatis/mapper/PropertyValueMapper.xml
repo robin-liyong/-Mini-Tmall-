@@ -6,10 +6,10 @@
     <resultMap id="propertyValueMap" type="propertyValue">
         <id property="propertyValue_id" column="propertyValue_id"/>
         <result property="propertyValue_value" column="propertyValue_value"/>
-        <association property="propertyValue_property" column="propertyValue_property_id">
+        <association property="propertyValue_property" column="propertyValue_property_id" javaType="com.xq.tmall.entity.Property">
             <id property="property_id" column="property_id"/>
         </association>
-        <association property="propertyValue_product" column="propertyValue_product_id">
+        <association property="propertyValue_product" column="propertyValue_product_id" javaType="com.xq.tmall.entity.Product">
             <id property="product_id" column="product_id"/>
         </association>
     </resultMap>

@@ -1,6 +1,6 @@
 package com.xq.tmall.util;
 
-public  class OrderUtil {
+public final class OrderUtil {
     //排序字段
     private String orderBy;
     //倒序排序

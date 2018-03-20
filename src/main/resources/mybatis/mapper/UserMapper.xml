@@ -12,19 +12,20 @@
         <result property="user_gender" column="user_gender"/>
         <result property="user_birthday" column="user_birthday"/>
         <result property="user_profile_picture_src" column="user_profile_picture_src"/>
-        <association property="user_address" column="user_address">
+        <association property="user_address" column="user_address" javaType="com.xq.tmall.entity.Address">
             <id property="address_areaId" column="address_areaId"/>
         </association>
-        <association property="user_homeplace" column="user_homeplace">
+        <association property="user_homeplace" column="user_homeplace" javaType="com.xq.tmall.entity.Address">
             <id property="address_areaId" column="address_areaId"/>
         </association>
     </resultMap>
 
     <insert id="insertOne" parameterType="user">
-        INSERT user(user_id,user_name,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace)
+        INSERT user(user_id,user_name,user_nickname,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace)
             VALUES (
             null,
             #{user.user_name},
+            #{user.user_nickname},
             #{user.user_password},
             #{user.user_realname},
             #{user.user_gender},
@@ -37,6 +38,7 @@
         UPDATE user
         <set>
             <if test="user.user_name != null">user_name = #{user.user_name}</if>
+            <if test="user.user_nickname != null">user_nickname = #{user_nickname}</if>
             <if test="user.user_password != null">user_password = #{user.user_password}</if>
             <if test="user.user_realname != null">user_realname = #{user.user_realname}</if>
             <if test="user.user_gender != null">user_gender = #{user.user_gender}</if>
@@ -50,7 +52,7 @@
         </where>
     </update>
     <select id="select" resultMap="userMap">
-        SELECT user_id,user_name,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
+        SELECT user_id,user_name,user_nickname,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
         <if test="user_name != null">
             <where>
                 user_name = #{user_name}
@@ -61,13 +63,13 @@
         </if>
     </select>
     <select id="selectOne" resultMap="userMap" parameterType="int">
-        SELECT user_id,user_name,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
+        SELECT user_id,user_name,user_nickname,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
         <where>
             user_id = #{user_id}
         </where>
     </select>
     <select id="selectByLogin" resultMap="userMap">
-        SELECT user_id,user_name,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
+        SELECT user_id,user_name,user_nickname,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
         <where>
             user_name = #{user_name} and user_password = #{user.password}
         </where>

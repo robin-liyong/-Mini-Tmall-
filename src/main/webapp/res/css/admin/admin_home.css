@@ -233,7 +233,6 @@ html,body,#div_home_main{
 }
 #div_home_main>#div_home_context{
     padding: 117px 25px 30px 225px;
-    min-height: 700px;
 }
 #div_home_context>#div_home_context_main{
     width: 100%;

@@ -200,42 +200,44 @@
     <span class="data_count_value">${requestScope.productCount}</span>
     <span class="data_count_unit">件</span>
 </div>
-<table class="table_normal" id="table_product_list">
-    <thead class="text_info">
-    <tr>
-        <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-        <th class="product_info" data-toggle="product_name_desc">产品名称</th>
-        <th class="product_info" data-toggle="product_title_desc">产品标题</th>
-        <th class="product_info" data-toggle="product_price_desc">原价</th>
-        <th class="product_info" data-toggle="product_sale_price_desc">促销价</th>
-        <th class="product_info" data-toggle="product_create_date_desc">创建时间</th>
-        <th class="product_info" data-toggle="product_isEnabled_desc">上架状态</th>
-        <th hidden>产品ID</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope.productList}" var="product">
+<div class="table_normal_div">
+    <table class="table_normal" id="table_product_list">
+        <thead class="text_info">
         <tr>
-            <td><input type="checkbox" class="cbx_select" id="cbx_product_select_${product.product_id}"><label for="cbx_product_select_${product.product_id}"></label></td>
-            <td>${product.product_name}</td>
-            <td>${product.product_title}</td>
-            <td>${product.product_price}</td>
-            <td>${product.product_sale_price}</td>
-            <td>${product.product_create_date}</td>
-            <td>
-                <c:choose>
-                    <c:when test="${product.product_isEnabled==0}"><span class="td_success">销售中</span></c:when>
-                    <c:when test="${product.product_isEnabled==2}"><span class="td_warn">促销中</span></c:when>
-                    <c:otherwise><span class="td_error">停售中</span></c:otherwise>
-                </c:choose>
-            </td>
-            <td hidden><span class="product_id">${product.product_id}</span></td>
-            <td><span class="td_special"><a href="#">详情</a></span></td>
+            <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
+            <th class="product_info" data-toggle="product_name_desc">产品名称</th>
+            <th class="product_info" data-toggle="product_title_desc">产品标题</th>
+            <th class="product_info" data-toggle="product_price_desc">原价</th>
+            <th class="product_info" data-toggle="product_sale_price_desc">促销价</th>
+            <th class="product_info" data-toggle="product_create_date_desc">创建时间</th>
+            <th class="product_info" data-toggle="product_isEnabled_desc">上架状态</th>
+            <th hidden>产品ID</th>
+            <th>操作</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<div class="loader"></div>
+        </thead>
+        <tbody>
+        <c:forEach items="${requestScope.productList}" var="product">
+            <tr>
+                <td><input type="checkbox" class="cbx_select" id="cbx_product_select_${product.product_id}"><label for="cbx_product_select_${product.product_id}"></label></td>
+                <td>${product.product_name}</td>
+                <td>${product.product_title}</td>
+                <td>${product.product_price}</td>
+                <td>${product.product_sale_price}</td>
+                <td>${product.product_create_date}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${product.product_isEnabled==0}"><span class="td_success">销售中</span></c:when>
+                        <c:when test="${product.product_isEnabled==2}"><span class="td_warn">促销中</span></c:when>
+                        <c:otherwise><span class="td_error">停售中</span></c:otherwise>
+                    </c:choose>
+                </td>
+                <td hidden><span class="product_id">${product.product_id}</span></td>
+                <td><span class="td_special"><a href="#">详情</a></span></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <div class="loader"></div>
+</div>
 </body>
 </html>
