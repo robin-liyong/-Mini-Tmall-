@@ -37,7 +37,10 @@ public class CategoryController extends BaseController{
         }
 
         logger.info("获取前10条分类信息列表");
-        List<Category> categoryList = categoryService.getList(null,null);
+        List<Category> categoryList = categoryService.getList(null,new PageUtil(1,10));
+        logger.info("获取分类总数量");
+        Integer categoryCount = categoryService.getTotal(null);
+        map.put("categoryCount", categoryCount);
         map.put("categoryList",categoryList);
 
         logger.info("转到后台管理-分类页-ajax方式");
@@ -58,7 +61,7 @@ public class CategoryController extends BaseController{
         JSONObject object = new JSONObject();
         logger.info("按条件获取第{}页的{}条分类",index,count);
         List<Category> categoryList=categoryService.getList(category_name,new PageUtil(index,count));
-        object.put("productList", JSONArray.parseArray(JSON.toJSONString(categoryList)));
+        object.put("categoryList", JSONArray.parseArray(JSON.toJSONString(categoryList)));
 
         return object.toJSONString();
     }
