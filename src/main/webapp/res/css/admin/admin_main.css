@@ -180,6 +180,9 @@ input[type="checkbox"] {
 .data_count_div>.data_count_unit{
     padding-right: 20px;
 }
+.table_normal_div{
+    position: relative;
+}
 
 .cbx_select+label{
     margin: 0;
@@ -203,12 +206,35 @@ input[type="checkbox"] {
     padding: 12px 15px;
     color:#333333;
 }
-.table_normal th:hover{
+.table_normal th.product_info:hover{
     background-color: rgb(235,235,235);
 }
-.table_normal th:first-child,.table_normal th:last-child{
-    cursor: default;
-    background-color: transparent;
+.table_normal th.product_info>span.orderByDesc{
+    opacity: 0;
+    display: inline-block;
+    position: relative;
+    bottom: 6px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-bottom-color: #999999;
+}
+.table_normal th.product_info>span.orderByDesc.orderBySelect{
+    border-bottom-color: #666666;
+}
+.table_normal th.product_info>span.orderByAsc{
+    opacity: 0;
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-top-color: #999999;
+}
+.table_normal th.product_info>span.orderByAsc.orderBySelect{
+    border-top-color: #666666;
 }
 .table_normal td{
     padding: 10px 15px;

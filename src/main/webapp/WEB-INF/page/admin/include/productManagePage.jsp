@@ -40,7 +40,6 @@
                 dataList.product_sale_price = lowest_price;
                 dataList.product_price = highest_price;
                 dataList.product_isEnabled_array = status_array;
-                //清除排序
                 dataList.orderBy = null;
                 dataList.isDesc = true;
 
@@ -51,25 +50,37 @@
                 //清除排序
                 dataList.orderBy = null;
                 dataList.isDesc = true;
-
                 getData("admin/product/1/10",null,false);
+                var table = $("#table_product_list");
+                table.find(".orderByDesc").css("opacity","0");
+                table.find(".orderByAsc").css("opacity","0");
+                $("th.product_info").attr("data-sort","asc");
             });
             //点击th排序时
             $("th.product_info").click(function () {
                 if($("tbody>tr").length <= 1){
                     return;
                 }
-                var orderData = $(this).attr("data-toggle");
                 //获取排序字段
-                dataList.orderBy = orderData.substring(0,orderData.lastIndexOf('_'));
-                //是否倒序
-                dataList.isDesc = orderData.substring(orderData.lastIndexOf('_')+1) === "desc";
-                if(dataList.isDesc){
-                    $(this).attr("data-toggle",dataList.orderBy+"_asc");
-                } else {
-                    $(this).attr("data-toggle",dataList.orderBy+"_desc");
-                }
+                dataList.orderBy = $(this).attr("data-name");
+                //是否倒序排序
+                dataList.isDesc = $(this).attr("data-sort")==="asc";
+
                 getData("admin/product/1/10",dataList,true);
+                //设置排序
+                var table = $("#table_product_list");
+                table.find(".orderByDesc").css("opacity","0");
+                table.find(".orderByAsc").css("opacity","0");
+                if(dataList.isDesc){
+                    $(this).attr("data-sort","desc");
+                    $(this).children(".orderByAsc").removeClass("orderBySelect").css("opacity","1");
+                    $(this).children(".orderByDesc").addClass("orderBySelect").css("opacity","1");
+                } else {
+                    $(this).attr("data-sort","asc");
+                    $(this).children(".orderByDesc").removeClass("orderBySelect").css("opacity","1");
+                    $(this).children(".orderByAsc").addClass("orderBySelect").css("opacity","1");
+                }
+
             });
             //点击table中的数据时
             $("tbody>tr").click(function () {
@@ -116,7 +127,7 @@
                             var product_title = data.productList[i].product_title;
                             var product_create_date = data.productList[i].product_create_date;
                             //显示产品数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td>" + product_name + "</td><td>" + product_title + "</td><td>" + product_price + "</td><td>" + product_sale_price + "</td><td>" + product_create_date + "<td><span class='" + isEnabledClass + "'>" + isEnabled + "</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + product_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td>" + product_name + "</td><td>" + product_title + "</td><td>" + product_price + "</td><td>" + product_sale_price + "</td><td>" + product_create_date + "</td><td><span class='" + isEnabledClass + "'>" + isEnabled + "</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + product_id + "</td></tr>");
                         }
                         //显示产品统计数据
                         $(".data_count_value").first().text(data.productCount);
@@ -205,12 +216,36 @@
         <thead class="text_info">
         <tr>
             <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-            <th class="product_info" data-toggle="product_name_desc">产品名称</th>
-            <th class="product_info" data-toggle="product_title_desc">产品标题</th>
-            <th class="product_info" data-toggle="product_price_desc">原价</th>
-            <th class="product_info" data-toggle="product_sale_price_desc">促销价</th>
-            <th class="product_info" data-toggle="product_create_date_desc">创建时间</th>
-            <th class="product_info" data-toggle="product_isEnabled_desc">上架状态</th>
+            <th class="product_info" data-sort="asc" data-name="product_name">
+                <span>产品名称</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
+            <th class="product_info" data-sort="asc" data-name="product_title">
+                <span>产品标题</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
+            <th class="product_info" data-sort="asc" data-name="product_price">
+                <span>原价</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
+            <th class="product_info" data-sort="asc" data-name="product_sale_price">
+                <span>促销价</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
+            <th class="product_info" data-sort="asc" data-name="product_create_date">
+                <span>创建时间</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
+            <th class="product_info" data-sort="asc" data-name="product_isEnabled">
+                <span>上架状态</span>
+                <span class="orderByDesc"></span>
+                <span class="orderByAsc orderBySelect"></span>
+            </th>
             <th hidden>产品ID</th>
             <th>操作</th>
         </tr>
