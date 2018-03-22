@@ -9,6 +9,6 @@ public interface AddressService {
     boolean update(Address address);
 
     List<Address> getList(String address_name, Integer address_regionId);
-    Address get(Integer address_areaId);
+    Address get(String address_areaId);
     List<Address> getRoot();
 }

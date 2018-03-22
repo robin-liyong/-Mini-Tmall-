@@ -7,6 +7,7 @@ import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
 import com.xq.tmall.service.CategoryService;
+import com.xq.tmall.service.ProductImageService;
 import com.xq.tmall.service.ProductService;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
@@ -29,7 +30,8 @@ public class ProductController extends BaseController{
     private CategoryService categoryService;
     @Resource(name = "productService")
     private ProductService productService;
-
+    @Resource(name = "productImageService")
+    private ProductImageService productImageService;
     //转到后台管理-产品页-ajax
     @RequestMapping("admin/product")
     public String goToPage(HttpSession session, Map<String, Object> map) {
@@ -100,5 +102,27 @@ public class ProductController extends BaseController{
         object.put("productCount", productCount);
 
         return object.toJSONString();
+    }
+
+    //转到后台产品展示页
+    @RequestMapping(value="admin/product/{pid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String getProductByPid(HttpSession session,@RequestParam(required = false) Integer pid,Map<String, Object> map){
+        logger.info("检查管理员权限");
+        Object adminld = checkAdmin(session);
+        if(adminld == null){
+            return null;
+        }
+        logger.info("根据pid获取单个产品信息");
+        Product product = productService.get(pid);
+        logger.info("根据产品category_id获取产品分类的信息");
+        Integer category_id = product.getProduct_category().getCategory_id();
+        product.setProduct_category(categoryService.get(category_id));
+        logger.info("根据产品id获取产品展示图片的信息");
+        Integer product_id =product.getProduct_id();
+        product.setSingleProductImageList(productImageService.getList(product_id,Byte.parseByte("0"),null));
+        logger.info("根据产品id获取产品详情图片的信息");
+        product.setDetailProductImageList(productImageService.getList(product_id,Byte.parseByte("1"),null));
+        map.put("product",product);
+        return "admin/include/productDetails";
     }
 }

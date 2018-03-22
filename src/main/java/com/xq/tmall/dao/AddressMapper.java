@@ -10,6 +10,6 @@ public interface AddressMapper {
     Integer updateOne(@Param("address") Address address);
 
     List<Address> select(@Param("address_name") String address_name, @Param("address_regionId") Integer address_regionId);
-    Address selectOne(@Param("address_areaId") Integer address_areaId);
+    Address selectOne(@Param("address_areaId") String address_areaId);
     List<Address> selectRoot();
 }

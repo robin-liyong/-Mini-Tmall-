@@ -31,7 +31,7 @@
             </if>
         </where>
     </select>
-    <select id="selectOne" resultType="address" parameterType="int">
+    <select id="selectOne" resultType="address" parameterType="string">
         SELECT address_areaId,address_name,address_regionId FROM address
         <where>
             address_areaId = #{address_areaId}

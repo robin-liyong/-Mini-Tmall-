@@ -32,7 +32,7 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public Address get(Integer address_areaId) {
+    public Address get(String address_areaId) {
         return addressMapper.selectOne(address_areaId);
     }
 
