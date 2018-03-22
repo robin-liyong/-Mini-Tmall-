@@ -1,10 +1,9 @@
 package com.xq.tmall.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.service.AdminService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +14,7 @@ import javax.servlet.http.HttpSession;
  * 后台管理-登录页
  */
 @Controller
-public class LoginController {
-    private Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+public class LoginController extends BaseController{
     @Resource(name = "adminService")
     private AdminService adminService;
 

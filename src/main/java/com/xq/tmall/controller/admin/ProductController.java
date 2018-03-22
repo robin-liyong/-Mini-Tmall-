@@ -3,14 +3,13 @@ package com.xq.tmall.controller.admin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
 import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.service.ProductService;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +24,7 @@ import java.util.Map;
  * 后台管理-产品页
  */
 @Controller
-public class ProductController {
-    private Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+public class ProductController extends BaseController{
     @Resource(name = "categoryService")
     private CategoryService categoryService;
     @Resource(name = "productService")
@@ -102,16 +100,5 @@ public class ProductController {
         object.put("productCount", productCount);
 
         return object.toJSONString();
-    }
-
-    //检查管理员权限
-    private Object checkAdmin(HttpSession session){
-        Object o = session.getAttribute("adminId");
-        if(o==null){
-            logger.info("无管理权限，返回管理员登陆页");
-            return null;
-        }
-        logger.info("权限验证成功，管理员ID：{}",o);
-        return o;
     }
 }

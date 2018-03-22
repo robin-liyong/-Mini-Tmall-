@@ -5,10 +5,6 @@ public class Category {
     private String category_name;
     private String category_image_src;
 
-    public Category(){
-
-    }
-
     @Override
     public String toString() {
         return "Category{" +
@@ -16,6 +12,10 @@ public class Category {
                 ", category_name='" + category_name + '\'' +
                 ", category_image_src='" + category_image_src + '\'' +
                 '}';
+    }
+
+    public Category(){
+
     }
 
     public Category(Integer category_id, String category_name, String category_image_src) {
