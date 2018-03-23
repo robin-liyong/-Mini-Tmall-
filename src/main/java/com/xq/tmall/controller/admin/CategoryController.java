@@ -8,10 +8,8 @@ import com.xq.tmall.entity.Category;
 import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
@@ -48,7 +46,7 @@ public class CategoryController extends BaseController{
     }
     //按条件查询分类-AJAX
     @ResponseBody
-    @RequestMapping("admin/category/{index}/{count}")
+    @RequestMapping(value = "admin/category/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getCategoryBySearch(@RequestParam(required = false) String category_name/* 分类名称 */,
                                       @PathVariable Integer index,
                                       @PathVariable Integer count) throws UnsupportedEncodingException {
@@ -62,6 +60,9 @@ public class CategoryController extends BaseController{
         logger.info("按条件获取第{}页的{}条分类",index,count);
         List<Category> categoryList=categoryService.getList(category_name,new PageUtil(index,count));
         object.put("categoryList", JSONArray.parseArray(JSON.toJSONString(categoryList)));
+        logger.info("按条件获取分类总数量");
+        Integer categoryCount = categoryService.getTotal(category_name);
+        object.put("categoryCount",categoryCount);
 
         return object.toJSONString();
     }

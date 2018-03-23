@@ -4,6 +4,9 @@
 <head>
     <script>
         $(function () {
+            //刷新下拉框
+            $('#select_product_category').selectpicker('refresh');
+            //检索数据集
             var dataList = {
                 "product_name": null,
                 "category_id": null,
@@ -13,8 +16,6 @@
                 "orderBy": null,
                 "isDesc": true
             };
-            //刷新下拉框
-            $('#select_product_category').selectpicker('refresh');
             /******
              * event
              ******/
@@ -40,25 +41,25 @@
                 dataList.product_sale_price = lowest_price;
                 dataList.product_price = highest_price;
                 dataList.product_isEnabled_array = status_array;
-                dataList.orderBy = null;
-                dataList.isDesc = true;
 
-                getData("admin/product/1/10",dataList,true);
+                getData("admin/product/1/10",dataList);
             });
             //点击刷新按钮时
             $("#btn_product_refresh").click(function () {
                 //清除排序
                 dataList.orderBy = null;
                 dataList.isDesc = true;
-                getData("admin/product/1/10",null,false);
+                //获取数据
+                getData("admin/product/1/10",null);
+                //清除排序样式
                 var table = $("#table_product_list");
-                table.find(".orderByDesc").css("opacity","0");
-                table.find(".orderByAsc").css("opacity","0");
-                $("th.product_info").attr("data-sort","asc");
+                table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
+                table.find("th.data_info").attr("data-sort","asc");
             });
             //点击th排序时
-            $("th.product_info").click(function () {
-                if($("tbody>tr").length <= 1){
+            $("th.data_info").click(function () {
+                var table = $("#table_product_list");
+                if(table.find(">tbody>tr").length <= 1){
                     return;
                 }
                 //获取排序字段
@@ -66,43 +67,38 @@
                 //是否倒序排序
                 dataList.isDesc = $(this).attr("data-sort")==="asc";
 
-                getData("admin/product/1/10",dataList,true);
+                getData("admin/product/1/10",dataList);
                 //设置排序
-                var table = $("#table_product_list");
-                table.find(".orderByDesc").css("opacity","0");
-                table.find(".orderByAsc").css("opacity","0");
+                table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
                 if(dataList.isDesc){
-                    $(this).attr("data-sort","desc");
-                    $(this).children(".orderByAsc").removeClass("orderBySelect").css("opacity","1");
+                    $(this).attr("data-sort","desc").children(".orderByAsc.orderBySelect").removeClass("orderBySelect").css("opacity","1");
                     $(this).children(".orderByDesc").addClass("orderBySelect").css("opacity","1");
                 } else {
-                    $(this).attr("data-sort","asc");
-                    $(this).children(".orderByDesc").removeClass("orderBySelect").css("opacity","1");
+                    $(this).attr("data-sort","asc").children(".orderByDesc.orderBySelect").removeClass("orderBySelect").css("opacity","1");
                     $(this).children(".orderByAsc").addClass("orderBySelect").css("opacity","1");
                 }
-
             });
             //点击table中的数据时
-            $("tbody>tr").click(function () {
+            $("#table_product_list").find(">tbody>tr").click(function () {
                 trDataStyle($(this));
             });
         });
         //获取产品数据
-        function getData(url,data,isTraditional) {
+        function getData(url,dataObject) {
             var table = $("#table_product_list");
             var tbody = table.children("tbody").first();
             $.ajax({
                 url: url,
                 type: "get",
-                data: data,
-                traditional: isTraditional,
+                data: dataObject,
+                traditional: true,
                 success: function (data) {
                     //清空原有数据
                     tbody.empty();
                     $(".loader").css("display","none");
                     if (data.productList.length > 0) {
-                        //解绑事件
-                        tbody.children("tr").unbind("click");
+                        //显示产品统计数据
+                        $("#product_count_data").text(data.productCount);
                         for (var i in data.productList) {
                             var isEnabledClass;
                             var isEnabled;
@@ -129,12 +125,10 @@
                             //显示产品数据
                             tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td>" + product_name + "</td><td>" + product_title + "</td><td>" + product_price + "</td><td>" + product_sale_price + "</td><td>" + product_create_date + "</td><td><span class='" + isEnabledClass + "'>" + isEnabled + "</span></td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + product_id + "</td></tr>");
                         }
-                        //显示产品统计数据
-                        $(".data_count_value").first().text(data.productCount);
-                        //重新绑定事件
+                        //绑定事件
                         tbody.children("tr").click(function () {
                             trDataStyle($(this));
-                        })
+                        });
                     }
                 },
                 beforeSend: function () {
@@ -208,7 +202,7 @@
         </svg>
     <span class="data_count_title">查看合计</span>
     <span>产品总数:</span>
-    <span class="data_count_value">${requestScope.productCount}</span>
+    <span class="data_count_value" id="product_count_data">${requestScope.productCount}</span>
     <span class="data_count_unit">件</span>
 </div>
 <div class="table_normal_div">
@@ -216,38 +210,38 @@
         <thead class="text_info">
         <tr>
             <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-            <th class="product_info" data-sort="asc" data-name="product_name">
+            <th class="data_info" data-sort="asc" data-name="product_name">
                 <span>产品名称</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th class="product_info" data-sort="asc" data-name="product_title">
+            <th class="data_info" data-sort="asc" data-name="product_title">
                 <span>产品标题</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th class="product_info" data-sort="asc" data-name="product_price">
+            <th class="data_info" data-sort="asc" data-name="product_price">
                 <span>原价</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th class="product_info" data-sort="asc" data-name="product_sale_price">
+            <th class="data_info" data-sort="asc" data-name="product_sale_price">
                 <span>促销价</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th class="product_info" data-sort="asc" data-name="product_create_date">
+            <th class="data_info" data-sort="asc" data-name="product_create_date">
                 <span>创建时间</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th class="product_info" data-sort="asc" data-name="product_isEnabled">
+            <th class="data_info" data-sort="asc" data-name="product_isEnabled">
                 <span>上架状态</span>
                 <span class="orderByDesc"></span>
                 <span class="orderByAsc orderBySelect"></span>
             </th>
-            <th hidden>产品ID</th>
             <th>操作</th>
+            <th hidden>产品ID</th>
         </tr>
         </thead>
         <tbody>
@@ -266,8 +260,8 @@
                         <c:otherwise><span class="td_error">停售中</span></c:otherwise>
                     </c:choose>
                 </td>
-                <td hidden><span class="product_id">${product.product_id}</span></td>
                 <td><span class="td_special"><a href="#">详情</a></span></td>
+                <td hidden><span class="product_id">${product.product_id}</span></td>
             </tr>
         </c:forEach>
         </tbody>

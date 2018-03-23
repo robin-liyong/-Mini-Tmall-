@@ -206,10 +206,10 @@ input[type="checkbox"] {
     padding: 12px 15px;
     color:#333333;
 }
-.table_normal th.product_info:hover{
+.table_normal th.data_info:hover{
     background-color: rgb(235,235,235);
 }
-.table_normal th.product_info>span.orderByDesc{
+.table_normal th.data_info>span.orderByDesc{
     opacity: 0;
     display: inline-block;
     position: relative;
@@ -219,10 +219,10 @@ input[type="checkbox"] {
     border: 4px solid transparent;
     border-bottom-color: #999999;
 }
-.table_normal th.product_info>span.orderByDesc.orderBySelect{
+.table_normal th.data_info>span.orderByDesc.orderBySelect{
     border-bottom-color: #666666;
 }
-.table_normal th.product_info>span.orderByAsc{
+.table_normal th.data_info>span.orderByAsc{
     opacity: 0;
     display: inline-block;
     position: relative;
@@ -233,7 +233,7 @@ input[type="checkbox"] {
     border: 4px solid transparent;
     border-top-color: #999999;
 }
-.table_normal th.product_info>span.orderByAsc.orderBySelect{
+.table_normal th.data_info>span.orderByAsc.orderBySelect{
     border-top-color: #666666;
 }
 .table_normal td{

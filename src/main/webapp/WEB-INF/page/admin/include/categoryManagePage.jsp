@@ -4,10 +4,9 @@
 <head>
     <script>
         $(function () {
+            //检索数据集
             var dataList = {
-                "category_name": null,
-                "orderBy": null,
-                "isDesc": true
+                "category_name": null
             };
             /******
              * event
@@ -17,54 +16,45 @@
                 var category_name = $.trim($("#input_category_name").val());
                 //封装数据
                 dataList.category_name = encodeURI(category_name);
-                //清除排序
-                dataList.orderBy = null;
-                dataList.isDesc = true;
 
                 getData("admin/category/1/10",dataList);
             });
             //点击刷新按钮时
-            $("th.category_info").click(function () {
-                    //清除排序
-                    dataList.orderBy=null;
-                    dataList.isDesc=true;
-
-                    getData("admin/category/1/10",null);
-            });
-            //点击th排序时
-            $("th.product_info").click(function () {
-
+            $("#btn_category_refresh").click(function () {
+                //获取数据
+                getData("admin/category/1/10",null);
             });
             //点击table中的数据时
-            $("tbody>tr").click(function () {
+            $("#table_category_list").find(">tbody>tr").click(function () {
                 trDataStyle($(this));
             });
-        })
-        //获取产品数据
-        function getData(url, data) {
+        });
+        //获取分类数据
+        function getData(url, dataObject) {
             var table = $("#table_category_list");
             var tbody = table.children("tbody").first();
             $.ajax({
                 url: url,
                 type: "get",
-                data: data,
+                data: dataObject,
                 success: function (data) {
                     //清空原有数据
                     tbody.empty();
                     $(".loader").css("display", "none");
-                    for (var i in data.categoryList) {
-                        var category_id = data.categoryList[i].category_id;
-                        var category_name = data.categoryList[i].category_name;
-                        var category_image_src = data.categoryList[i].category_image_src;
-                        //显示产品数据
-                        tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_\" + category_id + \"'><label for='cbx_category_select_\" + category_id + \t\"'></label></td><td>" + category_id + "</td><td>" + category_name + "</td><td>" + category_image_src + "</td><td><span class='td_special'><a href='#'>详情</a></span></td></tr>");
+                    if(data.categoryList.length > 0) {
+                        //显示分类统计数据
+                        $("#category_count_data").text(data.categoryCount);
+                        for (var i in data.categoryList) {
+                            var category_id = data.categoryList[i].category_id;
+                            var category_name = data.categoryList[i].category_name;
+                            //显示分类数据
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_" + category_id + "'><label for='cbx_category_select_" + category_id + "'></label></td><td>" + category_name + "</td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + category_id + "</td></tr>");
+                        }
+                        //绑定事件
+                        tbody.children("tr").click(function () {
+                            trDataStyle($(this));
+                        });
                     }
-                    //显示产品统计数据
-                    $(".data_count_value").first().text(data.categoryCount);
-                    //重新绑定事件
-                    tbody.children("tr").click(function () {
-                        trDataStyle($(this));
-                    });
                 },
                 beforeSend: function () {
                     $(".loader").css("display", "block");
@@ -88,7 +78,6 @@
         <div class="frm_group_last">
             <input class="frm_btn frm_add" id="btn_category_add" type="button" value="添加一个分类"/>
             <input class="frm_btn frm_refresh" id="btn_category_refresh" type="button" value="刷新分类列表"/>
-            <span class="frm_error_msg" id="text_tools_msg"></span>
         </div>
     </form>
 </div>
@@ -104,7 +93,7 @@
     </svg>
     <span class="data_count_title">查看合计</span>
     <span>分类总数:</span>
-    <span class="data_count_value">${requestScope.categoryCount}</span>
+    <span class="data_count_value" id="category_count_data">${requestScope.categoryCount}</span>
     <span class="data_count_unit">个</span>
 </div>
 <div class="table_normal_div">
@@ -112,21 +101,18 @@
         <thead class="text_info">
         <tr>
             <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-            <th class="category_info" data-toggle="category_name_desc">分类名称</th>
-            <th class="category_info" data-toggle="category_image_src_desc">分类图片</th>
-            <th hidden>分类ID</th>
+            <th><span>分类名称</span></th>
             <th>操作</th>
+            <th hidden>分类ID</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${requestScope.categoryList}" var="category">
             <tr>
-                <td><input type="checkbox" class="cbx_select" id="cbx_category_select_${category.category_id}"><label
-                        for="cbx_category_select_${category.category_id}"></label></td>
+                <td><input type="checkbox" class="cbx_select" id="cbx_category_select_${category.category_id}"><label for="cbx_category_select_${category.category_id}"></label></td>
                 <td>${category.category_name}</td>
-                <td><img src=""></td>
-                <td hidden><span class="category_id">${category.category_id}</span></td>
                 <td><span class="td_special"><a href="#">详情</a></span></td>
+                <td hidden><span class="category_id">${category.category_id}</span></td>
             </tr>
         </c:forEach>
         </tbody>

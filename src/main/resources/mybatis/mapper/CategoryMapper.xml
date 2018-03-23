@@ -23,9 +23,7 @@
     <select id="select" resultType="category">
         SELECT category_id,category_name,category_image_src FROM category
         <where>
-            <if test="category_name != null">
-                admin_name LIKE concat('%',#{category_name},'%')
-            </if>
+            <if test="category_name != null">category_name LIKE concat('%',#{category_name},'%')</if>
         </where>
         <if test="pageUtil != null">
             LIMIT #{pageUtil.index},#{pageUtil.count}
@@ -40,7 +38,7 @@
     <select id="selectTotal" resultType="int">
         SELECT COUNT(category_id) FROM category
         <where>
-            <if test="category_name != null">category_name LIKE concat('%','#{category_name}','%')</if>
+            <if test="category_name != null">category_name LIKE concat('%',#{category_name},'%')</if>
         </where>
     </select>
 </mapper>
