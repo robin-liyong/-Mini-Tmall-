@@ -32,6 +32,7 @@ public class ProductController extends BaseController{
     private ProductService productService;
     @Resource(name = "productImageService")
     private ProductImageService productImageService;
+
     //转到后台管理-产品页-ajax
     @RequestMapping("admin/product")
     public String goToPage(HttpSession session, Map<String, Object> map) {
@@ -51,11 +52,36 @@ public class ProductController extends BaseController{
         Integer productCount = productService.getTotal(null, null);
         map.put("productCount", productCount);
 
-        logger.info("转到后台管理-产品页--ajax方式");
-        return "admin/include/productManagePage";
+        logger.info("转到后台管理-产品页-ajax方式");
+        return "admin/productManagePage";
     }
 
-    //按条件查询产品-AJAX
+    //转到后台管理-产品详情页-ajax
+    @RequestMapping(value="admin/product/{pid}")
+    public String getProductByPid(HttpSession session,Map<String, Object> map, @PathVariable Integer pid/* 产品ID */){
+        logger.info("检查管理员权限");
+        Object adminId = checkAdmin(session);
+        if(adminId == null){
+            return null;
+        }
+
+        logger.info("获取product_id为{}的产品信息",pid);
+        Product product = productService.get(pid);
+        logger.info("获取产品详情-分类信息");
+        Integer category_id = product.getProduct_category().getCategory_id();
+        product.setProduct_category(categoryService.get(category_id));
+        logger.info("获取产品详情-展示图片信息");
+        Integer product_id =product.getProduct_id();
+        product.setSingleProductImageList(productImageService.getList(product_id,Byte.parseByte("0"),null));
+        logger.info("获取产品详情-详情图片信息");
+        product.setDetailProductImageList(productImageService.getList(product_id,Byte.parseByte("1"),null));
+        map.put("product",product);
+
+        logger.info("转到后台管理-产品详情页-ajax方式");
+        return "admin/include/productDetails";
+    }
+
+    //按条件查询产品-ajax
     @ResponseBody
     @RequestMapping(value = "admin/product/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getProductBySearch(@RequestParam(required = false) String product_name/* 产品名称 */,
@@ -102,27 +128,5 @@ public class ProductController extends BaseController{
         object.put("productCount", productCount);
 
         return object.toJSONString();
-    }
-
-    //转到后台产品展示页
-    @RequestMapping(value="admin/product/{pid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public String getProductByPid(HttpSession session,@RequestParam(required = false) Integer pid,Map<String, Object> map){
-        logger.info("检查管理员权限");
-        Object adminld = checkAdmin(session);
-        if(adminld == null){
-            return null;
-        }
-        logger.info("根据pid获取单个产品信息");
-        Product product = productService.get(pid);
-        logger.info("根据产品category_id获取产品分类的信息");
-        Integer category_id = product.getProduct_category().getCategory_id();
-        product.setProduct_category(categoryService.get(category_id));
-        logger.info("根据产品id获取产品展示图片的信息");
-        Integer product_id =product.getProduct_id();
-        product.setSingleProductImageList(productImageService.getList(product_id,Byte.parseByte("0"),null));
-        logger.info("根据产品id获取产品详情图片的信息");
-        product.setDetailProductImageList(productImageService.getList(product_id,Byte.parseByte("1"),null));
-        map.put("product",product);
-        return "admin/include/productDetails";
     }
 }

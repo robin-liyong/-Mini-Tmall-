@@ -27,7 +27,7 @@
                 address_name LIKE concat('%',#{address_name},'%')
             </if>
             <if test="address_regionId != null">
-                and address_regionId = #{address_regionId}
+                and address_regionId = #{address_regionId} and address_areaId != address_regionId
             </if>
         </where>
     </select>

@@ -27,11 +27,11 @@ public class AccountController extends BaseController{
             return null;
         }
 
-        logger.info("获取登录的管理员账户信息");
+        logger.info("获取目前登录的管理员信息，管理员ID：{}",adminId);
         Admin admin = adminService.get(null,Integer.parseInt(adminId.toString()));
         map.put("admin",admin);
 
         logger.info("转到后台管理-账户页-ajax方式");
-        return "admin/include/accountManagePage";
+        return "admin/accountManagePage";
     }
 }

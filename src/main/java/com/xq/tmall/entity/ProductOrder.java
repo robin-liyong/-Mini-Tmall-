@@ -13,6 +13,11 @@ public class ProductOrder {
     private String productOrder_mobile;
     private String productOrder_userMessage;
     private Date productOrder_pay_date;
+    private Date productOrder_delivery_date;
+    private Date productOrder_confirm_date;
+    private Byte productOrder_status;
+    private User productOrder_user;
+    private List<ProductOrderItem> productOrderItemList;
 
     @Override
     public String toString() {
@@ -33,12 +38,6 @@ public class ProductOrder {
                 ", productOrderItemList=" + productOrderItemList +
                 '}';
     }
-
-    private Date productOrder_delivery_date;
-    private Date productOrder_confirm_date;
-    private Byte productOrder_status;
-    private User productOrder_user;
-    private List<ProductOrderItem> productOrderItemList;
 
     public ProductOrder() {
     }

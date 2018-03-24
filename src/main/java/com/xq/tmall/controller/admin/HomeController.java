@@ -45,6 +45,6 @@ public class HomeController extends BaseController{
         }
 
         logger.info("转到后台管理-主页-ajax方式");
-        return "admin/include/homeManagePage";
+        return "admin/homeManagePage";
     }
 }
