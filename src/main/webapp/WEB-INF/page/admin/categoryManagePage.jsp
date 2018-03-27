@@ -17,12 +17,12 @@
                 //封装数据
                 dataList.category_name = encodeURI(category_name);
 
-                getData("admin/category/1/10",dataList);
+                getData($(this),"admin/category/1/10",dataList);
             });
             //点击刷新按钮时
             $("#btn_category_refresh").click(function () {
                 //获取数据
-                getData("admin/category/1/10",null);
+                getData($(this), "admin/category/1/10",null);
             });
             //点击table中的数据时
             $("#table_category_list").find(">tbody>tr").click(function () {
@@ -30,7 +30,7 @@
             });
         });
         //获取分类数据
-        function getData(url, dataObject) {
+        function getData(object, url, dataObject) {
             var table = $("#table_category_list");
             var tbody = table.children("tbody").first();
             $.ajax({
@@ -40,7 +40,9 @@
                 success: function (data) {
                     //清空原有数据
                     tbody.empty();
-                    $(".loader").css("display", "none");
+                    //设置样式
+                    $(".loader").css("display","none");
+                    object.attr("disabled",false);
                     if(data.categoryList.length > 0) {
                         //显示分类统计数据
                         $("#category_count_data").text(data.categoryCount);
@@ -58,6 +60,7 @@
                 },
                 beforeSend: function () {
                     $(".loader").css("display", "block");
+                    object.attr("disabled",true);
                 },
                 error: function () {
 

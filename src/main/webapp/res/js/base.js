@@ -2,7 +2,7 @@
 var cookieUtil = {
     //设置Cookie
     setCookie:
-        function setCookie(name,value,days) {
+        function (name,value,days) {
             var date = new Date();
             date.setDate(date.getDate() + days);
             document.cookie = name + "=" + decodeURI(value) + ";expires=" + date.toUTCString();
@@ -10,7 +10,7 @@ var cookieUtil = {
         },
     //获取Cookie
     getCookie:
-        function getCookie(name) {
+        function (name) {
             var arr;
             var reg = new RegExp("(^| )" + name + "=([^;]*)($|;)");
             if (arr = document.cookie.match(reg)) {
@@ -20,7 +20,7 @@ var cookieUtil = {
         },
     //移除Cookie
     removeCookie:
-        function removeCookie(name) {
+        function (name) {
             cookieUtil.setCookie(name, "", -1);
             return this;
         }
@@ -29,7 +29,7 @@ var cookieUtil = {
 var styleUtil = {
     //显示表单验证错误提示
     errorShow:
-        function errorShow(obj,text) {
+        function (obj,text) {
             obj.text(text);
             if (obj.css("opacity") !== "1") {
                 obj.animate({
@@ -45,7 +45,7 @@ var styleUtil = {
         },
     //隐藏表单验证错误提示
     errorHide:
-        function errorHide(obj) {
+        function (obj) {
             if(obj.css("opacity") !== "0"){
                 obj.animate({
                     left: "20px",
@@ -53,5 +53,56 @@ var styleUtil = {
                 }, 200);
             }
             return this;
+        }
+};
+//页面和数据交互工具
+var ajaxUtil = {
+    getPage:
+        function (url,data,isChild) {
+            if(url !== null && url !== ""){
+                $.ajax({
+                    url: "admin/"+url,
+                    type: "get",
+                    data: data,
+                    contentType: "text/html;charset=UTF-8",
+                    success : function (data) {
+                        $("#div_home_context_main").html(data);
+                        if(!isChild){
+                            /******
+                             * event
+                             ******/
+                            //获得表单元素焦点时
+                            $(".frm_input,.frm_radio").focus(function () {
+                                styleUtil.errorHide($("#text_product_msg"));
+                            });
+                            //点击table中的全选框时
+                            $("#cbx_select_all").click(function () {
+                                if($(this).prop("checked")){
+                                    $("td>.cbx_select").prop("checked",true);
+                                } else {
+                                    $("td>.cbx_select").prop("checked",false);
+                                }
+                                styleUtil.errorHide($("#text_tools_msg"));
+                            });
+                            //点击table中的选框时
+                            $("td>.cbx_select").click(function () {
+                                styleUtil.errorHide($("#text_tools_msg"));
+                            });
+                            //点击重置按钮时
+                            $('#btn_clear').click(function () {
+                                $(".form_main")[0].reset();
+                                $(".selectpicker").selectpicker("refresh");
+                            });
+                        }
+                    },
+                    beforeSend: function () {
+                        $(".loader").css("display","block");
+                    },
+                    error: function () {
+
+                    }
+                });
+                console.debug(url);
+            }
         }
 };

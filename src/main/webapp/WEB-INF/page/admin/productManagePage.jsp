@@ -42,7 +42,7 @@
                 dataList.product_price = highest_price;
                 dataList.product_isEnabled_array = status_array;
 
-                getData("admin/product/1/10",dataList);
+                getData($(this),"admin/product/1/10",dataList);
             });
             //点击刷新按钮时
             $("#btn_product_refresh").click(function () {
@@ -50,7 +50,7 @@
                 dataList.orderBy = null;
                 dataList.isDesc = true;
                 //获取数据
-                getData("admin/product/1/10",null);
+                getData($(this),"admin/product/1/10",null);
                 //清除排序样式
                 var table = $("#table_product_list");
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
@@ -67,7 +67,7 @@
                 //是否倒序排序
                 dataList.isDesc = $(this).attr("data-sort")==="asc";
 
-                getData("admin/product/1/10",dataList);
+                getData($(this),"admin/product/1/10",dataList);
                 //设置排序
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
                 if(dataList.isDesc){
@@ -84,7 +84,7 @@
             });
         });
         //获取产品数据
-        function getData(url,dataObject) {
+        function getData(object,url,dataObject) {
             var table = $("#table_product_list");
             var tbody = table.children("tbody").first();
             $.ajax({
@@ -95,7 +95,9 @@
                 success: function (data) {
                     //清空原有数据
                     tbody.empty();
+                    //设置样式
                     $(".loader").css("display","none");
+                    object.attr("disabled",false);
                     if (data.productList.length > 0) {
                         //显示产品统计数据
                         $("#product_count_data").text(data.productCount);
@@ -133,6 +135,7 @@
                 },
                 beforeSend: function () {
                     $(".loader").css("display","block");
+                    object.attr("disabled",true);
                 },
                 error: function () {
 
@@ -147,7 +150,7 @@
             color: #ccc;
         }
         #lbl_product_isEnabled_special{
-            margin: 0 20px 0 0;
+            margin-right: 20px;
         }
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
             width: 150px;

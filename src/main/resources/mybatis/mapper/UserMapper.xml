@@ -53,10 +53,18 @@
     </update>
     <select id="select" resultMap="userMap">
         SELECT user_id,user_name,user_nickname,user_password,user_realname,user_gender,user_birthday,user_profile_picture_src,user_address,user_homeplace FROM user
-        <if test="user_name != null">
+        <if test="user != null">
             <where>
-                user_name = #{user_name}
+                <if test="user.user_name != null">
+                    (user_name LIKE concat('%',#{user.user_name},'%') or user_nickname LIKE concat('%',#{user.user_name},'%'))
+                </if>
+                <if test="user.user_gender != null">
+                    and user_gender = #{user.user_gender}
+                </if>
             </where>
+        </if>
+        <if test="orderUtil != null">
+            ORDER BY ${orderUtil.orderBy}<if test="orderUtil.isDesc">desc </if>
         </if>
         <if test="pageUtil != null">
             LIMIT #{pageUtil.index},#{pageUtil.count}
@@ -76,9 +84,14 @@
     </select>
     <select id="selectTotal" resultType="int" parameterType="string">
         SELECT COUNT(user_id) FROM user
-        <if test="user_name != null">
+        <if test="user != null">
             <where>
-                user_name = #{user_name}
+                <if test="user.user_name != null">
+                    (user_name LIKE concat('%',#{user.user_name},'%') or user_nickname LIKE concat('%',#{user.user_name},'%'))
+                </if>
+                <if test="user.user_gender != null">
+                    and user_gender = #{user.user_gender}
+                </if>
             </where>
         </if>
     </select>

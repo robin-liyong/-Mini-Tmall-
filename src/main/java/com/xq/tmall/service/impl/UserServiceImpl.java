@@ -3,6 +3,7 @@ package com.xq.tmall.service.impl;
 import com.xq.tmall.dao.UserMapper;
 import com.xq.tmall.entity.User;
 import com.xq.tmall.service.UserService;
+import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> getList(String user_name, PageUtil pageUtil) {
-        return userMapper.select(user_name,pageUtil);
+    public List<User> getList(User user, OrderUtil orderUtil, PageUtil pageUtil) {
+        return userMapper.select(user,orderUtil,pageUtil);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Integer getTotal(String user_name) {
-        return userMapper.selectTotal(user_name);
+    public Integer getTotal(User user) {
+        return userMapper.selectTotal(user);
     }
 }

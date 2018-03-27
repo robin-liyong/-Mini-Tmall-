@@ -1,7 +1,9 @@
 package com.xq.tmall.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class User {
     private Integer user_id;
@@ -112,8 +114,9 @@ public class User {
         return this;
     }
 
-    public Date getUser_birthday() {
-        return user_birthday;
+    public String getUser_birthday() {
+        SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+        return time.format(user_birthday);
     }
 
     public User setUser_birthday(Date user_birthday) {
