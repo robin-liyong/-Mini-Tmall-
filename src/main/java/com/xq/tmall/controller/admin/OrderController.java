@@ -1,17 +1,18 @@
 package com.xq.tmall.controller.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.ProductOrder;
 import com.xq.tmall.service.AddressService;
 import com.xq.tmall.service.ProductOrderItemService;
 import com.xq.tmall.service.ProductOrderService;
 import com.xq.tmall.service.UserService;
+import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -42,11 +43,14 @@ public class OrderController extends BaseController{
         }
 
         logger.info("获取前10条订单列表");
-        List<ProductOrder> productOrderList=productOrderService.getList(null,null,new PageUtil(1,10));
+        List<ProductOrder> productOrderList=productOrderService.getList(null,null,null,new PageUtil(1,10));
         map.put("productOrderList",productOrderList);
+        logger.info("获取订单总数量");
+        Integer productOrderCount = productOrderService.getTotal(null, null);
+        map.put("productOrderCount", productOrderCount);
 
         logger.info("转到后台管理-订单页-ajax方式");
-        return "admin/OrderManagePage";
+        return "admin/orderManagePage";
     }
 
     //转到后台管理-订单详情页-ajax
@@ -75,8 +79,44 @@ public class OrderController extends BaseController{
     //按条件查询订单-ajax
     @ResponseBody
     @RequestMapping(value = "admin/order/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public String getOrderBySearch(@PathVariable Integer index/* 页数 */,
+    public String getOrderBySearch(@RequestParam(required = false) String productOrder_code/* 订单号 */,
+                                   @RequestParam(required = false) String productOrder_post/* 订单邮政编码 */,
+                                   @RequestParam(required = false) Byte[] productOrder_status_array/* 订单状态数组 */,
+                                   @RequestParam(required = false) String orderBy/* 排序字段 */,
+                                   @RequestParam(required = false,defaultValue = "true") Boolean isDesc/* 是否倒序 */,
+                                   @PathVariable Integer index/* 页数 */,
                                    @PathVariable Integer count/* 行数 */){
-        return "To be perfected";
+        //移除不必要条件
+        if (productOrder_status_array != null && (productOrder_status_array.length <= 0 || productOrder_status_array.length >=5)) {
+            productOrder_status_array = null;
+        }
+        if (productOrder_code != null){
+            productOrder_code = productOrder_code.equals("") ? null : productOrder_code;
+        }
+        if(productOrder_post != null){
+            productOrder_post = productOrder_post.equals("") ? null : productOrder_post;
+        }
+        if(orderBy != null && orderBy.equals("")){
+            orderBy = null;
+        }
+        //封装查询条件
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_code(productOrder_code)
+                .setProductOrder_post(productOrder_post);
+        OrderUtil orderUtil = null;
+        if (orderBy != null) {
+            logger.info("根据{}排序，是否倒序:{}",orderBy,isDesc);
+            orderUtil = new OrderUtil(orderBy, isDesc);
+        }
+
+        JSONObject object = new JSONObject();
+        logger.info("按条件获取第{}页的{}条订单",index,count);
+        List<ProductOrder> productOrderList = productOrderService.getList(productOrder,productOrder_status_array,orderUtil,new PageUtil(1,10));
+        object.put("productOrderList", JSONArray.parseArray(JSON.toJSONString(productOrderList)));
+        logger.info("按条件获取订单总数量");
+        Integer productOrderCount = productOrderService.getTotal(productOrder, productOrder_status_array);
+        object.put("productOrderCount", productOrderCount);
+
+        return object.toJSONString();
     }
 }

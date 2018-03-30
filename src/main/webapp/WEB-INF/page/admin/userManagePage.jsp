@@ -82,9 +82,9 @@
                     //设置样式
                     $(".loader").css("display","none");
                     object.attr("disabled",false);
+                    //显示用户统计数据
+                    $("#user_count_data").text(data.userCount);
                     if (data.userList.length > 0) {
-                        //显示用户统计数据
-                        $("#user_count_data").text(data.userCount);
                         for (var i in data.userList) {
                             var gender;
                             if (data.userList[i].user_gender === 0) {
@@ -98,7 +98,7 @@
                             var user_realname = data.userList[i].user_realname;
                             var user_birthday = data.userList[i].user_birthday;
                             //显示用户数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_user_select_" + user_id + "'><label for='cbx_user_select_" + user_id + "'></label></td><td>" + user_name + "</td><td>" + user_nickname + "</td><td>" + user_realname + "</td><td>" + user_birthday + "</td><td>" + gender + "</td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + user_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_user_select_" + user_id + "'><label for='cbx_user_select_" + user_id + "'></label></td><td title='"+user_name+"'>" + user_name + "</td><td title='"+user_nickname+"'>" + user_nickname + "</td><td title='"+user_realname+"'>" + user_realname + "</td><td title='"+user_birthday+"'>" + user_birthday + "</td><td title='"+gender+"'>" + gender + "</td><td><span class='td_special' title='查看用户详情'><a href='#'>详情</a></span></td><td hidden>" + user_id + "</td></tr>");
                         }
                         //绑定事件
                         tbody.children("tr").click(function () {
@@ -124,25 +124,23 @@
 </head>
 <body>
 <div class="frm_div text_info">
-    <form id="form_user" class="form_main">
-        <div class="frm_group">
-            <label class="frm_label" id="lbl_user_name" for="input_user_name">用户名/昵称</label>
-            <input class="frm_input" id="input_user_name" type="text" maxlength="50"/>
-            <input class="frm_btn" id="btn_user_submit" type="button" value="查询"/>
-            <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
-        </div>
-        <div class="frm_group">
-            <label class="frm_label" id="lbl_user_gender" for="checkbox_user_gender_man">用户性别</label>
-            <input class="frm_radio radio_gender" id="checkbox_user_gender_man" name="checkbox_user_gender" type="checkbox" value="0" checked>
-            <label class="frm_label" id="lbl_user_gender_man" for="checkbox_user_gender_man">男</label>
-            <input class="frm_radio radio_gender" id="checkbox_user_gender_woman" name="checkbox_user_gender" type="checkbox" value="1" checked>
-            <label class="frm_label" id="lbl_user_gender_woman" for="checkbox_user_gender_woman">女</label>
-        </div>
-        <div class="frm_group_last">
-            <input class="frm_btn frm_add" id="btn_user_add" type="button" value="添加一个用户"/>
-            <input class="frm_btn frm_refresh" id="btn_user_refresh" type="button" value="刷新用户列表"/>
-        </div>
-    </form>
+    <div class="frm_group">
+        <label class="frm_label" id="lbl_user_name" for="input_user_name">用户名/昵称</label>
+        <input class="frm_input" id="input_user_name" type="text" maxlength="50"/>
+        <input class="frm_btn" id="btn_user_submit" type="button" value="查询"/>
+        <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
+    </div>
+    <div class="frm_group">
+        <label class="frm_label" id="lbl_user_gender" for="checkbox_user_gender_man">用户性别</label>
+        <input class="frm_radio radio_gender" id="checkbox_user_gender_man" name="checkbox_user_gender" type="checkbox" value="0" checked>
+        <label class="frm_label" id="lbl_user_gender_man" for="checkbox_user_gender_man">男</label>
+        <input class="frm_radio radio_gender" id="checkbox_user_gender_woman" name="checkbox_user_gender" type="checkbox" value="1" checked>
+        <label class="frm_label" id="lbl_user_gender_woman" for="checkbox_user_gender_woman">女</label>
+    </div>
+    <div class="frm_group_last">
+        <input class="frm_btn frm_add" id="btn_user_add" type="button" value="添加一个用户"/>
+        <input class="frm_btn frm_refresh" id="btn_user_refresh" type="button" value="刷新用户列表"/>
+    </div>
 </div>
 <div class="data_count_div text_info">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522" width="16"
@@ -197,17 +195,17 @@
         <c:forEach items="${requestScope.userList}" var="user">
             <tr>
                 <td><input type="checkbox" class="cbx_select" id="cbx_user_select_${user.user_id}"><label for="cbx_user_select_${user.user_id}"></label></td>
-                <td>${user.user_name}</td>
-                <td>${user.user_nickname}</td>
-                <td>${user.user_realname}</td>
-                <td>${user.user_birthday}</td>
+                <td title="${user.user_name}">${user.user_name}</td>
+                <td title="${user.user_nickname}">${user.user_nickname}</td>
+                <td title="${user.user_realname}">${user.user_realname}</td>
+                <td title="${user.user_birthday}">${user.user_birthday}</td>
                 <td>
                     <c:choose>
                         <c:when test="${user.user_gender==0}">男</c:when>
                         <c:otherwise>女</c:otherwise>
                     </c:choose>
                 </td>
-                <td><span class="td_special"><a href="#">详情</a></span></td>
+                <td><span class="td_special" title="查看用户详情"><a href="#">详情</a></span></td>
                 <td hidden>${user.user_id}</td>
             </tr>
         </c:forEach>

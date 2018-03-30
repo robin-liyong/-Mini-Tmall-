@@ -181,6 +181,7 @@ input[type="checkbox"] {
 }
 .table_normal_div{
     position: relative;
+    min-height: 500px;
 }
 
 .cbx_select+label{
@@ -190,6 +191,7 @@ input[type="checkbox"] {
     width: 100%;
     font-size: 14px;
     margin-bottom: 20px;
+    table-layout: fixed;
 }
 .table_normal>thead{
     background-color: #f5f6fb;
@@ -204,6 +206,7 @@ input[type="checkbox"] {
 .table_normal th{
     padding: 12px 15px;
     color:#333333;
+    white-space: nowrap;
 }
 .table_normal th.data_info:hover{
     background-color: rgb(235,235,235);
@@ -238,6 +241,10 @@ input[type="checkbox"] {
 .table_normal td{
     padding: 10px 15px;
     color: #666666;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .table_normal span.td_success{
     color:#8BB979;
@@ -253,4 +260,7 @@ input[type="checkbox"] {
 }
 .table_normal span.td_error{
     color:#ccc;
+}
+.table_normal span.td_await{
+    color: #f7ff80;
 }

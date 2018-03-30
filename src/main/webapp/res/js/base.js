@@ -61,7 +61,7 @@ var ajaxUtil = {
         function (url,data,isChild) {
             if(url !== null && url !== ""){
                 $.ajax({
-                    url: "admin/"+url,
+                    url: "/tmall/admin/"+url,
                     type: "get",
                     data: data,
                     contentType: "text/html;charset=UTF-8",
@@ -73,7 +73,7 @@ var ajaxUtil = {
                              ******/
                             //获得表单元素焦点时
                             $(".frm_input,.frm_radio").focus(function () {
-                                styleUtil.errorHide($("#text_product_msg"));
+                                styleUtil.errorHide($(".frm_error_msg"));
                             });
                             //点击table中的全选框时
                             $("#cbx_select_all").click(function () {
@@ -90,8 +90,12 @@ var ajaxUtil = {
                             });
                             //点击重置按钮时
                             $('#btn_clear').click(function () {
-                                $(".form_main")[0].reset();
-                                $(".selectpicker").selectpicker("refresh");
+                                $(".frm_div :input")
+                                    .not(':button',':submit',':reset','hidden')
+                                    .val('')
+                                    .prop("checked",true);
+                                //刷新下拉框
+                                $('.selectpicker').selectpicker('refresh');
                             });
                         }
                     },

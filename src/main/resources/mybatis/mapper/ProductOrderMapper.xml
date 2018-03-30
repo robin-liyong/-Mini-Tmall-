@@ -66,12 +66,17 @@
     </delete>
     <select id="select" resultMap="productOrderMap">
         SELECT productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_userMessage,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id FROM productOrder
-        <if test="productOrder != null">
-            <where>
-                <if test="productOrder.productOrder_status">productOrder_status = #{productOrder.productOrder_status}</if>
-                <if test="productOrder.productOrder_user.user_id">productOrder_user_id = #{productOrder.productOrder_user.user_id}</if>
-            </where>
-        </if>
+        <where>
+            <if test="productOrder != null">
+                <if test="productOrder.productOrder_code">productOrder_code LIKE concat('%',#{productOrder.productOrder_code},'%')</if>
+                <if test="productOrder.productOrder_post">and productOrder_post LIKE concat('%',#{productOrder.productOrder_post},'%')</if>
+            </if>
+            <if test="productOrder_status_array != null">and productOrder_status IN
+                <foreach collection="productOrder_status_array" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
         <if test="orderUtil != null">
             ORDER BY #{orderUtil.orderBy}<if test="orderUtil.isDesc"> desc</if>
         </if>
@@ -91,13 +96,18 @@
             productOrder_code = #{productOrder_code}
         </where>
     </select>
-    <select id="selectTotal" resultMap="productOrderMap">
+    <select id="selectTotal" resultType="int">
         SELECT COUNT(productOrder_id) FROM productOrder
-        <if test="productOrder != null">
-            <where>
-                <if test="productOrder.productOrder_status">productOrder_status = #{productOrder.productOrder_status}</if>
-                <if test="productOrder.productOrder_user.user_id">productOrder_user_id = #{productOrder.productOrder_user.user_id}</if>
-            </where>
-        </if>
+        <where>
+            <if test="productOrder != null">
+                <if test="productOrder.productOrder_code">productOrder_code LIKE concat('%',#{productOrder.productOrder_code},'%')</if>
+                <if test="productOrder.productOrder_post">and productOrder_post LIKE concat('%',#{productOrder.productOrder_post},'%')</if>
+            </if>
+            <if test="productOrder_status_array != null">and productOrder_status IN
+                <foreach collection="productOrder_status_array" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
     </select>
 </mapper>

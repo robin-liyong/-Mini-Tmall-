@@ -43,14 +43,14 @@
                     //设置样式
                     $(".loader").css("display","none");
                     object.attr("disabled",false);
+                    //显示分类统计数据
+                    $("#category_count_data").text(data.categoryCount);
                     if(data.categoryList.length > 0) {
-                        //显示分类统计数据
-                        $("#category_count_data").text(data.categoryCount);
                         for (var i in data.categoryList) {
                             var category_id = data.categoryList[i].category_id;
                             var category_name = data.categoryList[i].category_name;
                             //显示分类数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_" + category_id + "'><label for='cbx_category_select_" + category_id + "'></label></td><td>" + category_name + "</td><td><span class='td_special'><a href='#'>详情</a></span></td><td hidden>" + category_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_" + category_id + "'><label for='cbx_category_select_" + category_id + "'></label></td><td title='"+category_name+"'>" + category_name + "</td><td><span class='td_special' title='查看分类详情'><a href='#'>详情</a></span></td><td hidden>" + category_id + "</td></tr>");
                         }
                         //绑定事件
                         tbody.children("tr").click(function () {
@@ -71,18 +71,16 @@
 </head>
 <body>
 <div class="frm_div text_info">
-    <form id="form_category" class="form_main">
-        <div class="frm_group">
-            <label class="frm_label" id="lbl_category_name" for="input_category_name">分类名称</label>
-            <input class="frm_input" id="input_category_name" type="text" maxlength="50"/>
-            <input class="frm_btn" id="btn_category_submit" type="button" value="查询"/>
-            <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
-        </div>
-        <div class="frm_group_last">
-            <input class="frm_btn frm_add" id="btn_category_add" type="button" value="添加一个分类"/>
-            <input class="frm_btn frm_refresh" id="btn_category_refresh" type="button" value="刷新分类列表"/>
-        </div>
-    </form>
+    <div class="frm_group">
+        <label class="frm_label" id="lbl_category_name" for="input_category_name">分类名称</label>
+        <input class="frm_input" id="input_category_name" type="text" maxlength="50"/>
+        <input class="frm_btn" id="btn_category_submit" type="button" value="查询"/>
+        <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
+    </div>
+    <div class="frm_group_last">
+        <input class="frm_btn frm_add" id="btn_category_add" type="button" value="添加一个分类"/>
+        <input class="frm_btn frm_refresh" id="btn_category_refresh" type="button" value="刷新分类列表"/>
+    </div>
 </div>
 <div class="data_count_div text_info">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2522" width="16"
@@ -104,7 +102,7 @@
         <thead class="text_info">
         <tr>
             <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
-            <th><span>分类名称</span></th>
+            <th>分类名称</th>
             <th>操作</th>
             <th hidden>分类ID</th>
         </tr>
@@ -113,8 +111,8 @@
         <c:forEach items="${requestScope.categoryList}" var="category">
             <tr>
                 <td><input type="checkbox" class="cbx_select" id="cbx_category_select_${category.category_id}"><label for="cbx_category_select_${category.category_id}"></label></td>
-                <td>${category.category_name}</td>
-                <td><span class="td_special"><a href="#">详情</a></span></td>
+                <td title="${category.category_name}">${category.category_name}</td>
+                <td><span class="td_special" title="查看分类详情"><a href="#">详情</a></span></td>
                 <td hidden><span class="category_id">${category.category_id}</span></td>
             </tr>
         </c:forEach>

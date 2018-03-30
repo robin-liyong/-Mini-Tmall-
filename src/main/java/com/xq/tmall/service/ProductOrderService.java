@@ -11,8 +11,8 @@ public interface ProductOrderService {
     boolean update(ProductOrder productOrder);
     boolean deleteList(Integer[] productOrder_id_list);
 
-    List<ProductOrder> getList(ProductOrder productOrder, OrderUtil orderUtil, PageUtil pageUtil);
+    List<ProductOrder> getList(ProductOrder productOrder, Byte[] productOrder_status_array, OrderUtil orderUtil, PageUtil pageUtil);
     ProductOrder get(Integer productOrder_id);
     ProductOrder getByCode(String productOrder_code);
-    Integer getTotal(ProductOrder productOrder);
+    Integer getTotal(ProductOrder productOrder,Byte[] productOrder_status_array);
 }
