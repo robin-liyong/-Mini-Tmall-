@@ -6,9 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
-import com.xq.tmall.service.CategoryService;
-import com.xq.tmall.service.ProductImageService;
-import com.xq.tmall.service.ProductService;
+import com.xq.tmall.entity.Property;
+import com.xq.tmall.entity.PropertyValue;
+import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,10 @@ public class ProductController extends BaseController{
     private ProductService productService;
     @Resource(name = "productImageService")
     private ProductImageService productImageService;
+    @Resource(name = "propertyService")
+    private PropertyService propertyService;
+    @Resource(name = "propertyValueService")
+    private PropertyValueService propertyValueService;
 
     //转到后台管理-产品页-ajax
     @RequestMapping("admin/product")
@@ -58,13 +63,12 @@ public class ProductController extends BaseController{
 
     //转到后台管理-产品详情页-ajax
     @RequestMapping(value="admin/product/{pid}")
-    public String getProductByPid(HttpSession session,Map<String, Object> map, @PathVariable Integer pid/* 产品ID */){
+    public String goToDetailsPage(HttpSession session,Map<String, Object> map, @PathVariable Integer pid/* 产品ID */){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
             return null;
         }
-
         logger.info("获取product_id为{}的产品信息",pid);
         Product product = productService.get(pid);
         logger.info("获取产品详情-分类信息");
@@ -76,8 +80,44 @@ public class ProductController extends BaseController{
         logger.info("获取产品详情-详情图片信息");
         product.setDetailProductImageList(productImageService.getList(product_id,Byte.parseByte("1"),null));
         map.put("product",product);
+        logger.info("获取产品详情-属性值信息");
+        List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product),null);
+        logger.info("获取产品详情-分类信息对应的属性列表");
+        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(product.getProduct_category()),null);
+        logger.info("属性列表和属性值列表合并");
+        for(Property property : propertyList){
+            for(PropertyValue propertyValue : propertyValueList){
+                if(property.getProperty_id().equals(propertyValue.getPropertyValue_property().getProperty_id())){
+                    List<PropertyValue> property_value_item = new ArrayList<>(1);
+                    property_value_item.add(propertyValue);
+                    property.setPropertyValueList(property_value_item);
+                    break;
+                }
+            }
+        }
+        map.put("propertyList",propertyList);
+        logger.info("获取分类列表");
+        List<Category> categoryList = categoryService.getList(null,null);
+        map.put("categoryList",categoryList);
 
         logger.info("转到后台管理-产品详情页-ajax方式");
+        return "admin/include/productDetails";
+    }
+
+    //转到后台管理-产品添加页-ajax
+    @RequestMapping(value = "admin/product/new")
+    public String goToAddPage(HttpSession session,Map<String, Object> map){
+        logger.info("检查管理员权限");
+        Object adminId = checkAdmin(session);
+        if(adminId == null){
+            return null;
+        }
+
+        logger.info("获取分类列表");
+        List<Category> categoryList = categoryService.getList(null,null);
+        map.put("categoryList",categoryList);
+
+        logger.info("转到后台管理-产品添加页-ajax方式");
         return "admin/include/productDetails";
     }
 

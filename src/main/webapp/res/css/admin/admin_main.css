@@ -15,8 +15,8 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     font-size: 12px;
     color:#cccccc;
 }
-/*修改多选按钮样式*/
-input[type="checkbox"]+label::before{
+/*修改多选,单选按钮样式*/
+input[type="checkbox"]+label::before,input[type="radio"]+label::before {
     content: "\a0";
     position: relative;
     bottom: 1px;
@@ -31,18 +31,21 @@ input[type="checkbox"]+label::before{
     line-height: 1;
     cursor: pointer;
 }
-input[type="checkbox"]:checked + label::before {
+input[type="radio"]+label::before {
+    border-radius: 50%;
+}
+input[type="checkbox"]:checked + label::before,input[type="radio"]:checked + label::before {
     background-color: #ff7874;
     background-clip: content-box;
     padding: 2px;
 }
-input[type="checkbox"] {
+input[type="checkbox"],input[type="radio"] {
     position: absolute;
     clip: rect(0, 0, 0, 0);
 }
 /*修改bootstrap-select下拉框样式*/
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
-    width: 80px;
+    width: 150px;
     margin: 0 20px 0 0;
     bottom: 1px;
 }
@@ -88,6 +91,7 @@ input[type="checkbox"] {
     margin: 0 4px 0 0;
 }
 .frm_input{
+    width: 150px;
     outline: none;
     padding: 5px;
     color:#666;
@@ -150,7 +154,7 @@ input[type="checkbox"] {
 .frm_btn.frm_refresh:hover{
     background-color: #50ABF4;
 }
-
+/*数据统计部分样式*/
 .data_count_div{
     overflow: hidden;
     width: 100%;
@@ -183,7 +187,7 @@ input[type="checkbox"] {
     position: relative;
     min-height: 500px;
 }
-
+/*数据列表部分样式*/
 .cbx_select+label{
     margin: 0;
 }
@@ -207,6 +211,9 @@ input[type="checkbox"] {
     padding: 12px 15px;
     color:#333333;
     white-space: nowrap;
+}
+.table_normal th:first-child{
+    width: 50px;
 }
 .table_normal th.data_info:hover{
     background-color: rgb(235,235,235);
@@ -263,4 +270,54 @@ input[type="checkbox"] {
 }
 .table_normal span.td_await{
     color: #f7ff80;
+}
+/*数据增改部分样式*/
+.details_div{
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ebef;
+}
+.details_div>.details_title{
+    display: block;
+    color:#333;
+    margin-bottom: 20px;
+}
+.details_div_first .frm_label,.details_div .frm_label{
+    min-width: 75px;
+    text-indent: 1em;
+}
+.details_div>.details_picList>li{
+    float: left;
+    list-style: none;
+}
+.details_picList>li>.fileUpload{
+    border: 2px dashed #ccc;
+    cursor: pointer;
+    width: 128px;
+    height: 128px;
+}
+.details_picList>li>.fileUpload>input[type="file"]{
+    cursor: pointer;
+    width: 128px;
+    height: 128px;
+    opacity: 0;
+}
+span.details_value{
+    display: inline-block;
+    color:#666;
+    width: 150px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 150px;
+}
+input[type="text"].details_unit{
+    width: 130px;
+    margin-right: 5px;
+}
+span.details_unit{
+    display: inline-block;
+    width: 15px;
+    color:#666;
+    font-size: 12px;
+    margin-right: 145px;
 }

@@ -5,7 +5,10 @@ import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.service.AdminService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -27,8 +30,8 @@ public class LoginController extends BaseController{
 
     //登陆验证-ajax
     @ResponseBody
-    @RequestMapping(value = "admin/login/{username}",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
-    public String checkLogin(HttpSession session, @PathVariable String username, @RequestParam String password) {
+    @RequestMapping(value = "admin/login/doLogin",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    public String checkLogin(HttpSession session, @RequestParam String username, @RequestParam String password) {
         logger.info("管理员登录验证");
         Admin admin = adminService.login(username,password);
 
@@ -47,8 +50,8 @@ public class LoginController extends BaseController{
 
     //获取管理员头像路径-ajax
     @ResponseBody
-    @RequestMapping(value = "admin/login/profile_picture/{username}",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-    public String getAdminProfilePicture(@PathVariable("username") String username){
+    @RequestMapping(value = "admin/login/profile_picture",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+    public String getAdminProfilePicture(@RequestParam String username){
         logger.info("根据用户名获取管理员头像路径");
         Admin admin = adminService.get(username,null);
 

@@ -10,11 +10,11 @@
         <association property="productOrderItem_product" column="productOrderItem_product_id" javaType="com.xq.tmall.entity.Product">
             <id property="product_id" column="product_id"/>
         </association>
-        <association property="productOrderItem_order" column="productOrderItem_order_id" javaType="com.xq.tmall.entity.ProductOrderItem">
-            <id property="productOrder_id" column="productOrder_id"/>
+        <association property="productOrderItem_order" javaType="com.xq.tmall.entity.ProductOrderItem">
+            <id property="productOrder_id" column="productOrderItem_order_id"/>
         </association>
-        <association property="productOrderItem_user" column="productOrderItem_user_id" javaType="com.xq.tmall.entity.User">
-            <id property="user_id" column="user_id"/>
+        <association property="productOrderItem_user" javaType="com.xq.tmall.entity.User">
+            <id property="user_id" column="productOrderItem_user_id"/>
         </association>
     </resultMap>
 

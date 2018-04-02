@@ -12,11 +12,11 @@
         <result property="user_gender" column="user_gender"/>
         <result property="user_birthday" column="user_birthday"/>
         <result property="user_profile_picture_src" column="user_profile_picture_src"/>
-        <association property="user_address" column="user_address" javaType="com.xq.tmall.entity.Address">
-            <id property="address_areaId" column="address_areaId"/>
+        <association property="user_address" javaType="com.xq.tmall.entity.Address">
+            <id property="address_areaId" column="user_address"/>
         </association>
-        <association property="user_homeplace" column="user_homeplace" javaType="com.xq.tmall.entity.Address">
-            <id property="address_areaId" column="address_areaId"/>
+        <association property="user_homeplace" javaType="com.xq.tmall.entity.Address">
+            <id property="address_areaId" column="user_homeplace"/>
         </association>
     </resultMap>
 

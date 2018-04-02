@@ -121,8 +121,11 @@ public class Product {
     }
 
     public String getProduct_create_date() {
-        SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.UK);
-        return time.format(product_create_date);
+        if(product_create_date != null){
+            SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.UK);
+            return time.format(product_create_date);
+        }
+        return null;
     }
 
     public Product setProduct_create_date(Date product_create_date) {

@@ -31,3 +31,9 @@ function trDataStyle(obj) {
         checkbox.prop("checked",true);
     }
 }
+//
+function getChildPage(url,data,title) {
+    document.title = "Tmall管理后台 - "+title;
+    //ajax请求页面
+    ajaxUtil.getPage(url,data,true);
+}

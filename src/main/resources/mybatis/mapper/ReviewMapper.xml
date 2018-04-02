@@ -7,11 +7,11 @@
         <id column="review_id" property="review_id"/>
         <result column="review_content" property="review_content"/>
         <result column="review_createDate" property="review_createDate"/>
-        <association property="review_user" column="review_user_id" javaType="com.xq.tmall.entity.User">
-            <id property="user_id" column="user_id"/>
+        <association property="review_user" javaType="com.xq.tmall.entity.User">
+            <id property="user_id" column="review_user_id"/>
         </association>
-        <association property="review_product" column="review_product_id" javaType="com.xq.tmall.entity.Product">
-            <id property="product_id" column="product_id"/>
+        <association property="review_product" javaType="com.xq.tmall.entity.Product">
+            <id property="product_id" column="review_product_id"/>
         </association>
     </resultMap>
 

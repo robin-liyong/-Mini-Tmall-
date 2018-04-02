@@ -43,9 +43,9 @@ $(function () {
             return;
         }
         $.ajax({
-            url: "/tmall/admin/login/"+username,
+            url: "/tmall/admin/login/doLogin",
             type:"post",
-            data: {"password":password},
+            data: {"username":username,"password":password},
             success:function (data) {
                 $("#btn_login").val("登录");
                 if (data.success) {
@@ -110,7 +110,7 @@ function initialData() {
 //获取用户头像
 function getUserProfilePicture(username) {
     if(username !== null && username !== ""){
-        $.getJSON("/tmall/admin/login/profile_picture/"+username,null,function (data) {
+        $.getJSON("/tmall/admin/login/profile_picture",{"username":username},function (data) {
             if(data.success){
                 if(data.srcString !== null){
                     $("#img_profile_picture").attr("src",data.srcString);

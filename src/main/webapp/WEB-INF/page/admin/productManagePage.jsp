@@ -1,5 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <script>
@@ -129,7 +129,7 @@
                             var product_title = data.productList[i].product_title;
                             var product_create_date = data.productList[i].product_create_date;
                             //显示产品数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td title='"+product_name+"'>" + product_name + "</td><td title='"+product_title+"'>" + product_title + "</td><td title='"+product_price+"'>" + product_price + "</td><td title='"+product_sale_price+"'>" + product_sale_price + "</td><td title='"+product_create_date+"'>" + product_create_date + "</td><td><span class='" + isEnabledClass + "' title='"+isEnabledTitle+"'>"+ isEnabled + "</span></td><td><span class='td_special' title='查看产品详情'><a href='#'>详情</a></span></td><td hidden>" + product_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_product_select_" + product_id + "'><label for='cbx_product_select_" + product_id + "'></label></td><td title='"+product_name+"'>" + product_name + "</td><td title='"+product_title+"'>" + product_title + "</td><td title='"+product_price+"'>" + product_price + "</td><td title='"+product_sale_price+"'>" + product_sale_price + "</td><td title='"+product_create_date+"'>" + product_create_date + "</td><td><span class='" + isEnabledClass + "' title='"+isEnabledTitle+"'>"+ isEnabled + "</span></td><td><span class='td_special' title='查看产品详情'><a href='javascript:void(0);' onclick='getChildPage(this)'>详情</a></span></td><td hidden><span class='product_id'>" + product_id + "</span></td></tr>");
                         }
                         //绑定事件
                         tbody.children("tr").click(function () {
@@ -145,6 +145,24 @@
 
                 }
             });
+        }
+        // 获取产品子界面
+        function getChildPage(obj) {
+            var url;
+            var title;
+            if(obj === null){
+                title = "添加产品";
+                url = "product/new";
+            } else {
+                title = "产品详情";
+                url = "product/"+$(obj).parents("tr").find(".product_id").text();
+            }
+
+            //设置样式
+            $("#div_home_title").children("span").text(title);
+            document.title = "Tmall管理后台 - "+title;
+            //ajax请求页面
+            ajaxUtil.getPage(url,null,true);
         }
     </script>
     <style rel="stylesheet">
@@ -178,11 +196,11 @@
     </div>
     <div class="frm_group">
         <label class="frm_label" id="lbl_product_isEnabled" for="checkbox_product_isEnabled_true">产品状态</label>
-        <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
+        <input id="checkbox_product_isEnabled_true" name="checkbox_product_isEnabled" type="checkbox" value="0" checked>
         <label class="frm_label" id="lbl_product_isEnabled_true" for="checkbox_product_isEnabled_true">销售中</label>
-        <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="1" checked>
+        <input id="checkbox_product_isEnabled_false" name="checkbox_product_isEnabled" type="checkbox" value="1" checked>
         <label class="frm_label" id="lbl_product_isEnabled_false" for="checkbox_product_isEnabled_false">停售中</label>
-        <input class="frm_radio radio_isEnabled" id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2" checked>
+        <input id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2" checked>
         <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
 
         <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>
@@ -192,7 +210,7 @@
         <span class="frm_error_msg" id="text_product_msg"></span>
     </div>
     <div class="frm_group_last">
-        <input class="frm_btn frm_add" id="btn_product_add" type="button" value="添加一件产品"/>
+        <input class="frm_btn frm_add" id="btn_product_add" type="button" value="添加一件产品" onclick="getChildPage(null)"/>
         <input class="frm_btn frm_refresh" id="btn_product_refresh" type="button" value="刷新产品列表"/>
         <span class="frm_error_msg" id="text_tools_msg"></span>
     </div>
@@ -264,7 +282,7 @@
                         <c:otherwise><span class="td_error" title="产品缺货或违规停售中">停售中</span></c:otherwise>
                     </c:choose>
                 </td>
-                <td><span class="td_special" title="查看产品详情"><a href="#">详情</a></span></td>
+                <td><span class="td_special" title="查看产品详情"><a href="javascript:void(0)" onclick="getChildPage(this)">详情</a></span></td>
                 <td hidden><span class="product_id">${product.product_id}</span></td>
             </tr>
         </c:forEach>

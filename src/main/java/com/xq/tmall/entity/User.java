@@ -115,8 +115,11 @@ public class User {
     }
 
     public String getUser_birthday() {
-        SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
-        return time.format(user_birthday);
+        if(user_birthday != null){
+            SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+            return time.format(user_birthday);
+        }
+        return null;
     }
 
     public User setUser_birthday(Date user_birthday) {

@@ -6,8 +6,8 @@
     <resultMap id="propertyMap" type="property">
         <id property="property_id" column="property_id"/>
         <result property="property_name" column="property_name"/>
-        <association property="property_category" column="property_category_id" javaType="com.xq.tmall.entity.Category">
-            <id property="category_id" column="category_id"/>
+        <association property="property_category" javaType="com.xq.tmall.entity.Category">
+            <id property="category_id" column="property_category_id"/>
         </association>
     </resultMap>
 
@@ -41,7 +41,9 @@
         <if test="property != null">
             <where>
                 <if test="property.property_name != null">property_name LIKE concat('%',#{property.property_name},'%')</if>
-                <if test="property.property_category.category_id != null">property_category_id = #{property.property_category.category_id}</if>
+                <if test="property.property_category != null">
+                    <if test="property.property_category.category_id != null">property_category_id = #{property.property_category.category_id}</if>
+                </if>
             </where>
         </if>
         <if test="pageUtil != null">
@@ -60,7 +62,9 @@
             <where>
                 <where>
                     <if test="property.property_name != null">property_name LIKE concat('%',#{property.property_name},'%')</if>
-                    <if test="property.property_category.category_id != null">property_category_id = #{property.property_category.category_id}</if>
+                    <if test="property.property_category != null">
+                        <if test="property.property_category.category_id != null">property_category_id = #{property.property_category.category_id}</if>
+                    </if>
                 </where>
             </where>
         </if>

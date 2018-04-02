@@ -7,8 +7,8 @@
         <id property="productImage_id" column="productImage_id"/>
         <result property="productImage_type" column="productImage_type"/>
         <result property="productImage_src" column="productImage_src"/>
-        <association property="productImage_product" column="productImage_product_id" javaType="com.xq.tmall.entity.Product">
-            <id property="product_id" column="product_id"/>
+        <association property="productImage_product" javaType="com.xq.tmall.entity.Product">
+            <id property="product_id" column="productImage_product_id"/>
         </association>
     </resultMap>
 

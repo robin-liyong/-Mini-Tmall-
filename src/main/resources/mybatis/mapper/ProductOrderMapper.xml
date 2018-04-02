@@ -15,11 +15,11 @@
         <result property="productOrder_delivery_date" column="productOrder_delivery_date"/>
         <result property="productOrder_confirm_date" column="productOrder_confirm_date"/>
         <result property="productOrder_status" column="productOrder_status"/>
-        <association property="productOrder_address" column="productOrder_address" javaType="com.xq.tmall.entity.Address">
-            <id property="address_areaId" column="address_areaId"/>
+        <association property="productOrder_address" javaType="com.xq.tmall.entity.Address">
+            <id property="address_areaId" column="productOrder_address"/>
         </association>
-        <association property="productOrder_user" column="productOrder_user_id" javaType="com.xq.tmall.entity.User">
-            <id property="user_id" column="user_id"/>
+        <association property="productOrder_user" javaType="com.xq.tmall.entity.User">
+            <id property="user_id" column="productOrder_user_id"/>
         </association>
     </resultMap>
 

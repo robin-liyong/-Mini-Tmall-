@@ -97,6 +97,9 @@ var ajaxUtil = {
                                 //刷新下拉框
                                 $('.selectpicker').selectpicker('refresh');
                             });
+                        } else {
+                            //清除已选中的li样式
+                            $(".menu_li_select").removeClass("menu_li_select");
                         }
                     },
                     beforeSend: function () {
