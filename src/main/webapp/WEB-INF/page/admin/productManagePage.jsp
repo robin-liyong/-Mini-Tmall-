@@ -23,11 +23,11 @@
             $("#btn_product_submit").click(function () {
                 var product_name = $.trim($("#input_product_name").val());
                 var category_id = parseInt($("#select_product_category").val());
-                var lowest_price = $.trim($("#input_product_sale_place").val());
-                var highest_price = $.trim($("#input_product_place").val());
+                var lowest_price = $.trim($("#input_product_sale_price").val());
+                var highest_price = $.trim($("#input_product_price").val());
                 //产品状态数组
                 var status_array = [];
-                $(".radio_isEnabled:checked").each(function () {
+                $("input[name = checkbox_product_isEnabled]:checked").each(function () {
                     status_array.push($(this).val());
                 });
                 //校验数据合法性
@@ -174,9 +174,6 @@
         #lbl_product_isEnabled_special{
             margin-right: 20px;
         }
-        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
-            width: 150px;
-        }
     </style>
 </head>
 <body>
@@ -203,10 +200,10 @@
         <input id="checkbox_product_isEnabled_special" name="checkbox_product_isEnabled" type="checkbox" value="2" checked>
         <label class="frm_label" id="lbl_product_isEnabled_special" for="checkbox_product_isEnabled_special">促销中</label>
 
-        <label class="frm_label"  id="lbl_product_sale_place" for="input_product_sale_place">金额</label>
-        <input class="frm_input frm_num"  id="input_product_sale_place" type="text" placeholder="最低价" maxlength="10">
+        <label class="frm_label"  id="lbl_product_sale_price" for="input_product_sale_price">金额</label>
+        <input class="frm_input frm_num"  id="input_product_sale_price" type="text" placeholder="最低价" maxlength="10">
         <span id="text_cut">—</span>
-        <input class="frm_input frm_num"  id="input_product_place" type="text" placeholder="最高价" maxlength="10">
+        <input class="frm_input frm_num"  id="input_product_price" type="text" placeholder="最高价" maxlength="10">
         <span class="frm_error_msg" id="text_product_msg"></span>
     </div>
     <div class="frm_group_last">

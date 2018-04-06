@@ -39,7 +39,7 @@ public class ProductController extends BaseController{
     private PropertyValueService propertyValueService;
 
     //转到后台管理-产品页-ajax
-    @RequestMapping("admin/product")
+    @RequestMapping(value = "admin/product",method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -62,7 +62,7 @@ public class ProductController extends BaseController{
     }
 
     //转到后台管理-产品详情页-ajax
-    @RequestMapping(value="admin/product/{pid}")
+    @RequestMapping(value="admin/product/{pid}",method = RequestMethod.GET)
     public String goToDetailsPage(HttpSession session,Map<String, Object> map, @PathVariable Integer pid/* 产品ID */){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -105,7 +105,7 @@ public class ProductController extends BaseController{
     }
 
     //转到后台管理-产品添加页-ajax
-    @RequestMapping(value = "admin/product/new")
+    @RequestMapping(value = "admin/product/new",method = RequestMethod.GET)
     public String goToAddPage(HttpSession session,Map<String, Object> map){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -116,9 +116,26 @@ public class ProductController extends BaseController{
         logger.info("获取分类列表");
         List<Category> categoryList = categoryService.getList(null,null);
         map.put("categoryList",categoryList);
+        logger.info("获取第一个分类信息对应的属性列表");
+        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(categoryList.get(0)),null);
+        map.put("propertyList",propertyList);
 
         logger.info("转到后台管理-产品添加页-ajax方式");
         return "admin/include/productDetails";
+    }
+
+    //添加产品-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/product", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    public String addProduct(@RequestParam Product product/* 产品对象 */){
+        return "";
+    }
+
+    //更新产品-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/product", method = RequestMethod.PUT,produces = "application/json;charset=utf-8")
+    public String updateProduct(@RequestParam Product product/* 产品对象 */){
+        return "";
     }
 
     //按条件查询产品-ajax
@@ -166,6 +183,22 @@ public class ProductController extends BaseController{
         logger.info("按条件获取产品总数量");
         Integer productCount = productService.getTotal(product, product_isEnabled_array);
         object.put("productCount", productCount);
+
+        return object.toJSONString();
+    }
+
+    //按类型查询属性-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/property/type/{property_category_id}", method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+    public String getPropertyByCategory(@PathVariable Integer property_category_id/* 属性所属类型ID*/){
+        //封装查询条件
+        Category category = new Category()
+                .setCategory_id(property_category_id);
+
+        JSONObject object = new JSONObject();
+        logger.info("按类型获取属性列表，类型ID：{}",property_category_id);
+        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(category),null);
+        object.put("propertyList",JSONArray.parseArray(JSON.toJSONString(propertyList)));
 
         return object.toJSONString();
     }

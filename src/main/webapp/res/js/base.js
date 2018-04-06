@@ -30,14 +30,16 @@ var styleUtil = {
     //显示表单验证错误提示
     errorShow:
         function (obj,text) {
-            obj.text(text);
+            obj.text(text).attr("title",text);
             if (obj.css("opacity") !== "1") {
                 obj.animate({
                     left: "0",
                     opacity: 1
                 }, 200);
             } else {
-                obj.css("opacity", "0.5").animate({
+                obj
+                    .css("opacity", "0.5")
+                    .animate({
                     opacity: 1
                 }, 100);
             }
@@ -52,6 +54,29 @@ var styleUtil = {
                     opacity: 0
                 }, 200);
             }
+            return this;
+        },
+    //显示基础的表单验证错误提示
+    basicErrorShow:
+        function (obj) {
+            obj
+                .css("color","#c33")
+                .css("opacity", "0.5")
+                .animate({
+                    opacity: 1
+            }, 100)
+                .next("input")
+                .css("border-color","#c33");
+            return this;
+        },
+    //隐藏基础的表单验证错误提示
+    basicErrorHide:
+        function (obj) {
+            obj
+                .css("color","#666")
+                .css("opacity","1")
+                .next("input")
+                .css("border-color","");
             return this;
         }
 };

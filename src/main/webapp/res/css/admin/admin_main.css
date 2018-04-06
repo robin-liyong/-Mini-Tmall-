@@ -47,7 +47,6 @@ input[type="checkbox"],input[type="radio"] {
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
     width: 150px;
     margin: 0 20px 0 0;
-    bottom: 1px;
 }
 .btn.dropdown-toggle.btn-default{
     font-size: 12px;
@@ -272,46 +271,89 @@ input[type="checkbox"],input[type="radio"] {
     color: #f7ff80;
 }
 /*数据增改部分样式*/
+.details_div_first .frm_label,.details_div .frm_label,.details_div_last .frm_label{
+    min-width: 75px;
+}
+.details_div_first>div,.details_div>div,.details_div_last>div{
+    margin-left: 10px;
+}
 .details_div{
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid #e9ebef;
+}
+.details_div_last{
+    margin-bottom: 60px;
 }
 .details_div>.details_title{
     display: block;
     color:#333;
     margin-bottom: 20px;
 }
-.details_div_first .frm_label,.details_div .frm_label{
-    min-width: 75px;
-    text-indent: 1em;
+.details_div>.details_picList{
+    font-size: 0;
+    padding: 0;
+    margin: 0 0 0 10px;
 }
-.details_div>.details_picList>li{
-    float: left;
-    list-style: none;
-}
-.details_picList>li>.fileUpload{
+.details_picList>li{
     border: 2px dashed #ccc;
+    display: inline-block;
+    list-style: none;
+    padding: 1px;
+    margin: 0 5px 10px;
+    vertical-align: top;
     cursor: pointer;
-    width: 128px;
-    height: 128px;
 }
-.details_picList>li>.fileUpload>input[type="file"]{
+.details_picList>.details_picList_fileUpload{
+    position: relative;
+}
+.details_picList_fileUpload>input[type="file"]{
     cursor: pointer;
     width: 128px;
     height: 128px;
     opacity: 0;
 }
+.details_picList_fileUpload>svg{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 25px auto 0;
+}
+.details_picList_fileUpload>span{
+    text-align: center;
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    right: 0;
+    margin: 80px auto 0;
+    color:#666;
+    line-height: 14px;
+    font-size: 12px;
+}
+.details_tools_div{
+    position: fixed;
+    left: 200px;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f6fb;
+    border-top: 1px solid #e9ebef;
+    padding: 15px 25px;
+}
+.details_tools_div>.frm_btn{
+    width: 100px;
+    height: 30px;
+    margin-right: 20px;
+}
 span.details_value{
     display: inline-block;
     color:#666;
-    width: 150px;
+    width: 130px;
     font-size: 12px;
     font-weight: bold;
     margin-right: 150px;
 }
 input[type="text"].details_unit{
-    width: 130px;
+    width: 110px;
     margin-right: 5px;
 }
 span.details_unit{
