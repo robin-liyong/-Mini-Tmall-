@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <script>
@@ -58,31 +59,19 @@
                             return true;
                         }
                         property.property_id = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_')+1);
-
                         propertyValueList.push(property);
                     });
-                    $.ajax({
-                        url: "product",
-                        type: "POST",
-                        data: {
-                            "product_category_id": product_category_id,
-                            "product_isEnabled": product_isEnabled,
-                            "product_name": product_name,
-                            "product_title": product_title,
-                            "product_price": product_price,
-                            "product_sale_price" : product_sale_price,
-                            "propertyValueList" : JSON.stringify(propertyValueList)
-                        },
-                        success: function (data) {
-                            alert(data.toString());
-                        },
-                        beforeSend: function () {
 
-                        },
-                        error: function () {
-
-                        }
-                    });
+                    //数据集
+                    var dataList = {
+                        "product_category_id": product_category_id,
+                        "product_isEnabled" : product_isEnabled,
+                        "product_name": product_name,
+                        "product_title": product_title,
+                        "product_price": product_price,
+                        "product_sale_price": product_sale_price,
+                        "propertyValueList" : JSON.stringify(propertyValueList)
+                    };
                 });
             } else {
                 //设置产品种类值
@@ -110,10 +99,37 @@
             /******
              * event
              ******/
-            //单击图片列表中图片时
-            $(".details_picList").children("li:not(.details_picList_fileUpload)").click(function () {
-                $(this).css("display","none");
-                $(this).parent(".details_picList").children(".details_picList_fileUpload").css("display","inline-block");
+            //单击图片列表项时
+            $(".details_picList").on("click","li:not(.details_picList_fileUpload)",function () {
+                var ul = $(this).parent(".details_picList");
+                var type;
+                if(ul.attr("id") === "product_single_list"){
+                    type = "single";
+                } else {
+                    type = "details";
+                }
+                var productImage_id = $(this).children("img").attr("name");
+                $('#modalDiv').modal();
+                $("#btn-ok").click(function () {
+                    $.ajax({
+                        url: "/tmall/admin/productImage/"+productImage_id,
+                        type: "delete",
+                        data: null,
+                        success : function (data) {
+                            $("#btn-ok").attr("disabled",false).text("确定");
+                            $("#btn-close").attr("data-dismiss","modal");
+                            $('#modalDiv').modal("hide");
+                            loadImageList(ul,data,type);
+                        },
+                        beforeSend: function () {
+                            $("#btn-ok").attr("disabled",true).text("操作中...");
+                            $("#btn-close").attr("data-dismiss","");
+                        },
+                        error: function () {
+
+                        }
+                    });
+                });
             });
             //改变产品状态时
             $('input:radio').click(function () {
@@ -189,10 +205,6 @@
             //读取
             reader.onload = function (e) {
                 $(fileDom).parents("li.details_picList_fileUpload").before("<li><img src='"+e.target.result+"' width='128px' height='128px'/></li>");
-                $(".details_picList").children("li:not(.details_picList_fileUpload)").click(function () {
-                    $(this).css("display","none");
-                    $(this).parent(".details_picList").children(".details_picList_fileUpload").css("display","inline-block");
-                });
                 checkFileUpload($(fileDom).parents("ul"),size);
             };
             reader.readAsDataURL(file);
@@ -203,6 +215,18 @@
                 obj.children(".details_picList_fileUpload").css("display","none");
             } else {
                 obj.children(".details_picList_fileUpload").css("display","inline-block");
+            }
+        }
+        //加载图片列表
+        function loadImageList(obj,data,type) {
+            //清空列表
+            obj.children("li:not(.details_picList_fileUpload)").remove();
+            if(data.productImageList !== null){
+                for(var i in data.productImageList){
+                    var id = data.productImageList[i].productImage_id;
+                    var src = data.productImageList[i].productImage_src;
+                    obj.children(".details_picList_fileUpload").before("<li><img src='"+src+"' id='pic_"+type+"_"+id+"'  width='128px' height='128px' name='"+id+"'/></li>");
+                }
             }
         }
     </script>
@@ -268,7 +292,7 @@
     <span class="details_title text_info">概述图片</span>
     <ul class="details_picList" id="product_single_list">
         <c:forEach items="${requestScope.product.singleProductImageList}" var="image">
-            <li><img src="${image.productImage_src}" id="pic_single_${image.productImage_id}" width="128px" height="128px"/></li>
+            <li><img src="${image.productImage_src}" id="pic_single_${image.productImage_id}" width="128px" height="128px" name="${image.productImage_id}"/></li>
         </c:forEach>
         <li class="details_picList_fileUpload">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"  width="40" height="40">
@@ -276,15 +300,15 @@
                 <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z" p-id="1530" fill="#FFFFFF"></path>
             </svg>
             <span>点击上传</span>
-            <input type="file" onchange="imgPreview(this,5)" accept="image/*">
+            <input type="file" onchange="imgPreview(this,5)" accept="image/*" class="product_single_image_list">
         </li>
     </ul>
 </div>
 <div class="details_div">
     <span class="details_title text_info">详情图片</span>
     <ul class="details_picList" id="product_details_list">
-        <c:forEach items="${requestScope.product.singleProductImageList}" var="image">
-            <li><img src="${image.productImage_src}" id="pic_single_${image.productImage_id}" width="128px" height="128px"/></li>
+        <c:forEach items="${requestScope.product.detailProductImageList}" var="image">
+            <li><img src="${image.productImage_src}" id="pic_details_${image.productImage_id}" width="128px" height="128px" name="${image.productImage_id}"/></li>
         </c:forEach>
         <li class="details_picList_fileUpload">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"  width="40" height="40">
@@ -292,7 +316,7 @@
                 <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z" p-id="1530" fill="#FFFFFF"></path>
             </svg>
             <span>点击上传</span>
-            <input type="file" onchange="imgPreview(this,8)" accept="image/*">
+            <input type="file" onchange="imgPreview(this,8)" accept="image/*" class="product_details_image_list">
         </li>
     </ul>
 </div>
@@ -322,6 +346,22 @@
 <div class="details_tools_div">
     <input class="frm_btn" id="btn_product_save" type="button" value="保存"/>
     <input class="frm_btn frm_clear" id="btn_product_cancel" type="button" value="取消"/>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="modalDiv" tabindex="-1" role="dialog" aria-labelledby="modalDiv" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">您确定要删除该产品图片吗？</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btn-ok">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 </body>
 </html>

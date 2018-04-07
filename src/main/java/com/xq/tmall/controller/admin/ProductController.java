@@ -4,15 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
-import com.xq.tmall.entity.Category;
-import com.xq.tmall.entity.Product;
-import com.xq.tmall.entity.Property;
-import com.xq.tmall.entity.PropertyValue;
+import com.xq.tmall.entity.*;
 import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -127,7 +125,15 @@ public class ProductController extends BaseController{
     //添加产品-ajax
     @ResponseBody
     @RequestMapping(value = "admin/product", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
-    public String addProduct(@RequestParam Product product/* 产品对象 */){
+    public String addProduct(@RequestParam String product_name/* 产品名称 */,
+                             @RequestParam Integer product_category_id/* 产品类型ID */,
+                             @RequestParam Double product_sale_price/* 产品最低价 */,
+                             @RequestParam Double product_price/* 产品最高价 */,
+                             @RequestParam Byte product_isEnabled/* 产品状态 */,
+                             @RequestParam String propertyValueList/* 产品属性值数组JSON */,
+                             @RequestParam MultipartFile[] singleImageList/* 产品预览图片数组 */,
+                             @RequestParam MultipartFile[] detailsImageList/* 产品详情图片数组 */){
+        logger.warn(singleImageList.length);
         return "";
     }
 
@@ -187,10 +193,10 @@ public class ProductController extends BaseController{
         return object.toJSONString();
     }
 
-    //按类型查询属性-ajax
+    //按类型ID查询属性-ajax
     @ResponseBody
     @RequestMapping(value = "admin/property/type/{property_category_id}", method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-    public String getPropertyByCategory(@PathVariable Integer property_category_id/* 属性所属类型ID*/){
+    public String getPropertyByCategoryId(@PathVariable Integer property_category_id/* 属性所属类型ID*/){
         //封装查询条件
         Category category = new Category()
                 .setCategory_id(property_category_id);
@@ -199,6 +205,27 @@ public class ProductController extends BaseController{
         logger.info("按类型获取属性列表，类型ID：{}",property_category_id);
         List<Property> propertyList = propertyService.getList(new Property().setProperty_category(category),null);
         object.put("propertyList",JSONArray.parseArray(JSON.toJSONString(propertyList)));
+
+        return object.toJSONString();
+    }
+
+    //按ID删除产品图片并返回最新结果-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/productImage/{productImage_id}",method = RequestMethod.DELETE,produces = "application/json;charset=utf-8")
+    public String deleteProductImageById(@PathVariable Integer productImage_id/* 产品图片ID */){
+        logger.info("获取productImage_id为{}的产品图片信息",productImage_id);
+        ProductImage productImage = productImageService.get(productImage_id);
+        if(productImage != null){
+            logger.info("删除该产品图片");
+            Boolean yn = productImageService.deleteList(new Integer[]{productImage_id});
+        } else {
+            throw new RuntimeException();
+        }
+        logger.info("获取产品详情-图片信息");
+        Integer product_id =productImage.getProductImage_product().getProduct_id();
+        List<ProductImage> productImageList = productImageService.getList(product_id,productImage.getProductImage_type(),null);
+        JSONObject object = new JSONObject();
+        object.put("productImageList",JSONArray.parseArray(JSON.toJSONString(productImageList)));
 
         return object.toJSONString();
     }
