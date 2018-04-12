@@ -14,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 后台管理-产品页
@@ -35,6 +35,8 @@ public class ProductController extends BaseController{
     private PropertyService propertyService;
     @Resource(name = "propertyValueService")
     private PropertyValueService propertyValueService;
+    @Resource(name = "lastIDService")
+    private LastIDService lastIDService;
 
     //转到后台管理-产品页-ajax
     @RequestMapping(value = "admin/product",method = RequestMethod.GET)
@@ -61,7 +63,7 @@ public class ProductController extends BaseController{
 
     //转到后台管理-产品详情页-ajax
     @RequestMapping(value="admin/product/{pid}",method = RequestMethod.GET)
-    public String goToDetailsPage(HttpSession session,Map<String, Object> map, @PathVariable Integer pid/* 产品ID */){
+    public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer pid/* 产品ID */) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
@@ -122,19 +124,130 @@ public class ProductController extends BaseController{
         return "admin/include/productDetails";
     }
 
-    //添加产品-ajax
+    //添加产品信息-ajax
     @ResponseBody
     @RequestMapping(value = "admin/product", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String addProduct(@RequestParam String product_name/* 产品名称 */,
+                             @RequestParam String product_title/* 产品标题 */,
                              @RequestParam Integer product_category_id/* 产品类型ID */,
                              @RequestParam Double product_sale_price/* 产品最低价 */,
                              @RequestParam Double product_price/* 产品最高价 */,
                              @RequestParam Byte product_isEnabled/* 产品状态 */,
-                             @RequestParam String propertyValueList/* 产品属性值数组JSON */,
-                             @RequestParam MultipartFile[] singleImageList/* 产品预览图片数组 */,
-                             @RequestParam MultipartFile[] detailsImageList/* 产品详情图片数组 */){
-        logger.warn(singleImageList.length);
-        return "";
+                             @RequestParam String propertyJson/* 产品属性JSON */,
+                             @RequestParam(required = false) String[] productSingleImageList/*产品预览图片名称数组*/,
+                             @RequestParam(required = false) String[] productDetailsImageList/*产品详情图片名称数组*/) {
+        try {
+            logger.info("整合产品信息");
+            Product product = new Product()
+                    .setProduct_name(product_name)
+                    .setProduct_title(product_title)
+                    .setProduct_category(new Category().setCategory_id(product_category_id))
+                    .setProduct_sale_price(product_sale_price)
+                    .setProduct_price(product_price)
+                    .setProduct_isEnabled(product_isEnabled)
+                    .setProduct_create_date(new Date());
+            JSONObject jsonObject = new JSONObject();
+            logger.info("添加产品信息");
+            boolean yn = productService.add(product);
+            if (yn) {
+                int product_id = lastIDService.selectLastID();
+                logger.info("添加成功！,新增产品的ID值为：{}", product_id);
+                JSONObject object = JSON.parseObject(propertyJson);
+                Set<String> propertyIdSet = object.keySet();
+                if (propertyIdSet.size() > 0) {
+                    logger.info("整合产品子信息-产品属性");
+                    List<PropertyValue> list = new ArrayList<>(5);
+                    for (String key : propertyIdSet) {
+                        String value = object.getString(key.toString());
+                        PropertyValue propertyValue = new PropertyValue()
+                                .setPropertyValue_value(value)
+                                .setPropertyValue_property(new Property().setProperty_id(Integer.valueOf(key)))
+                                .setPropertyValue_product(new Product().setProduct_id(product_id));
+                        list.add(propertyValue);
+                    }
+                    product.setPropertyValueList(list);
+                    logger.info("共有{}条产品属性数据", list.size());
+
+                    List<PropertyValue> propertyValueList = product.getPropertyValueList();
+                    int size = propertyValueList.size();
+                    for (int i = 0; i < size; i++) {
+                        logger.info("添加产品属性（第{}条,共{}条）", i + 1, size);
+                        boolean yn_b = propertyValueService.add(propertyValueList.get(i));
+                        if (yn_b) {
+                            logger.info("添加成功！");
+                        } else {
+                            logger.warn("添加失败！");
+                            jsonObject.put("success", false);
+                            throw new RuntimeException();
+                        }
+                    }
+                }
+                if (productSingleImageList != null && productSingleImageList.length > 0) {
+                    logger.info("整合产品子信息-产品预览图片");
+                    List<ProductImage> productImageList = new ArrayList<>(5);
+                    for (String imageName : productSingleImageList) {
+                        productImageList.add(new ProductImage()
+                                .setProductImage_type((byte) 0)
+                                .setProductImage_src(imageName.substring(imageName.lastIndexOf("/") + 1))
+                                .setProductImage_product(new Product().setProduct_id(product_id))
+                        );
+                    }
+                    product.setSingleProductImageList(productImageList);
+                    logger.info("共有{}条产品预览图片数据", productImageList.size());
+
+                    List<ProductImage> productSingleProductImageList = product.getSingleProductImageList();
+                    int size = productSingleProductImageList.size();
+                    for (int i = 0; i < size; i++) {
+                        logger.info("添加产品预览图片（第{}条,共{}条）", i + 1, size);
+                        boolean yn_b = productImageService.add(productSingleProductImageList.get(i));
+                        if (yn_b) {
+                            logger.info("添加成功！");
+                        } else {
+                            logger.warn("添加失败！");
+                            jsonObject.put("success", false);
+                            throw new RuntimeException();
+                        }
+                    }
+                }
+                if (productDetailsImageList != null && productDetailsImageList.length > 0) {
+                    logger.info("整合产品子信息-产品详情图片");
+                    List<ProductImage> productImageList = new ArrayList<>(5);
+                    for (String imageName : productDetailsImageList) {
+                        productImageList.add(new ProductImage()
+                                .setProductImage_type((byte) 1)
+                                .setProductImage_src(imageName.substring(imageName.lastIndexOf("/") + 1))
+                                .setProductImage_product(new Product().setProduct_id(product_id))
+                        );
+                    }
+                    product.setDetailProductImageList(productImageList);
+                    logger.info("共有{}条产品详情图片数据", productImageList.size());
+
+                    List<ProductImage> productDetailProductImageList = product.getDetailProductImageList();
+                    int size = productDetailProductImageList.size();
+                    for (int i = 0; i < size; i++) {
+                        logger.info("添加产品详情图片（第{}条,共{}条）", i + 1, size);
+                        boolean yn_b = productImageService.add(productDetailProductImageList.get(i));
+                        if (yn_b) {
+                            logger.info("添加成功！");
+                        } else {
+                            logger.warn("添加失败！");
+                            jsonObject.put("success", false);
+                            throw new RuntimeException();
+                        }
+                    }
+                }
+                jsonObject.put("success", true);
+                jsonObject.put("product_id", product_id);
+            } else {
+                logger.warn("添加失败！");
+                jsonObject.put("success", false);
+                throw new RuntimeException();
+            }
+            return jsonObject.toJSONString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //更新产品-ajax
@@ -215,18 +328,52 @@ public class ProductController extends BaseController{
     public String deleteProductImageById(@PathVariable Integer productImage_id/* 产品图片ID */){
         logger.info("获取productImage_id为{}的产品图片信息",productImage_id);
         ProductImage productImage = productImageService.get(productImage_id);
+        JSONObject object = new JSONObject();
         if(productImage != null){
             logger.info("删除该产品图片");
             Boolean yn = productImageService.deleteList(new Integer[]{productImage_id});
+            if (yn) {
+                logger.info("删除图片成功！");
+                object.put("success", true);
+            } else {
+                logger.warn("删除图片失败！");
+                object.put("success", false);
+            }
         } else {
-            throw new RuntimeException();
+            logger.warn("未获取到产品图片信息，删除失败！");
+            object.put("success", false);
         }
-        logger.info("获取产品详情-图片信息");
-        Integer product_id =productImage.getProductImage_product().getProduct_id();
-        List<ProductImage> productImageList = productImageService.getList(product_id,productImage.getProductImage_type(),null);
-        JSONObject object = new JSONObject();
-        object.put("productImageList",JSONArray.parseArray(JSON.toJSONString(productImageList)));
+        return object.toJSONString();
+    }
 
+    //上传产品图片-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/uploadProductImage", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String uploadProductImage(@RequestParam MultipartFile file, @RequestParam String imageType, HttpSession session) {
+        String originalFileName = file.getOriginalFilename();
+        logger.info("获取图片原始文件名：{}", originalFileName);
+        String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        String filePath;
+        String fileName = UUID.randomUUID() + extension;
+        if (imageType.equals("single")) {
+            filePath = session.getServletContext().getRealPath("/") + "res/images/item/productSinglePicture/" + fileName;
+        } else {
+            filePath = session.getServletContext().getRealPath("/") + "res/images/item/productDetailsPicture/" + fileName;
+        }
+
+        logger.info("文件上传路径：{}", filePath);
+        JSONObject object = new JSONObject();
+        try {
+            logger.info("文件上传中...");
+            file.transferTo(new File(filePath));
+            logger.info("文件上传完成");
+            object.put("success", true);
+            object.put("fileName", fileName);
+        } catch (IOException e) {
+            logger.warn("文件上传失败！");
+            e.printStackTrace();
+            object.put("success", false);
+        }
         return object.toJSONString();
     }
 }

@@ -47,19 +47,31 @@
                         return;
                     }
 
-                    //产品属性数组
-                    var propertyValueList = [];
+                    //产品属性Map
+                    var propertyMap = {};
                     $("input[id^='input_product_property']").each(function () {
-                        var property = {
-                            property_id : 0,
-                            property_value : null
-                        };
-                        property.property_value = $.trim($(this).val());
-                        if(property.property_value === ""){
+                        var value = $.trim($(this).val());
+                        if (value === "") {
                             return true;
                         }
-                        property.property_id = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_')+1);
-                        propertyValueList.push(property);
+                        var key = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_') + 1);
+                        propertyMap[key] = value;
+                    });
+
+                    //产品图片List
+                    var productSingleImageList = [];
+                    $("#product_single_list").children("li:not(.details_picList_fileUpload)").each(function () {
+                        var img = $(this).children("img");
+                        if (img.attr("name") === "new") {
+                            productSingleImageList.push(img.attr("src"));
+                        }
+                    });
+                    var productDetailsImageList = [];
+                    $("#product_details_list").children("li:not(.details_picList_fileUpload)").each(function () {
+                        var img = $(this).children("img");
+                        if (img.attr("name") === "new") {
+                            productDetailsImageList.push(img.attr("src"));
+                        }
                     });
 
                     //数据集
@@ -70,8 +82,30 @@
                         "product_title": product_title,
                         "product_price": product_price,
                         "product_sale_price": product_sale_price,
-                        "propertyValueList" : JSON.stringify(propertyValueList)
+                        "propertyJson": JSON.stringify(propertyMap),
+                        "productSingleImageList": productSingleImageList,
+                        "productDetailsImageList": productDetailsImageList
                     };
+
+                    $.ajax({
+                        url: "admin/product",
+                        type: "post",
+                        data: dataList,
+                        traditional: true,
+                        success: function (data) {
+                            if (data.success) {
+                                //ajax请求页面
+                                ajaxUtil.getPage("product/" + data.product_id, null, true);
+                                window.scrollTo(0, 0);
+                            }
+                        },
+                        beforeSend: function () {
+
+                        },
+                        error: function () {
+
+                        }
+                    })
                 });
             } else {
                 //设置产品种类值
@@ -101,35 +135,42 @@
              ******/
             //单击图片列表项时
             $(".details_picList").on("click","li:not(.details_picList_fileUpload)",function () {
-                var ul = $(this).parent(".details_picList");
-                var type;
-                if(ul.attr("id") === "product_single_list"){
-                    type = "single";
-                } else {
-                    type = "details";
-                }
-                var productImage_id = $(this).children("img").attr("name");
-                $('#modalDiv').modal();
-                $("#btn-ok").click(function () {
-                    $.ajax({
-                        url: "/tmall/admin/productImage/"+productImage_id,
-                        type: "delete",
-                        data: null,
-                        success : function (data) {
-                            $("#btn-ok").attr("disabled",false).text("确定");
-                            $("#btn-close").attr("data-dismiss","modal");
-                            $('#modalDiv').modal("hide");
-                            loadImageList(ul,data,type);
-                        },
-                        beforeSend: function () {
-                            $("#btn-ok").attr("disabled",true).text("操作中...");
-                            $("#btn-close").attr("data-dismiss","");
-                        },
-                        error: function () {
-
-                        }
+                var img = $(this);
+                var productImage_id = img.children("img").attr("name");
+                var fileUploadInput = $(this).parents("ul").children(".details_picList_fileUpload");
+                if (productImage_id === "new") {
+                    $("#btn-ok").click(function () {
+                        img.remove();
+                        fileUploadInput.css("display", "inline-block");
+                        $('#modalDiv').modal("hide");
                     });
-                });
+                } else {
+                    $("#btn-ok").click(function () {
+                        $.ajax({
+                            url: "/tmall/admin/productImage/" + productImage_id,
+                            type: "delete",
+                            data: null,
+                            success: function (data) {
+                                $("#btn-ok").attr("disabled", false).text("确定");
+                                if (data.success) {
+                                    img.remove();
+                                    fileUploadInput.css("display", "inline-block");
+                                } else {
+                                    $('#modalDiv').modal("hide");
+                                    alert("图片删除异常！");
+                                }
+                            },
+                            beforeSend: function () {
+                                $("#btn-ok").attr("disabled", true).text("操作中...");
+                            },
+                            error: function () {
+
+                            }
+                        });
+                    });
+                }
+                $(".modal-body").text("您确定要删除该产品图片吗？");
+                $('#modalDiv').modal();
             });
             //改变产品状态时
             $('input:radio').click(function () {
@@ -182,51 +223,80 @@
                 styleUtil.basicErrorHide($(this).prev("label"));
             });
         });
-        //图片预览
-        function imgPreview(fileDom,size) {
+
+        //图片上传
+        function uploadImage(fileDom) {
             //获取文件
             var file = fileDom.files[0];
+            //判断类型
             var imageType = /^image\//;
-            if(file === undefined){
+            if (file === undefined || !imageType.test(file.type)) {
+                $("#btn-ok").click(function () {
+                    $("#modalDiv").modal("hide");
+                });
+                $(".modal-body").text("请选择图片！");
+                $('#modalDiv').modal();
                 return;
             }
-            //判断是否支持FileReader
-            if(window.FileReader){
-                var reader = new FileReader();
+            //判断大小
+            if (file.size > 3145728) {
+                $("#btn-ok").click(function () {
+                    $("#modalDiv").modal("hide");
+                });
+                $(".modal-body").text("图片大小不能超过3M！");
+                $('#modalDiv').modal();
+                return;
+            }
+            var ul = $(fileDom).parents(".details_picList");
+            var type;
+            if (ul.attr("id") === "product_single_list") {
+                type = "single";
             } else {
-                alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
-                return;
+                type = "details";
             }
-            //判断文件格式
-            if(!imageType.test(file.type)){
-                alert("请选择图片！");
-                return;
-            }
-            //读取
-            reader.onload = function (e) {
-                $(fileDom).parents("li.details_picList_fileUpload").before("<li><img src='"+e.target.result+"' width='128px' height='128px'/></li>");
-                checkFileUpload($(fileDom).parents("ul"),size);
-            };
-            reader.readAsDataURL(file);
+            //清空值
+            $(fileDom).val('');
+            var formData = new FormData();
+            formData.append("file", file);
+            formData.append("imageType", type);
+            //上传图片
+            $.ajax({
+                url: "/tmall/admin/uploadProductImage",
+                type: "post",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                mimeType: "multipart/form-data",
+                success: function (data) {
+                    $(fileDom).attr("disabled", false).prev("span").text("上传图片");
+                    if (data.success) {
+                        if (type === "single") {
+                            $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='${pageContext.request.contextPath}/res/images/item/productSinglePicture/" + data.fileName + "' width='128px' height='128px' name='new'/></li>");
+                            checkFileUpload(ul, 5);
+                        } else {
+                            $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='${pageContext.request.contextPath}/res/images/item/productDetailsPicture/" + data.fileName + "' width='128px' height='128px' name='new'/></li>");
+                            checkFileUpload(ul, 8);
+                        }
+                    } else {
+                        alert("图片上传异常！");
+                    }
+                },
+                beforeSend: function () {
+                    $(fileDom).attr("disabled", true).prev("span").text("图片上传中...");
+                },
+                error: function () {
+
+                }
+            });
         }
-        //判断文件是否允许上传
+
+        //判断是否允许上传文件
         function checkFileUpload(obj, size) {
             if(obj.children("li:not(.details_picList_fileUpload,:hidden)").length>=size){
                 obj.children(".details_picList_fileUpload").css("display","none");
             } else {
                 obj.children(".details_picList_fileUpload").css("display","inline-block");
-            }
-        }
-        //加载图片列表
-        function loadImageList(obj,data,type) {
-            //清空列表
-            obj.children("li:not(.details_picList_fileUpload)").remove();
-            if(data.productImageList !== null){
-                for(var i in data.productImageList){
-                    var id = data.productImageList[i].productImage_id;
-                    var src = data.productImageList[i].productImage_src;
-                    obj.children(".details_picList_fileUpload").before("<li><img src='"+src+"' id='pic_"+type+"_"+id+"'  width='128px' height='128px' name='"+id+"'/></li>");
-                }
             }
         }
     </script>
@@ -292,7 +362,10 @@
     <span class="details_title text_info">概述图片</span>
     <ul class="details_picList" id="product_single_list">
         <c:forEach items="${requestScope.product.singleProductImageList}" var="image">
-            <li><img src="${image.productImage_src}" id="pic_single_${image.productImage_id}" width="128px" height="128px" name="${image.productImage_id}"/></li>
+            <li><img
+                    src="${pageContext.request.contextPath}/res/images/item/productSinglePicture/${image.productImage_src}"
+                    id="pic_single_${image.productImage_id}" width="128px" height="128px"
+                    name="${image.productImage_id}"/></li>
         </c:forEach>
         <li class="details_picList_fileUpload">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"  width="40" height="40">
@@ -300,7 +373,7 @@
                 <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z" p-id="1530" fill="#FFFFFF"></path>
             </svg>
             <span>点击上传</span>
-            <input type="file" onchange="imgPreview(this,5)" accept="image/*" class="product_single_image_list">
+            <input type="file" onchange="uploadImage(this)" accept="image/*" class="product_single_image_list">
         </li>
     </ul>
 </div>
@@ -308,7 +381,10 @@
     <span class="details_title text_info">详情图片</span>
     <ul class="details_picList" id="product_details_list">
         <c:forEach items="${requestScope.product.detailProductImageList}" var="image">
-            <li><img src="${image.productImage_src}" id="pic_details_${image.productImage_id}" width="128px" height="128px" name="${image.productImage_id}"/></li>
+            <li><img
+                    src="${pageContext.request.contextPath}/res/images/item/productDetailsPicture/${image.productImage_src}"
+                    id="pic_details_${image.productImage_id}" width="128px" height="128px"
+                    name="${image.productImage_id}"/></li>
         </c:forEach>
         <li class="details_picList_fileUpload">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"  width="40" height="40">
@@ -316,7 +392,7 @@
                 <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z" p-id="1530" fill="#FFFFFF"></path>
             </svg>
             <span>点击上传</span>
-            <input type="file" onchange="imgPreview(this,8)" accept="image/*" class="product_details_image_list">
+            <input type="file" onchange="uploadImage(this)" accept="image/*" class="product_details_image_list">
         </li>
     </ul>
 </div>
@@ -363,5 +439,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
+<div class="loader"></div>
 </body>
 </html>

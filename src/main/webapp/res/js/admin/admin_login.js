@@ -113,7 +113,7 @@ function getUserProfilePicture(username) {
         $.getJSON("/tmall/admin/login/profile_picture",{"username":username},function (data) {
             if(data.success){
                 if(data.srcString !== null){
-                    $("#img_profile_picture").attr("src",data.srcString);
+                    $("#img_profile_picture").attr("src", "/tmall/res/images/item/adminProfilePicture/" + data.srcString);
                     return true;
                 }
             }

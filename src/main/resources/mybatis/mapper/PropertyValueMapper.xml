@@ -15,12 +15,12 @@
     </resultMap>
 
     <insert id="insertOne" parameterType="propertyValue">
-        INSERT propertyValue_id,propertyValue_value,propertyValue_property_id,propertyValue_product_id
+        INSERT propertyValue(propertyValue_id,propertyValue_value,propertyValue_property_id,propertyValue_product_id)
             VALUES (
             null,
             #{propertyValue.propertyValue_value},
-            #{propertyValue.propertyValue_property_id},
-            #{propertyValue.propertyValue_product_id})
+        #{propertyValue.propertyValue_property.property_id},
+        #{propertyValue.propertyValue_product.product_id})
     </insert>
     <update id="updateOne" parameterType="propertyValue">
         UPDATE propertyValue
