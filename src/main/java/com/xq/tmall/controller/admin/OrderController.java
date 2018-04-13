@@ -3,6 +3,7 @@ package com.xq.tmall.controller.admin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.ProductOrder;
 import com.xq.tmall.service.AddressService;
@@ -118,5 +119,26 @@ public class OrderController extends BaseController{
         object.put("productOrderCount", productOrderCount);
 
         return object.toJSONString();
+    }
+    //根据order_id更新订单
+    @ResponseBody
+    @RequestMapping(value = "admin/order/{order_id}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    public String OrderUpdate(@PathVariable("order_id") String order_id) {
+
+        logger.info("创建order_id为{}的订单对象", order_id);
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(Integer.valueOf(order_id))
+                .setProductOrder_status((byte) 2);
+
+        logger.info("订单更新中...");
+        JSONObject jsonObject = new JSONObject();
+        if (productOrderService.update(productOrder)) {
+                jsonObject.put("success", true);
+            logger.info("订单更新成功！");
+        } else {
+                logger.info("订单更新失败！");
+                jsonObject.put("success",false);
+        }
+        return jsonObject.toJSONString();
     }
 }

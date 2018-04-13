@@ -9,34 +9,39 @@ import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 
 /**
  * 后台管理-分类页
  */
 @Controller
-public class CategoryController extends BaseController{
+public class CategoryController extends BaseController {
     @Resource(name = "categoryService")
     private CategoryService categoryService;
 
     //转到后台管理-分类页-ajax
     @RequestMapping("admin/category")
-    public String goToPage(HttpSession session, Map<String, Object> map){
+    public String goToPage(HttpSession session, Map<String, Object> map) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
-        if(adminId == null){
+        if (adminId == null) {
             return null;
         }
 
         logger.info("获取前10条分类列表");
-        List<Category> categoryList = categoryService.getList(null,new PageUtil(1,10));
-        map.put("categoryList",categoryList);
+        List<Category> categoryList = categoryService.getList(null, new PageUtil(1, 10));
+        map.put("categoryList", categoryList);
         logger.info("获取分类总数量");
         Integer categoryCount = categoryService.getTotal(null);
         map.put("categoryCount", categoryCount);
@@ -46,17 +51,17 @@ public class CategoryController extends BaseController{
     }
 
     //转到后台管理-分类详情页-ajax
-    @RequestMapping("admin/category/{cid}")
-    public String getCategoryByCid(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */){
+    @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String getCategoryByCid(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */) {
         logger.info("检查管理员权限");
-        Object adminId=checkAdmin(session);
-        if (adminId==null){
+        Object adminId = checkAdmin(session);
+        if (adminId == null) {
             return null;
         }
 
-        logger.info("获取category_id为{}的分类信息",cid);
-        Category category=categoryService.get(cid);
-        map.put("category",category);
+        logger.info("获取category_id为{}的分类信息", cid);
+        Category category = categoryService.get(cid);
+        map.put("category", category);
 
         logger.info("转到后台管理-分类详情页-ajax方式");
         return "admin/include/categoryDetails";
@@ -75,14 +80,86 @@ public class CategoryController extends BaseController{
         }
 
         JSONObject object = new JSONObject();
-        logger.info("按条件获取第{}页的{}条分类",index,count);
-        List<Category> categoryList=categoryService.getList(category_name, new PageUtil(index,count));
+        logger.info("按条件获取第{}页的{}条分类", index, count);
+        List<Category> categoryList = categoryService.getList(category_name, new PageUtil(index, count));
         object.put("categoryList", JSONArray.parseArray(JSON.toJSONString(categoryList)));
         logger.info("按条件获取分类总数量");
         Integer categoryCount = categoryService.getTotal(category_name);
-        object.put("categoryCount",categoryCount);
+        object.put("categoryCount", categoryCount);
 
         return object.toJSONString();
     }
+
+
+    //完成分类的添加功能
+    @ResponseBody
+    @RequestMapping(value = "admin/category/new", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String insertCategory(@RequestParam String category_name,@RequestParam(required = false) String categoryImage) {
+        logger.info("整合产品分类信息");
+        Category category = new Category()
+                .setCategory_name(category_name)
+                .setCategory_image_src(categoryImage);
+        JSONObject jsonObject = new JSONObject();
+        logger.info("添加产品分类信息");
+        boolean yn = categoryService.add(category);
+        if(yn){
+            logger.info("添加成功！");
+        }else{
+            logger.warn("添加失败！");
+            jsonObject.put("success",false);
+            throw new RuntimeException();
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 上传分类图片-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/uploadCategoryImage", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String uploadCategoryImage(@RequestParam MultipartFile file, HttpSession session) {
+        String originalFileName = file.getOriginalFilename();
+        logger.info("获取图片原始文件名:  {}", originalFileName);
+        String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        String fileName = UUID.randomUUID()+extension;
+        String filePath = "res/images/item/" + fileName;
+
+        logger.info("文件上传路径：{}",filePath);
+        JSONObject object = new JSONObject();
+
+        try {
+            logger.info("文件上传中...");
+            file.transferTo(new File(filePath));
+            logger.info("文件上传完成");
+            object.put("success", true);
+            object.put("fileName", fileName);
+        } catch (IOException e) {
+            logger.warn("文件上传失败!");
+            e.printStackTrace();
+            object.put("success",false);
+        }
+        return  object.toJSONString();
+    }
+
+    //分类的更新功能
+    @ResponseBody
+    @RequestMapping(value = "admin/category/{cid}",method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String updateCategory(@RequestParam String category_name, @RequestParam String categoryImage, @PathVariable("cid") Integer cid){
+        logger.info("整合产品分类信息");
+        Category category = new Category()
+                .setCategory_id(cid)
+                .setCategory_name(category_name)
+                .setCategory_image_src(categoryImage);
+        JSONObject jsonObject = new JSONObject();
+        logger.info("更新分类信息");
+        boolean yn = categoryService.update(category);
+        if(yn){
+            logger.info("更新成功！");
+        }else{
+            logger.info("更新失败！");
+            jsonObject.put("success",false);
+            throw new RuntimeException();
+        }
+        return jsonObject.toJSONString();
+    }
 }
+
 
