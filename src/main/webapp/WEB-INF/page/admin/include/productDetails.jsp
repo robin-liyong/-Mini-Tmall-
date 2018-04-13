@@ -86,25 +86,7 @@
                         "productSingleImageList": productSingleImageList,
                         "productDetailsImageList": productDetailsImageList
                     };
-
-                    $.ajax({
-                        url: "admin/product",
-                        type: "post",
-                        data: dataList,
-                        traditional: true,
-                        success: function (data) {
-                            if (data.success) {
-                                //ajax请求页面
-                                ajaxUtil.getPage("product/" + data.product_id, null, true);
-                            }
-                        },
-                        beforeSend: function () {
-
-                        },
-                        error: function () {
-
-                        }
-                    })
+                    doAction(dataList, "admin/product", "POST");
                 });
             } else {
                 //设置产品种类值
@@ -127,6 +109,102 @@
                 //判断文件是否允许上传
                 checkFileUpload($("#product_single_list"),5);
                 checkFileUpload($("#product_details_list"),8);
+
+                /******
+                 * event
+                 ******/
+                //单击保存按钮时
+                $("#btn_product_save").click(function () {
+                    var product_id = $("#details_product_id").val();
+                    var product_category_id = $("#select_product_category").selectpicker("val");
+                    var product_isEnabled = $("input[name='radio_product_isEnabled']:checked").val();
+                    var product_name = $.trim($("#input_product_name").val());
+                    var product_title = $.trim($("#input_product_title").val());
+                    var product_price = $.trim($("#input_product_price").val());
+                    var product_sale_price = $.trim($("#input_product_sale_price").val());
+
+                    //校验数据合法性
+                    var yn = true;
+                    if (product_isEnabled === undefined) {
+                        styleUtil.errorShow($("#text_productState_details_msg"), "请选择产品状态！");
+                        yn = false;
+                    }
+                    if (product_name === "") {
+                        styleUtil.basicErrorShow($("#lbl_product_name"));
+                        yn = false;
+                    }
+                    if (product_title === "") {
+                        styleUtil.basicErrorShow($("#lbl_product_title"));
+                        yn = false;
+                    }
+                    if (product_price === "" || isNaN(product_price)) {
+                        styleUtil.basicErrorShow($("#lbl_product_price"));
+                        yn = false;
+                    }
+                    if (product_sale_price === "" || isNaN(product_sale_price)) {
+                        styleUtil.basicErrorShow($("#lbl_product_sale_price"));
+                        yn = false;
+                    }
+                    if (!yn) {
+                        return;
+                    }
+
+                    //产品属性Map
+                    var propertyAddMap = {};
+                    var propertyUpdateMap = {};
+                    var propertyDeleteList = [];
+                    $("input[id^='input_product_property']").each(function () {
+                        var value = $.trim($(this).val());
+                        var value_id = $.trim($(this).attr("data-pvid"));
+                        if (value === "" && value_id === "") {
+                            /*如果未指定*/
+                            return true;
+                        } else if (value !== "" && value_id !== "") {
+                            /*如果为更新*/
+                            var key = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_') + 1);
+                            propertyUpdateMap[key] = value;
+                        } else if (value !== "" && value_id === "") {
+                            /*如果为添加*/
+                            var key = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_') + 1);
+                            propertyAddMap[key] = value;
+                        } else {
+                            /*如果为删除*/
+                            propertyDeleteList.push(value_id);
+                        }
+                    });
+
+                    //产品图片List
+                    var productSingleImageList = [];
+                    $("#product_single_list").children("li:not(.details_picList_fileUpload)").each(function () {
+                        var img = $(this).children("img");
+                        if (img.attr("name") === "new") {
+                            productSingleImageList.push(img.attr("src"));
+                        }
+                    });
+                    var productDetailsImageList = [];
+                    $("#product_details_list").children("li:not(.details_picList_fileUpload)").each(function () {
+                        var img = $(this).children("img");
+                        if (img.attr("name") === "new") {
+                            productDetailsImageList.push(img.attr("src"));
+                        }
+                    });
+
+                    //数据集
+                    var dataList = {
+                        "product_category_id": product_category_id,
+                        "product_isEnabled": product_isEnabled,
+                        "product_name": product_name,
+                        "product_title": product_title,
+                        "product_price": product_price,
+                        "product_sale_price": product_sale_price,
+                        "propertyAddJson": JSON.stringify(propertyAddMap),
+                        "propertyUpdateJson": JSON.stringify(propertyUpdateMap),
+                        "propertyDeleteList": propertyDeleteList,
+                        "productSingleImageList": productSingleImageList,
+                        "productDetailsImageList": productDetailsImageList
+                    };
+                    doAction(dataList, "admin/product/" + product_id, "PUT");
+                });
             }
 
             /******
@@ -138,13 +216,13 @@
                 var productImage_id = img.children("img").attr("name");
                 var fileUploadInput = $(this).parents("ul").children(".details_picList_fileUpload");
                 if (productImage_id === "new") {
-                    $("#btn-ok").click(function () {
+                    $("#btn-ok").unbind("click").click(function () {
                         img.remove();
                         fileUploadInput.css("display", "inline-block");
                         $('#modalDiv').modal("hide");
                     });
                 } else {
-                    $("#btn-ok").click(function () {
+                    $("#btn-ok").unbind("click").click(function () {
                         $.ajax({
                             url: "/tmall/admin/productImage/" + productImage_id,
                             type: "delete",
@@ -231,7 +309,7 @@
             //判断类型
             var imageType = /^image\//;
             if (file === undefined || !imageType.test(file.type)) {
-                $("#btn-ok").click(function () {
+                $("#btn-ok").unbind("click").click(function () {
                     $("#modalDiv").modal("hide");
                 });
                 $(".modal-body").text("请选择图片！");
@@ -240,7 +318,7 @@
             }
             //判断大小
             if (file.size > 3145728) {
-                $("#btn-ok").click(function () {
+                $("#btn-ok").unbind("click").click(function () {
                     $("#modalDiv").modal("hide");
                 });
                 $(".modal-body").text("图片大小不能超过3M！");
@@ -298,6 +376,28 @@
             } else {
                 obj.children(".details_picList_fileUpload").css("display","inline-block");
             }
+        }
+
+        //产品操作
+        function doAction(dataList, url, type) {
+            $.ajax({
+                url: url,
+                type: type,
+                data: dataList,
+                traditional: true,
+                success: function (data) {
+                    if (data.success) {
+                        //ajax请求页面
+                        ajaxUtil.getPage("product/" + data.product_id, null, true);
+                    }
+                },
+                beforeSend: function () {
+
+                },
+                error: function () {
+
+                }
+            });
         }
     </script>
     <style rel="stylesheet">
