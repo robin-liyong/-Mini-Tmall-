@@ -154,6 +154,7 @@
                                 if (data.success) {
                                     img.remove();
                                     fileUploadInput.css("display", "inline-block");
+                                    $('#modalDiv').modal("hide");
                                 } else {
                                     $('#modalDiv').modal("hide");
                                     alert("图片删除异常！");
