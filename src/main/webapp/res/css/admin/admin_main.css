@@ -283,7 +283,7 @@ input[type="checkbox"],input[type="radio"] {
     border-top: 1px solid #e9ebef;
 }
 .details_div_last{
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 .details_div>.details_title{
     display: block;

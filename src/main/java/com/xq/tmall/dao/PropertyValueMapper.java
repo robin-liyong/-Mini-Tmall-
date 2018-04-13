@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface PropertyValueMapper {
     Integer insertOne(@Param("propertyValue") PropertyValue propertyValue);
+
+    Integer insertList(@Param("propertyValue_list") List<PropertyValue> propertyValueList);
     Integer updateOne(@Param("propertyValue") PropertyValue propertyValue);
     Integer deleteList(@Param("propertyValue_id_list") Integer[] propertyValue_id_list);
 

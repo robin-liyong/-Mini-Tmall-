@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface PropertyService {
     boolean add(Property property);
+
+    boolean addList(List<Property> propertyList);
     boolean update(Property property);
     boolean deleteList(Integer[] property_id_list);
 

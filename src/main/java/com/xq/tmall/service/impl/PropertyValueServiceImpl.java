@@ -22,6 +22,11 @@ public class PropertyValueServiceImpl implements PropertyValueService{
     }
 
     @Override
+    public boolean addList(List<PropertyValue> propertyValueList) {
+        return propertyValueMapper.insertList(propertyValueList) > 0;
+    }
+
+    @Override
     public boolean update(PropertyValue propertyValue) {
         return propertyValueMapper.updateOne(propertyValue)>0;
     }

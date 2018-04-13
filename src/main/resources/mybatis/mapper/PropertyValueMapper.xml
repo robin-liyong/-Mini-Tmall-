@@ -22,6 +22,16 @@
         #{propertyValue.propertyValue_property.property_id},
         #{propertyValue.propertyValue_product.product_id})
     </insert>
+    <insert id="insertList" parameterType="list">
+        INSERT propertyValue(propertyValue_id,propertyValue_value,propertyValue_property_id,propertyValue_product_id)
+        VALUES
+        <foreach collection="propertyValue_list" index="index" item="propertyValue" separator=",">
+            (null,
+            #{propertyValue.propertyValue_value},
+            #{propertyValue.propertyValue_property.property_id},
+            #{propertyValue.propertyValue_product.product_id})
+        </foreach>
+    </insert>
     <update id="updateOne" parameterType="propertyValue">
         UPDATE propertyValue
         <set>

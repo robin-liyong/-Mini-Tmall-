@@ -23,6 +23,11 @@ public class PropertyServiceImpl implements PropertyService{
     }
 
     @Override
+    public boolean addList(List<Property> propertyList) {
+        return propertyMapper.insertList(propertyList) > 0;
+    }
+
+    @Override
     public boolean update(Property property) {
         return propertyMapper.updateOne(property)>0;
     }

@@ -20,6 +20,16 @@
             #{productImage.productImage_src},
             #{productImage.productImage_product.product_id})
     </insert>
+    <insert id="insertList" parameterType="list">
+        INSERT productImage (productImage_id,productImage_type,productImage_src,productImage_product_id)
+        VALUES
+        <foreach collection="productImage_list" item="productImage" index="index" separator=",">
+            (null,
+            #{productImage.productImage_type},
+            #{productImage.productImage_src},
+            #{productImage.productImage_product.product_id})
+        </foreach>
+    </insert>
     <update id="updateOne" parameterType="productImage">
         UPDATE productImage
         <set>

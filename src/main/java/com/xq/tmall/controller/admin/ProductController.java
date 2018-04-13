@@ -156,30 +156,23 @@ public class ProductController extends BaseController{
                 Set<String> propertyIdSet = object.keySet();
                 if (propertyIdSet.size() > 0) {
                     logger.info("整合产品子信息-产品属性");
-                    List<PropertyValue> list = new ArrayList<>(5);
+                    List<PropertyValue> propertyValueList = new ArrayList<>(5);
                     for (String key : propertyIdSet) {
                         String value = object.getString(key.toString());
                         PropertyValue propertyValue = new PropertyValue()
                                 .setPropertyValue_value(value)
                                 .setPropertyValue_property(new Property().setProperty_id(Integer.valueOf(key)))
                                 .setPropertyValue_product(new Product().setProduct_id(product_id));
-                        list.add(propertyValue);
+                        propertyValueList.add(propertyValue);
                     }
-                    product.setPropertyValueList(list);
-                    logger.info("共有{}条产品属性数据", list.size());
-
-                    List<PropertyValue> propertyValueList = product.getPropertyValueList();
-                    int size = propertyValueList.size();
-                    for (int i = 0; i < size; i++) {
-                        logger.info("添加产品属性（第{}条,共{}条）", i + 1, size);
-                        boolean yn_b = propertyValueService.add(propertyValueList.get(i));
-                        if (yn_b) {
-                            logger.info("添加成功！");
-                        } else {
-                            logger.warn("添加失败！");
-                            jsonObject.put("success", false);
-                            throw new RuntimeException();
-                        }
+                    logger.info("共有{}条产品属性数据", propertyValueList.size());
+                    boolean yn_b = propertyValueService.addList(propertyValueList);
+                    if (yn_b) {
+                        logger.info("添加成功！");
+                    } else {
+                        logger.warn("添加失败！");
+                        jsonObject.put("success", false);
+                        throw new RuntimeException();
                     }
                 }
                 if (productSingleImageList != null && productSingleImageList.length > 0) {
@@ -192,21 +185,14 @@ public class ProductController extends BaseController{
                                 .setProductImage_product(new Product().setProduct_id(product_id))
                         );
                     }
-                    product.setSingleProductImageList(productImageList);
                     logger.info("共有{}条产品预览图片数据", productImageList.size());
-
-                    List<ProductImage> productSingleProductImageList = product.getSingleProductImageList();
-                    int size = productSingleProductImageList.size();
-                    for (int i = 0; i < size; i++) {
-                        logger.info("添加产品预览图片（第{}条,共{}条）", i + 1, size);
-                        boolean yn_b = productImageService.add(productSingleProductImageList.get(i));
-                        if (yn_b) {
-                            logger.info("添加成功！");
-                        } else {
-                            logger.warn("添加失败！");
-                            jsonObject.put("success", false);
-                            throw new RuntimeException();
-                        }
+                    boolean yn_b = productImageService.addList(productImageList);
+                    if (yn_b) {
+                        logger.info("添加成功！");
+                    } else {
+                        logger.warn("添加失败！");
+                        jsonObject.put("success", false);
+                        throw new RuntimeException();
                     }
                 }
                 if (productDetailsImageList != null && productDetailsImageList.length > 0) {
@@ -219,21 +205,14 @@ public class ProductController extends BaseController{
                                 .setProductImage_product(new Product().setProduct_id(product_id))
                         );
                     }
-                    product.setDetailProductImageList(productImageList);
                     logger.info("共有{}条产品详情图片数据", productImageList.size());
-
-                    List<ProductImage> productDetailProductImageList = product.getDetailProductImageList();
-                    int size = productDetailProductImageList.size();
-                    for (int i = 0; i < size; i++) {
-                        logger.info("添加产品详情图片（第{}条,共{}条）", i + 1, size);
-                        boolean yn_b = productImageService.add(productDetailProductImageList.get(i));
-                        if (yn_b) {
-                            logger.info("添加成功！");
-                        } else {
-                            logger.warn("添加失败！");
-                            jsonObject.put("success", false);
-                            throw new RuntimeException();
-                        }
+                    boolean yn_b = productImageService.addList(productImageList);
+                    if (yn_b) {
+                        logger.info("添加成功！");
+                    } else {
+                        logger.warn("添加失败！");
+                        jsonObject.put("success", false);
+                        throw new RuntimeException();
                     }
                 }
                 jsonObject.put("success", true);

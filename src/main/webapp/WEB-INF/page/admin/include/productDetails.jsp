@@ -96,7 +96,6 @@
                             if (data.success) {
                                 //ajax请求页面
                                 ajaxUtil.getPage("product/" + data.product_id, null, true);
-                                window.scrollTo(0, 0);
                             }
                         },
                         beforeSend: function () {
@@ -203,9 +202,9 @@
                                     var nextPropertyId = data.propertyList[i+1].property_id;
                                     var nextPropertyName = data.propertyList[i+1].property_name;
                                     i++;
-                                    listDiv.append("<div class='frm_div'><label class='frm_label lbl_property_name text_info' id='lbl_product_property_"+propertyId+"' for='input_product_property_"+propertyId+"'>"+propertyName+"</label><input class='frm_input' id='input_product_property_"+propertyId+"' type='text' maxlength='50'/><label class='frm_label lbl_property_name text_info' id='lbl_product_property_"+nextPropertyId+"' for='input_product_property_"+nextPropertyId+"'>"+nextPropertyName+"</label><input class='frm_input' id='input_product_property_"+nextPropertyId+"' type='text' maxlength='50'/></div>");
+                                    listDiv.append("<label class='frm_label lbl_property_name text_info' id='lbl_product_property_" + propertyId + "' for='input_product_property_" + propertyId + "'>" + propertyName + "</label><input class='frm_input' id='input_product_property_" + propertyId + "' type='text' maxlength='50'/><label class='frm_label lbl_property_name text_info' id='lbl_product_property_" + nextPropertyId + "' for='input_product_property_" + nextPropertyId + "'>" + nextPropertyName + "</label><input class='frm_input' id='input_product_property_" + nextPropertyId + "' type='text' maxlength='50'/><div class='br'></div>");
                                 } else {
-                                    listDiv.append("<div class='frm_div'><label class='frm_label lbl_property_name text_info' id='lbl_product_property_"+propertyId+"' for='input_product_property_"+propertyId+"'>"+propertyName+"</label><input class='frm_input' id='input_product_property_"+propertyId+"' type='text' maxlength='50'/></div>");
+                                    listDiv.append("<label class='frm_label lbl_property_name text_info' id='lbl_product_property_" + propertyId + "' for='input_product_property_" + propertyId + "'>" + propertyName + "</label><input class='frm_input' id='input_product_property_" + propertyId + "' type='text' maxlength='50'/><div class='br'></div>");
                                 }
                             }
                         }
@@ -313,6 +312,14 @@
         .warn_height{
             max-height: 25px;
         }
+
+        div.br {
+            height: 20px;
+        }
+
+        .details_property_list label {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -399,23 +406,43 @@
 <div class="details_div details_div_last details_property_list" >
     <span class="details_title text_info">属性值信息</span>
     <c:forEach items="${requestScope.propertyList}" var="property" varStatus="status">
-        <c:if test="${status.index % 2 == 0}">
-            <div class="frm_div">
-        </c:if>
-        <label class="frm_label lbl_property_name text_info" id="lbl_product_property_${property.property_id}" for="input_product_property_${property.property_id}">${property.property_name}</label>
         <c:choose>
-            <c:when test="${property.propertyValueList != null}">
-                <c:forEach items="${property.propertyValueList}" var="propertyValue">
-                    <input class="frm_input" id="input_product_property_${property.property_id}" type="text" maxlength="50" value="${propertyValue.propertyValue_value}" data-pvid="${propertyValue.propertyValue_id}"/>
-                </c:forEach>
+            <c:when test="${status.index % 2 == 0}">
+                <label class="frm_label lbl_property_name text_info" id="lbl_product_property_${property.property_id}"
+                       for="input_product_property_${property.property_id}">${property.property_name}</label>
+                <c:choose>
+                    <c:when test="${property.propertyValueList != null}">
+                        <c:forEach items="${property.propertyValueList}" var="propertyValue">
+                            <input class="frm_input" id="input_product_property_${property.property_id}" type="text"
+                                   maxlength="50" value="${propertyValue.propertyValue_value}"
+                                   data-pvid="${propertyValue.propertyValue_id}"/>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <input class="frm_input" id="input_product_property_${property.property_id}" type="text"
+                               maxlength="50"/>
+                    </c:otherwise>
+                </c:choose>
             </c:when>
             <c:otherwise>
-                <input class="frm_input" id="input_product_property_${property.property_id}" type="text" maxlength="50"/>
+                <label class="frm_label lbl_property_name text_info" id="lbl_product_property_${property.property_id}"
+                       for="input_product_property_${property.property_id}">${property.property_name}</label>
+                <c:choose>
+                    <c:when test="${property.propertyValueList != null}">
+                        <c:forEach items="${property.propertyValueList}" var="propertyValue">
+                            <input class="frm_input" id="input_product_property_${property.property_id}" type="text"
+                                   maxlength="50" value="${propertyValue.propertyValue_value}"
+                                   data-pvid="${propertyValue.propertyValue_id}"/>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <input class="frm_input" id="input_product_property_${property.property_id}" type="text"
+                               maxlength="50"/>
+                    </c:otherwise>
+                </c:choose>
+                <div class="br"></div>
             </c:otherwise>
         </c:choose>
-        <c:if test="${status.index % 2 != 0}">
-            </div>
-        </c:if>
     </c:forEach>
 </div>
 

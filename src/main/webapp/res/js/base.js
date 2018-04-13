@@ -92,6 +92,7 @@ var ajaxUtil = {
                     contentType: "text/html;charset=UTF-8",
                     success : function (data) {
                         $("#div_home_context_main").html(data);
+                        window.scrollTo(0, 0);
                         if(!isChild){
                             /******
                              * event

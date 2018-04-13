@@ -23,6 +23,11 @@ public class ProductImageServiceImpl implements ProductImageService{
     }
 
     @Override
+    public boolean addList(List<ProductImage> productImageList) {
+        return productImageMapper.insertList(productImageList) > 0;
+    }
+
+    @Override
     public boolean update(ProductImage productImage) {
         return productImageMapper.updateOne(productImage)>0;
     }

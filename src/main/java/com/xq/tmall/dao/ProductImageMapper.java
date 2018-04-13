@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ProductImageMapper {
     Integer insertOne(@Param("productImage") ProductImage productImage);
+
+    Integer insertList(@Param("productImage_list") List<ProductImage> productImageList);
     Integer updateOne(@Param("productImage") ProductImage productImage);
     Integer deleteList(@Param("productImage_id_list") Integer[] productImage_id_list);
 
