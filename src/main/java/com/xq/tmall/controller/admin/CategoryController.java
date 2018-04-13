@@ -94,7 +94,7 @@ public class CategoryController extends BaseController {
     //完成分类的添加功能
     @ResponseBody
     @RequestMapping(value = "admin/category/new", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String insertCategory(@RequestParam String category_name,@RequestParam(required = false) String categoryImage) {
+    public String insertCategory(@RequestParam String category_name, @RequestParam(required = false) String categoryImage) {
         logger.info("整合产品分类信息");
         Category category = new Category()
                 .setCategory_name(category_name)
@@ -102,11 +102,11 @@ public class CategoryController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         logger.info("添加产品分类信息");
         boolean yn = categoryService.add(category);
-        if(yn){
+        if (yn) {
             logger.info("添加成功！");
-        }else{
+        } else {
             logger.warn("添加失败！");
-            jsonObject.put("success",false);
+            jsonObject.put("success", false);
             throw new RuntimeException();
         }
         return jsonObject.toJSONString();
@@ -119,10 +119,10 @@ public class CategoryController extends BaseController {
         String originalFileName = file.getOriginalFilename();
         logger.info("获取图片原始文件名:  {}", originalFileName);
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-        String fileName = UUID.randomUUID()+extension;
+        String fileName = UUID.randomUUID() + extension;
         String filePath = "res/images/item/" + fileName;
 
-        logger.info("文件上传路径：{}",filePath);
+        logger.info("文件上传路径：{}", filePath);
         JSONObject object = new JSONObject();
 
         try {
@@ -134,15 +134,15 @@ public class CategoryController extends BaseController {
         } catch (IOException e) {
             logger.warn("文件上传失败!");
             e.printStackTrace();
-            object.put("success",false);
+            object.put("success", false);
         }
-        return  object.toJSONString();
+        return object.toJSONString();
     }
 
     //分类的更新功能
     @ResponseBody
-    @RequestMapping(value = "admin/category/{cid}",method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String updateCategory(@RequestParam String category_name, @RequestParam String categoryImage, @PathVariable("cid") Integer cid){
+    @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String updateCategory(@RequestParam String category_name, @RequestParam String categoryImage, @PathVariable("cid") Integer cid) {
         logger.info("整合产品分类信息");
         Category category = new Category()
                 .setCategory_id(cid)
@@ -151,11 +151,11 @@ public class CategoryController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         logger.info("更新分类信息");
         boolean yn = categoryService.update(category);
-        if(yn){
+        if (yn) {
             logger.info("更新成功！");
-        }else{
+        } else {
             logger.info("更新失败！");
-            jsonObject.put("success",false);
+            jsonObject.put("success", false);
             throw new RuntimeException();
         }
         return jsonObject.toJSONString();
