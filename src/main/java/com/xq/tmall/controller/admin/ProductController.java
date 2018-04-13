@@ -231,7 +231,7 @@ public class ProductController extends BaseController{
 
     //更新产品-ajax
     @ResponseBody
-    @RequestMapping(value = "admin/product", method = RequestMethod.PUT,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "admin/product/{pid}", method = RequestMethod.PUT,produces = "application/json;charset=utf-8")
     public String updateProduct(@RequestParam Product product/* 产品对象 */){
         return "";
     }
@@ -355,4 +355,5 @@ public class ProductController extends BaseController{
         }
         return object.toJSONString();
     }
+
 }
