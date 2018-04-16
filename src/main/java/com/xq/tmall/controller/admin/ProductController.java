@@ -254,7 +254,7 @@ public class ProductController extends BaseController{
             logger.info("更新产品信息，产品ID值为：{}", product_id);
             boolean yn = productService.update(product);
             if (yn) {
-                logger.info("添加成功！");
+                logger.info("更新成功！");
                 JSONObject object = JSON.parseObject(propertyAddJson);
                 Set<String> propertyIdSet = object.keySet();
                 if (propertyIdSet.size() > 0) {
@@ -286,7 +286,8 @@ public class ProductController extends BaseController{
                     for (String key : propertyIdSet) {
                         String value = object.getString(key.toString());
                         PropertyValue propertyValue = new PropertyValue()
-                                .setPropertyValue_property(new Property().setProperty_id(Integer.valueOf(key)));
+                                .setPropertyValue_value(value)
+                                .setPropertyValue_id(Integer.valueOf(key));
                         propertyValueList.add(propertyValue);
                     }
                     logger.info("共有{}条需要更新的产品属性数据", propertyValueList.size());
@@ -305,7 +306,7 @@ public class ProductController extends BaseController{
                 if (propertyDeleteList != null && propertyDeleteList.length > 0) {
                     logger.info("整合产品子信息-需要删除的产品属性");
                     logger.info("共有{}条需要删除的产品属性数据", propertyDeleteList.length);
-                    yn = propertyService.deleteList(propertyDeleteList);
+                    yn = propertyValueService.deleteList(propertyDeleteList);
                     if (yn) {
                         logger.info("删除成功！");
                     } else {

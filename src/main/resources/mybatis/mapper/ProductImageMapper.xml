@@ -33,7 +33,8 @@
     <update id="updateOne" parameterType="productImage">
         UPDATE productImage
         <set>
-            <if test="productImage.productImage_type != null">productImage_type = #{productImage.productImage_type}</if>
+            <if test="productImage.productImage_type != null">productImage_type = #{productImage.productImage_type},
+            </if>
             <if test="productImage.productImage_src != null">productImage_src = #{productImage.productImage_src}</if>
         </set>
         <where>

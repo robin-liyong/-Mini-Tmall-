@@ -31,8 +31,12 @@
     <update id="updateOne" parameterType="productOrderItem">
         UPDATE productOrderItem
         <set>
-            <if test="productOrderItem.productOrderItem_order.productOrder_id != null">productOrderItem_order_id = #{productOrderItem.productOrderItem_order.productOrder_id}</if>
-            <if test="productOrderItem.productOrderItem_number != null">productOrderItem_number = #{productOrderItem.productOrderItem_number}</if>
+            <if test="productOrderItem.productOrderItem_order.productOrder_id != null">productOrderItem_order_id =
+                #{productOrderItem.productOrderItem_order.productOrder_id},
+            </if>
+            <if test="productOrderItem.productOrderItem_number != null">productOrderItem_number =
+                #{productOrderItem.productOrderItem_number},
+            </if>
             <if test="productOrderItem.productOrderItem_price != null">productOrderItem_price = #{productOrderItem.productOrderItem_price}</if>
         </set>
         <where>

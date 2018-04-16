@@ -109,6 +109,12 @@
                 //判断文件是否允许上传
                 checkFileUpload($("#product_single_list"),5);
                 checkFileUpload($("#product_details_list"),8);
+                //原属性值Map
+                var propertyMap = {};
+                $("input[id^='input_product_property'][data-pvid]").each(function () {
+                    var value_id = $(this).attr("data-pvid");
+                    propertyMap[value_id] = $(this).val();
+                });
 
                 /******
                  * event
@@ -153,23 +159,24 @@
                     var propertyAddMap = {};
                     var propertyUpdateMap = {};
                     var propertyDeleteList = [];
-                    $("input[id^='input_product_property']").each(function () {
+                    //获取需要更新或删除的产品属性
+                    $("input[id^=input_product_property][data-pvid]").each(function () {
+                        var value_id = $(this).attr("data-pvid");
                         var value = $.trim($(this).val());
-                        var value_id = $.trim($(this).attr("data-pvid"));
-                        if (value === "" && value_id === "") {
-                            /*如果未指定*/
+                        if (value === "") {
+                            propertyDeleteList.push(value_id);
+                        } else if (propertyMap[value_id] !== value) {
+                            propertyUpdateMap[value_id] = value;
+                        }
+                    });
+                    //获取需要添加的产品属性
+                    $("input[id^=input_product_property]:not([data-pvid])").each(function () {
+                        var value = $.trim($(this).val());
+                        if (value === "") {
                             return true;
-                        } else if (value !== "" && value_id !== "") {
-                            /*如果为更新*/
-                            var key = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_') + 1);
-                            propertyUpdateMap[key] = value;
-                        } else if (value !== "" && value_id === "") {
-                            /*如果为添加*/
+                        } else {
                             var key = $(this).attr("id").substring($(this).attr("id").lastIndexOf('_') + 1);
                             propertyAddMap[key] = value;
-                        } else {
-                            /*如果为删除*/
-                            propertyDeleteList.push(value_id);
                         }
                     });
 
@@ -386,13 +393,14 @@
                 data: dataList,
                 traditional: true,
                 success: function (data) {
+                    $("#btn_product_save").attr("disabled", false).val("保存");
                     if (data.success) {
                         //ajax请求页面
                         ajaxUtil.getPage("product/" + data.product_id, null, true);
                     }
                 },
                 beforeSend: function () {
-
+                    $("#btn_product_save").attr("disabled", true).val("保存中...");
                 },
                 error: function () {
 

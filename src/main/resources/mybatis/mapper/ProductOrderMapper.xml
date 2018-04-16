@@ -44,11 +44,20 @@
     <update id="updateOne" parameterType="productOrder">
         UPDATE productOrder
         <set>
-            <if test="productOrder.productOrder_address != null">productOrder_address = #{productOrder.productOrder_address}</if>
-            <if test="productOrder.productOrder_detail_address != null">productOrder_detail_address = #{productOrder.productOrder_detail_address}</if>
-            <if test="productOrder.productOrder_post != null">productOrder_post = #{productOrder.productOrder_post}</if>
-            <if test="productOrder.productOrder_status != null">productOrder_status = #{productOrder.productOrder_status}</if>
-            <if test="productOrder.productOrder_delivery_date != null">productOrder_delivery_date = #{productOrder.productOrder_delivery_date}</if>
+            <if test="productOrder.productOrder_address != null">productOrder_address =
+                #{productOrder.productOrder_address},
+            </if>
+            <if test="productOrder.productOrder_detail_address != null">productOrder_detail_address =
+                #{productOrder.productOrder_detail_address},
+            </if>
+            <if test="productOrder.productOrder_post != null">productOrder_post = #{productOrder.productOrder_post},
+            </if>
+            <if test="productOrder.productOrder_status != null">productOrder_status =
+                #{productOrder.productOrder_status},
+            </if>
+            <if test="productOrder.productOrder_delivery_date != null">productOrder_delivery_date =
+                #{productOrder.productOrder_delivery_date},
+            </if>
             <if test="productOrder.productOrder_confirm_date != null">productOrder_confirm_date = #{productOrder.productOrder_confirm_date}</if>
         </set>
         <where>

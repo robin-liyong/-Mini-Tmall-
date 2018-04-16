@@ -31,10 +31,10 @@
     <update id="updateOne" parameterType="product">
         UPDATE product
         <set>
-            <if test="product.product_name != null">product_name = #{product.product_name}</if>
-            <if test="product.product_title != null">product_title = #{product.product_title}</if>
-            <if test="product.product_price != null">product_price = #{product.product_price}</if>
-            <if test="product.product_sale_price != null">product_sale_price = #{product.product_sale_price}</if>
+            <if test="product.product_name != null">product_name = #{product.product_name},</if>
+            <if test="product.product_title != null">product_title = #{product.product_title},</if>
+            <if test="product.product_price != null">product_price = #{product.product_price},</if>
+            <if test="product.product_sale_price != null">product_sale_price = #{product.product_sale_price},</if>
             <if test="product.product_isEnabled != null">product_isEnabled = #{product.product_isEnabled}</if>
         </set>
         <where>

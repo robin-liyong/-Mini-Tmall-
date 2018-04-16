@@ -27,7 +27,7 @@
     <update id="updateOne" parameterType="review">
         UPDATE review
         <set>
-            <if test="review.review_content != null">review_content = #{review.review_content}</if>
+            <if test="review.review_content != null">review_content = #{review.review_content},</if>
             <if test="review.review_createDate != null">review_createDate = #{review.review_createDate}</if>
         </set>
         <where>
