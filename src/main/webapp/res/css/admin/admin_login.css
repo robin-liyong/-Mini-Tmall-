@@ -4,7 +4,7 @@ html,body,#div_background{
 }
 #div_background{
     position: relative;
-    min-width: 1280px;
+    min-width: 1000px;
     min-height: 650px;
     background-repeat: no-repeat;
     background-size: cover;

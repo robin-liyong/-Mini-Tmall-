@@ -13,8 +13,8 @@
     <update id="updateOne" parameterType="category">
         UPDATE category
         <set>
-            <if test="category_name != null">category_name = #{category.category_name},</if>
-            <if test="category_image_src != null">category_image_src = #{category.category_image_src}</if>
+            <if test="category.category_name != null">category_name = #{category.category_name},</if>
+            <if test="category.category_image_src != null">category_image_src = #{category.category_image_src}</if>
         </set>
         <where>
             category_id = #{category.category_id}

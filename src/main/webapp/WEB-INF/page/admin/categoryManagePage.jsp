@@ -50,7 +50,7 @@
                             var category_id = data.categoryList[i].category_id;
                             var category_name = data.categoryList[i].category_name;
                             //显示分类数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_" + category_id + "'><label for='cbx_category_select_" + category_id + "'></label></td><td title='"+category_name+"'>" + category_name + "</td><td><span class='td_special' title='查看分类详情'><a href='#'>详情</a></span></td><td hidden>" + category_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_category_select_" + category_id + "'><label for='cbx_category_select_" + category_id + "'></label></td><td title='" + category_name + "'>" + category_name + "</td><td><span class='td_special' title='查看分类详情'><a href='javascript:void(0)' onclick='getChildPage(this)'>详情</a></span></td><td hidden class='category_id'>" + category_id + "</td></tr>");
                         }
                         //绑定事件
                         tbody.children("tr").click(function () {
@@ -67,6 +67,25 @@
                 }
             });
         }
+
+        // 获取产品分类子界面
+        function getChildPage(obj) {
+            var url;
+            var title;
+            if (obj === null) {
+                title = "添加分类";
+                url = "category/new";
+            } else {
+                title = "分类详情";
+                url = "category/" + $(obj).parents("tr").find(".category_id").text();
+            }
+
+            //设置样式
+            $("#div_home_title").children("span").text(title);
+            document.title = "Tmall管理后台 - " + title;
+            //ajax请求页面
+            ajaxUtil.getPage(url, null, true);
+        }
     </script>
 </head>
 <body>
@@ -78,7 +97,7 @@
         <input class="frm_btn frm_clear" id="btn_clear" type="button" value="重置"/>
     </div>
     <div class="frm_group_last">
-        <input class="frm_btn frm_add" id="btn_category_add" type="button" value="添加一个分类"/>
+        <input class="frm_btn frm_add" id="btn_category_add" type="button" value="添加一个分类" onclick="getChildPage(null)"/>
         <input class="frm_btn frm_refresh" id="btn_category_refresh" type="button" value="刷新分类列表"/>
     </div>
 </div>
@@ -104,7 +123,7 @@
             <th><input type="checkbox" class="cbx_select" id="cbx_select_all"><label for="cbx_select_all"></label></th>
             <th>分类名称</th>
             <th>操作</th>
-            <th hidden>分类ID</th>
+            <th hidden class="category_id">分类ID</th>
         </tr>
         </thead>
         <tbody>
@@ -112,7 +131,8 @@
             <tr>
                 <td><input type="checkbox" class="cbx_select" id="cbx_category_select_${category.category_id}"><label for="cbx_category_select_${category.category_id}"></label></td>
                 <td title="${category.category_name}">${category.category_name}</td>
-                <td><span class="td_special" title="查看分类详情"><a href="#">详情</a></span></td>
+                <td><span class="td_special" title="查看分类详情"><a href="javascript:void(0)"
+                                                               onclick="getChildPage(this)">详情</a></span></td>
                 <td hidden><span class="category_id">${category.category_id}</span></td>
             </tr>
         </c:forEach>

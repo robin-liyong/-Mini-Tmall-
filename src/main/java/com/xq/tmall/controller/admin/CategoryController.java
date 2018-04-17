@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.service.CategoryService;
+import com.xq.tmall.service.LastIDService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,11 @@ import java.util.UUID;
 public class CategoryController extends BaseController {
     @Resource(name = "categoryService")
     private CategoryService categoryService;
+    @Resource(name = "lastIDService")
+    private LastIDService lastIDService;
 
     //转到后台管理-分类页-ajax
-    @RequestMapping("admin/category")
+    @RequestMapping(value = "admin/category", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -51,20 +54,85 @@ public class CategoryController extends BaseController {
     }
 
     //转到后台管理-分类详情页-ajax
-    @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public String getCategoryByCid(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */) {
+    @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.GET)
+    public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
             return null;
         }
-
         logger.info("获取category_id为{}的分类信息", cid);
         Category category = categoryService.get(cid);
         map.put("category", category);
 
         logger.info("转到后台管理-分类详情页-ajax方式");
         return "admin/include/categoryDetails";
+    }
+
+    //转到后台管理-分类添加页-ajax
+    @RequestMapping(value = "admin/category/new", method = RequestMethod.GET)
+    public String goToAddPage(HttpSession session, Map<String, Object> map) {
+        logger.info("检查管理员权限");
+        Object adminId = checkAdmin(session);
+        if (adminId == null) {
+            return null;
+        }
+
+        logger.info("转到后台管理-分类添加页-ajax方式");
+        return "admin/include/categoryDetails";
+    }
+
+    //添加分类信息-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/category", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String addCategory(@RequestParam String category_name/* 分类名称 */,
+                              @RequestParam String category_image_src/* 分类图片路径 */) {
+        JSONObject jsonObject = new JSONObject();
+        logger.info("整合分类信息");
+        Category category = new Category()
+                .setCategory_name(category_name)
+                .setCategory_image_src(category_image_src.substring(category_image_src.lastIndexOf("/") + 1));
+        logger.info("添加分类信息");
+        boolean yn = categoryService.add(category);
+        if (yn) {
+            int category_id = lastIDService.selectLastID();
+            logger.info("添加成功！,新增分类的ID值为：{}", category_id);
+            jsonObject.put("success", true);
+            jsonObject.put("category_id", category_id);
+        } else {
+            logger.warn("添加失败！");
+            jsonObject.put("success", false);
+            throw new RuntimeException();
+        }
+
+        return jsonObject.toJSONString();
+    }
+
+    //更新分类信息-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/category/{category_id}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
+    public String updateCategory(@RequestParam String category_name/* 分类名称 */,
+                                 @RequestParam String category_image_src/* 分类图片路径 */,
+                                 @PathVariable("category_id") Integer category_id/* 分类ID */) {
+        JSONObject jsonObject = new JSONObject();
+        logger.info("整合分类信息");
+        Category category = new Category()
+                .setCategory_id(category_id)
+                .setCategory_name(category_name)
+                .setCategory_image_src(category_image_src.substring(category_image_src.lastIndexOf("/") + 1));
+        logger.info("更新分类信息，分类ID值为：{}", category_id);
+        boolean yn = categoryService.update(category);
+        if (yn) {
+            logger.info("更新成功！");
+            jsonObject.put("success", true);
+            jsonObject.put("category_id", category_id);
+        } else {
+            logger.info("更新失败！");
+            jsonObject.put("success", false);
+            throw new RuntimeException();
+        }
+
+        return jsonObject.toJSONString();
     }
 
     //按条件查询分类-ajax
@@ -90,28 +158,6 @@ public class CategoryController extends BaseController {
         return object.toJSONString();
     }
 
-
-    //完成分类的添加功能
-    @ResponseBody
-    @RequestMapping(value = "admin/category/new", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String insertCategory(@RequestParam String category_name, @RequestParam(required = false) String categoryImage) {
-        logger.info("整合产品分类信息");
-        Category category = new Category()
-                .setCategory_name(category_name)
-                .setCategory_image_src(categoryImage);
-        JSONObject jsonObject = new JSONObject();
-        logger.info("添加产品分类信息");
-        boolean yn = categoryService.add(category);
-        if (yn) {
-            logger.info("添加成功！");
-        } else {
-            logger.warn("添加失败！");
-            jsonObject.put("success", false);
-            throw new RuntimeException();
-        }
-        return jsonObject.toJSONString();
-    }
-
     // 上传分类图片-ajax
     @ResponseBody
     @RequestMapping(value = "admin/uploadCategoryImage", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
@@ -120,11 +166,10 @@ public class CategoryController extends BaseController {
         logger.info("获取图片原始文件名:  {}", originalFileName);
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         String fileName = UUID.randomUUID() + extension;
-        String filePath = "res/images/item/" + fileName;
+        String filePath = session.getServletContext().getRealPath("/") + "res/images/item/categoryPicture/" + fileName;
 
         logger.info("文件上传路径：{}", filePath);
         JSONObject object = new JSONObject();
-
         try {
             logger.info("文件上传中...");
             file.transferTo(new File(filePath));
@@ -136,30 +181,7 @@ public class CategoryController extends BaseController {
             e.printStackTrace();
             object.put("success", false);
         }
+
         return object.toJSONString();
     }
-
-    //分类的更新功能
-    @ResponseBody
-    @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String updateCategory(@RequestParam String category_name, @RequestParam String categoryImage, @PathVariable("cid") Integer cid) {
-        logger.info("整合产品分类信息");
-        Category category = new Category()
-                .setCategory_id(cid)
-                .setCategory_name(category_name)
-                .setCategory_image_src(categoryImage);
-        JSONObject jsonObject = new JSONObject();
-        logger.info("更新分类信息");
-        boolean yn = categoryService.update(category);
-        if (yn) {
-            logger.info("更新成功！");
-        } else {
-            logger.info("更新失败！");
-            jsonObject.put("success", false);
-            throw new RuntimeException();
-        }
-        return jsonObject.toJSONString();
-    }
 }
-
-

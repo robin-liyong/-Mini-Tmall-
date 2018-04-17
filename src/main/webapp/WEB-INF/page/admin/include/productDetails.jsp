@@ -395,8 +395,15 @@
                 success: function (data) {
                     $("#btn_product_save").attr("disabled", false).val("保存");
                     if (data.success) {
-                        //ajax请求页面
-                        ajaxUtil.getPage("product/" + data.product_id, null, true);
+                        $("#btn-ok,#btn-close").unbind("click").click(function () {
+                            $('#modalDiv').modal("hide");
+                            setTimeout(function () {
+                                //ajax请求页面
+                                ajaxUtil.getPage("product/" + data.product_id, null, true);
+                            }, 170);
+                        });
+                        $(".modal-body").text("保存成功！");
+                        $('#modalDiv').modal();
                     }
                 },
                 beforeSend: function () {
@@ -489,7 +496,7 @@
                 <path d="M753.301333 490.666667l-219.946667 0L533.354667 270.741333c0-11.776-9.557333-21.333333-21.354667-21.333333-11.776 0-21.333333 9.536-21.333333 21.333333L490.666667 490.666667 270.72 490.666667c-11.776 0-21.333333 9.557333-21.333333 21.333333 0 11.797333 9.557333 21.354667 21.333333 21.354667L490.666667 533.354667l0 219.904c0 11.861333 9.536 21.376 21.333333 21.376 11.797333 0 21.354667-9.578667 21.354667-21.333333l0-219.946667 219.946667 0c11.754667 0 21.333333-9.557333 21.333333-21.354667C774.634667 500.224 765.077333 490.666667 753.301333 490.666667z" p-id="1530" fill="#FFFFFF"></path>
             </svg>
             <span>点击上传</span>
-            <input type="file" onchange="uploadImage(this)" accept="image/*" class="product_single_image_list">
+            <input type="file" onchange="uploadImage(this)" accept="image/*">
         </li>
     </ul>
 </div>
