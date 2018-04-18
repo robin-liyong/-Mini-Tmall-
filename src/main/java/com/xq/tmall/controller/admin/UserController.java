@@ -42,11 +42,15 @@ public class UserController extends BaseController{
         }
 
         logger.info("获取前十条用户信息");
-        List<User> userList = userService.getList(null, null, new PageUtil(1, 10));
+        PageUtil pageUtil = new PageUtil(0, 10);
+        List<User> userList = userService.getList(null, null, pageUtil);
         map.put("userList", userList);
         logger.info("获取用户总数量");
         Integer userCount = userService.getTotal(null);
         map.put("userCount", userCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(userCount);
+        map.put("pageUtil", pageUtil);
 
         logger.info("转到后台管理-用户页-ajax方式");
         return "admin/userManagePage";
@@ -71,7 +75,7 @@ public class UserController extends BaseController{
         String homeplace_area_id = user.getUser_homeplace().getAddress_areaId();
         user.setUser_homeplace(addressService.get(homeplace_area_id));
         logger.info("获取用户详情-评论信息");
-        user.setReviewList(reviewService.getListByUserId(uid,new PageUtil(1,5)));
+        user.setReviewList(reviewService.getListByUserId(uid, new PageUtil(0, 5)));
         map.put("user",user);
 
         logger.info("转到后台管理-用户详情页-ajax方式");
@@ -113,11 +117,16 @@ public class UserController extends BaseController{
 
         JSONObject object = new JSONObject();
         logger.info("按条件获取第{}页的{}条用户",index,count);
-        List<User> userList = userService.getList(user, orderUtil, new PageUtil(index, count));
+        PageUtil pageUtil = new PageUtil(index, count);
+        List<User> userList = userService.getList(user, orderUtil, pageUtil);
         object.put("userList", JSONArray.parseArray(JSON.toJSONString(userList)));
         logger.info("按条件获取用户总数量");
         Integer userCount = userService.getTotal(user);
         object.put("userCount", userCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(userCount);
+        object.put("totalPage", pageUtil.getTotalPage());
+        object.put("pageUtil", pageUtil);
 
         return object.toJSONString();
     }

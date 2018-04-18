@@ -56,7 +56,7 @@
             </where>
         </if>
         <if test="pageUtil != null">
-            LIMIT #{pageUtil.index},#{pageUtil.count}
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>
     </select>
     <select id="selectOne" resultMap="propertyMap" parameterType="int">

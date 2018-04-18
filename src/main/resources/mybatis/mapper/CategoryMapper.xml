@@ -26,7 +26,7 @@
             <if test="category_name != null">category_name LIKE concat('%',#{category_name},'%')</if>
         </where>
         <if test="pageUtil != null">
-            LIMIT #{pageUtil.index},#{pageUtil.count}
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>
     </select>
     <select id="selectOne" parameterType="int" resultType="category">

@@ -143,7 +143,7 @@
                 success: function (data) {
                     $(fileDom).attr("disabled", false).prev("span").text("上传图片");
                     if (data.success) {
-                        $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='${pageContext.request.contextPath}/res/images/item/categoryPicture/" + data.fileName + "' id='pic_category'/></li>").css("display", "none");
+                        $(fileDom).parent('.details_picList_fileUpload').before("<li><img src='${pageContext.request.contextPath}/res/images/item/categoryPicture/" + data.fileName + "' id='pic_category'  width='1190px' height='150px'/></li>").css("display", "none");
                     } else {
                         alert("图片上传异常！");
                     }
@@ -207,7 +207,7 @@
         <c:if test="${requestScope.category.category_image_src != null}">
             <li><img
                     src="${pageContext.request.contextPath}/res/images/item/categoryPicture/${requestScope.category.category_image_src}"
-                    id="pic_category"/></li>
+                    id="pic_category" width="1190px" height="150px"/></li>
         </c:if>
         <li class="details_picList_fileUpload">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1528"

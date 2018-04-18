@@ -17,12 +17,14 @@
                 //封装数据
                 dataList.category_name = encodeURI(category_name);
 
-                getData($(this),"admin/category/1/10",dataList);
+                getData($(this), "admin/category/0/10", dataList);
             });
             //点击刷新按钮时
             $("#btn_category_refresh").click(function () {
+                //清除数据
+                dataList.category_name = null;
                 //获取数据
-                getData($(this), "admin/category/1/10",null);
+                getData($(this), "admin/category/0/10", null);
             });
             //点击table中的数据时
             $("#table_category_list").find(">tbody>tr").click(function () {
@@ -140,5 +142,6 @@
     </table>
     <div class="loader"></div>
 </div>
+<%@ include file="include/page.jsp" %>
 </body>
 </html>

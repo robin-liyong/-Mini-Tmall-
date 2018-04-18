@@ -3,19 +3,19 @@
 <html>
 <head>
     <script>
+        //检索数据集
+        var dataList = {
+            "product_name": null,
+            "category_id": null,
+            "product_sale_price": null,
+            "product_price": null,
+            "product_isEnabled_array": null,
+            "orderBy": null,
+            "isDesc": true
+        };
         $(function () {
             //刷新下拉框
             $('#select_product_category').selectpicker('refresh');
-            //检索数据集
-            var dataList = {
-                "product_name": null,
-                "category_id": null,
-                "product_sale_price": null,
-                "product_price": null,
-                "product_isEnabled_array": null,
-                "orderBy": null,
-                "isDesc": true
-            };
             /******
              * event
              ******/
@@ -42,15 +42,20 @@
                 dataList.product_price = highest_price;
                 dataList.product_isEnabled_array = status_array;
 
-                getData($(this),"admin/product/1/10",dataList);
+                getData($(this), "admin/product/0/10", dataList);
             });
             //点击刷新按钮时
             $("#btn_product_refresh").click(function () {
-                //清除排序
+                //清除数据
+                dataList.product_name = null;
+                dataList.category_id = null;
+                dataList.product_sale_price = null;
+                dataList.product_price = null;
+                dataList.product_isEnabled_array = null;
                 dataList.orderBy = null;
                 dataList.isDesc = true;
                 //获取数据
-                getData($(this),"admin/product/1/10",null);
+                getData($(this), "admin/product/0/10", null);
                 //清除排序样式
                 var table = $("#table_product_list");
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
@@ -67,7 +72,7 @@
                 //是否倒序排序
                 dataList.isDesc = $(this).attr("data-sort")==="asc";
 
-                getData($(this),"admin/product/1/10",dataList);
+                getData($(this), "admin/product/0/10", dataList);
                 //设置排序
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
                 if(dataList.isDesc){
@@ -135,6 +140,13 @@
                         tbody.children("tr").click(function () {
                             trDataStyle($(this));
                         });
+                        //分页
+                        var pageUtil = {
+                            index: data.pageUtil.index,
+                            count: data.pageUtil.count,
+                            total: data.pageUtil.total
+                        };
+                        createPageDiv($(".loader"), pageUtil, data.totalPage);
                     }
                 },
                 beforeSend: function () {
@@ -146,7 +158,8 @@
                 }
             });
         }
-        // 获取产品子界面
+
+        //获取产品子界面
         function getChildPage(obj) {
             var url;
             var title;
@@ -163,6 +176,11 @@
             document.title = "Tmall管理后台 - "+title;
             //ajax请求页面
             ajaxUtil.getPage(url,null,true);
+        }
+
+        //获取页码数据
+        function getPage(index) {
+            getData($(this), "admin/product/" + index + "/10", dataList, true);
         }
     </script>
     <style rel="stylesheet">
@@ -285,6 +303,7 @@
         </c:forEach>
         </tbody>
     </table>
+    <%@ include file="include/page.jsp" %>
     <div class="loader"></div>
 </div>
 </body>

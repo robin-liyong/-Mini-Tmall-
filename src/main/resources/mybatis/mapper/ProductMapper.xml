@@ -67,7 +67,7 @@
             ORDER BY ${orderUtil.orderBy}<if test="orderUtil.isDesc">desc </if>
         </if>
         <if test="pageUtil != null">
-            LIMIT #{pageUtil.index},#{pageUtil.count}
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>
     </select>
     <select id="selectOne" resultMap="productMap" parameterType="int">

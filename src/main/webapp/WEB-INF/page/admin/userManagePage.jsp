@@ -26,15 +26,17 @@
                 dataList.user_name = encodeURI(user_name);
                 dataList.user_gender_array = gender_array;
 
-                getData($(this),"admin/user/1/10",dataList);
+                getData($(this), "admin/user/0/10", dataList);
             });
             //点击刷新按钮时
             $("#btn_user_refresh").click(function () {
-                //清除排序
+                //清除数据
+                dataList.user_name = null;
+                dataList.user_gender_array = null;
                 dataList.orderBy = null;
                 dataList.isDesc = true;
                 //获取数据
-                getData($(this),"admin/user/1/10",null);
+                getData($(this), "admin/user/0/10", null);
                 //清除排序样式
                 var table = $("#table_user_list");
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
@@ -51,7 +53,7 @@
                 //是否倒序排序
                 dataList.isDesc = $(this).attr("data-sort")==="asc";
 
-                getData($(this),"admin/user/1/10",dataList);
+                getData($(this), "admin/user/0/10", dataList);
                 //设置排序
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
                 if(dataList.isDesc){
@@ -138,7 +140,6 @@
         <label class="frm_label" id="lbl_user_gender_woman" for="checkbox_user_gender_woman">女</label>
     </div>
     <div class="frm_group_last">
-        <input class="frm_btn frm_add" id="btn_user_add" type="button" value="添加一个用户"/>
         <input class="frm_btn frm_refresh" id="btn_user_refresh" type="button" value="刷新用户列表"/>
     </div>
 </div>
@@ -211,6 +212,7 @@
         </c:forEach>
         </tbody>
     </table>
+    <%@ include file="include/page.jsp" %>
     <div class="loader"></div>
 </div>
 </body>

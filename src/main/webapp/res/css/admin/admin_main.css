@@ -252,23 +252,35 @@ input[type="checkbox"],input[type="radio"] {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.table_normal span.td_success{
-    color:#8BB979;
+
+span.td_success {
+    font-weight: normal !important;
+    color: #8BB979 !important;
 }
-.table_normal span.td_warn{
-    color:#f9B689;
+
+span.td_warn {
+    font-weight: normal !important;
+    color: #f9B689 !important;
 }
-.table_normal span.td_special,.table_normal span.td_special>a{
-    color:#ff7874;
+
+.table_normal span.td_special, span.td_special > a, .td_special {
+    font-weight: normal !important;
+    color: #ff7874 !important;
 }
-.table_normal span.td_wait{
-    color: #70ABF4;
+
+span.td_wait {
+    font-weight: normal !important;
+    color: #70ABF4 !important;
 }
-.table_normal span.td_error{
-    color:#ccc;
+
+span.td_error {
+    font-weight: normal !important;
+    color: #ccc !important;
 }
-.table_normal span.td_await{
-    color: #f7ff80;
+
+span.td_await {
+    font-weight: normal !important;
+    color: #C7B390 !important;
 }
 /*数据增改部分样式*/
 .details_div_first .frm_label,.details_div .frm_label,.details_div_last .frm_label{
@@ -352,6 +364,10 @@ span.details_value{
     font-weight: bold;
     margin-right: 150px;
 }
+
+span.details_value.details_value_noRows {
+    width: auto;
+}
 input[type="text"].details_unit{
     width: 110px;
     margin-right: 5px;
@@ -362,4 +378,65 @@ span.details_unit{
     color:#666;
     font-size: 12px;
     margin-right: 145px;
+}
+
+/*分页工具样式*/
+#pageDiv {
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+}
+
+#pageDiv > ul {
+    display: inline-block;
+    height: 34px;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+#pageDiv li {
+    float: left;
+    list-style: none;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+}
+
+#pageDiv li:first-child {
+    border-radius: 5px 0 0 5px;
+    border-left: 1px solid #ddd;
+}
+
+#pageDiv li:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+#pageDiv a {
+    display: inline-block;
+    padding: 6px 14px;
+    text-decoration: none;
+}
+
+#pageDiv a:hover {
+    background-color: #eee;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#pageDiv .disabled > a {
+    color: #dddddd;
+    cursor: not-allowed;
+}
+
+#pageDiv .disabled > a:hover {
+    background-color: #fff;
+}
+
+#pageDiv .pageThis > a {
+    color: black;
+    cursor: default;
+}
+
+#pageDiv .pageThis > a:hover {
+    background-color: #fff;
 }

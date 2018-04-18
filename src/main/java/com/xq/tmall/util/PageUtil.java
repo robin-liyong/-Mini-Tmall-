@@ -4,26 +4,31 @@ public final class PageUtil {
     private Integer index;
     private Integer count;
     private Integer total;
+    private Integer pageStart;
+
+    public PageUtil(Integer index, Integer count) {
+        this.index = index;
+        this.count = count;
+    }
 
     public Boolean isHasPrev(){
-        return index>1;
+        return index >= 1;
     }
 
     public Boolean isHasNext(){
-        return index<getTotalPage();
+        return index + 1 < getTotalPage();
     }
 
     public Integer getTotalPage(){
-        return (int)Math.ceil((double)(total/count));
+        return (int) Math.ceil((double) total / count);
     }
 
     public PageUtil(){
 
     }
 
-    public PageUtil(Integer index, Integer count) {
-        this.index = index-1;
-        this.count = count;
+    public Integer getPageStart() {
+        return index * count;
     }
 
     public Integer getIndex() {
@@ -31,7 +36,7 @@ public final class PageUtil {
     }
 
     public void setIndex(Integer index) {
-        this.index = index-1;
+        this.index = index;
     }
 
     public Integer getCount() {

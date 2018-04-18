@@ -51,11 +51,15 @@ public class ProductController extends BaseController{
         List<Category> categoryList = categoryService.getList(null, null);
         map.put("categoryList", categoryList);
         logger.info("获取前10条产品列表");
-        List<Product> productList = productService.getList(null, null, null, new PageUtil(1, 10));
+        PageUtil pageUtil = new PageUtil(0, 10);
+        List<Product> productList = productService.getList(null, null, null, pageUtil);
         map.put("productList", productList);
         logger.info("获取产品总数量");
         Integer productCount = productService.getTotal(null, null);
         map.put("productCount", productCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(productCount);
+        map.put("pageUtil", pageUtil);
 
         logger.info("转到后台管理-产品页-ajax方式");
         return "admin/productManagePage";
@@ -69,16 +73,23 @@ public class ProductController extends BaseController{
         if(adminId == null){
             return null;
         }
+
         logger.info("获取product_id为{}的产品信息",pid);
         Product product = productService.get(pid);
-        logger.info("获取产品详情-分类信息");
-        Integer category_id = product.getProduct_category().getCategory_id();
-        product.setProduct_category(categoryService.get(category_id));
-        logger.info("获取产品详情-展示图片信息");
+        logger.info("获取产品详情-图片信息");
         Integer product_id =product.getProduct_id();
-        product.setSingleProductImageList(productImageService.getList(product_id,Byte.parseByte("0"),null));
-        logger.info("获取产品详情-详情图片信息");
-        product.setDetailProductImageList(productImageService.getList(product_id,Byte.parseByte("1"),null));
+        List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
+        List<ProductImage> singleProductImageList = new ArrayList<>(5);
+        List<ProductImage> detailsProductImageList = new ArrayList<>(5);
+        for (ProductImage productImage : productImageList) {
+            if (productImage.getProductImage_type() == 0) {
+                singleProductImageList.add(productImage);
+            } else {
+                detailsProductImageList.add(productImage);
+            }
+        }
+        product.setSingleProductImageList(singleProductImageList);
+        product.setDetailProductImageList(detailsProductImageList);
         map.put("product",product);
         logger.info("获取产品详情-属性值信息");
         List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product),null);
@@ -402,11 +413,16 @@ public class ProductController extends BaseController{
 
         JSONObject object = new JSONObject();
         logger.info("按条件获取第{}页的{}条产品",index,count);
-        List<Product> productList = productService.getList(product, product_isEnabled_array, orderUtil, new PageUtil(index, count));
+        PageUtil pageUtil = new PageUtil(index, count);
+        List<Product> productList = productService.getList(product, product_isEnabled_array, orderUtil, pageUtil);
         object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));
         logger.info("按条件获取产品总数量");
         Integer productCount = productService.getTotal(product, product_isEnabled_array);
         object.put("productCount", productCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(productCount);
+        object.put("totalPage", pageUtil.getTotalPage());
+        object.put("pageUtil", pageUtil);
 
         return object.toJSONString();
     }

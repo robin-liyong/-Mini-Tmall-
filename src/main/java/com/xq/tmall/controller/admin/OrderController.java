@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
+import com.xq.tmall.entity.Address;
 import com.xq.tmall.entity.ProductOrder;
-import com.xq.tmall.service.AddressService;
-import com.xq.tmall.service.ProductOrderItemService;
-import com.xq.tmall.service.ProductOrderService;
-import com.xq.tmall.service.UserService;
+import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 后台管理-订单页
@@ -32,9 +31,11 @@ public class OrderController extends BaseController{
     private UserService userService;
     @Resource(name = "productOrderItemService")
     private ProductOrderItemService productOrderItemService;
+    @Resource(name = "lastIDService")
+    private LastIDService lastIDService;
 
     //转到后台管理-订单页-ajax
-    @RequestMapping("admin/order")
+    @RequestMapping(value = "admin/order", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -43,19 +44,23 @@ public class OrderController extends BaseController{
         }
 
         logger.info("获取前10条订单列表");
-        List<ProductOrder> productOrderList=productOrderService.getList(null,null,null,new PageUtil(1,10));
+        PageUtil pageUtil = new PageUtil(0, 10);
+        List<ProductOrder> productOrderList = productOrderService.getList(null, null, null, pageUtil);
         map.put("productOrderList",productOrderList);
         logger.info("获取订单总数量");
         Integer productOrderCount = productOrderService.getTotal(null, null);
         map.put("productOrderCount", productOrderCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(productOrderCount);
+        map.put("pageUtil", pageUtil);
 
         logger.info("转到后台管理-订单页-ajax方式");
         return "admin/orderManagePage";
     }
 
     //转到后台管理-订单详情页-ajax
-    @RequestMapping("admin/order/{oid}")
-    public String getOrderByOid(HttpSession session,Map<String, Object> map, @PathVariable Integer oid/* 订单ID */){
+    @RequestMapping(value = "admin/order/{oid}", method = RequestMethod.GET)
+    public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer oid/* 订单ID */) {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
@@ -65,13 +70,28 @@ public class OrderController extends BaseController{
         logger.info("获取order_id为{}的订单信息",oid);
         ProductOrder order = productOrderService.get(oid);
         logger.info("获取订单详情-地址信息");
-        order.setProductOrder_address(addressService.get(order.getProductOrder_address().getAddress_areaId()));
+        Address address = addressService.get(order.getProductOrder_address().getAddress_areaId());
+        Stack<String> addressStack = new Stack<>();
+        //详细地址
+        addressStack.push(order.getProductOrder_detail_address());
+        //最后一级地址
+        addressStack.push(address.getAddress_name() + " ");
+        //如果不是第一级地址
+        while (!address.getAddress_areaId().equals(address.getAddress_regionId().getAddress_areaId())) {
+            address = addressService.get(address.getAddress_regionId().getAddress_areaId());
+            addressStack.push(address.getAddress_name() + " ");
+        }
+        StringBuilder builder = new StringBuilder();
+        while (!addressStack.empty()) {
+            builder.append(addressStack.pop());
+        }
+        logger.warn("订单地址字符串：{}", builder);
+        order.setProductOrder_detail_address(builder.toString());
         logger.info("获取订单详情-用户信息");
         order.setProductOrder_user(userService.get(order.getProductOrder_user().getUser_id()));
         logger.info("获取订单详情-订单项信息");
-        order.setProductOrderItemList(productOrderItemService.getListByOrderId(oid,new PageUtil(1,5)));
-        map.put("order",order);
-
+        order.setProductOrderItemList(productOrderItemService.getListByOrderId(oid, new PageUtil(1, 5)));
+        map.put("order", order);
         logger.info("转到后台管理-订单详情页-ajax方式");
         return "admin/include/orderDetails";
     }
@@ -111,11 +131,16 @@ public class OrderController extends BaseController{
 
         JSONObject object = new JSONObject();
         logger.info("按条件获取第{}页的{}条订单",index,count);
-        List<ProductOrder> productOrderList = productOrderService.getList(productOrder,productOrder_status_array,orderUtil,new PageUtil(1,10));
+        PageUtil pageUtil = new PageUtil(index, count);
+        List<ProductOrder> productOrderList = productOrderService.getList(productOrder, productOrder_status_array, orderUtil, pageUtil);
         object.put("productOrderList", JSONArray.parseArray(JSON.toJSONString(productOrderList)));
         logger.info("按条件获取订单总数量");
         Integer productOrderCount = productOrderService.getTotal(productOrder, productOrder_status_array);
         object.put("productOrderCount", productOrderCount);
+        logger.info("获取分页信息");
+        pageUtil.setTotal(productOrderCount);
+        object.put("totalPage", pageUtil.getTotalPage());
+        object.put("pageUtil", pageUtil);
 
         return object.toJSONString();
     }

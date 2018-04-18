@@ -1,7 +1,9 @@
 package com.xq.tmall.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductOrder {
     private Integer productOrder_id;
@@ -11,7 +13,6 @@ public class ProductOrder {
     private String productOrder_post;
     private String productOrder_receiver;
     private String productOrder_mobile;
-    private String productOrder_userMessage;
     private Date productOrder_pay_date;
     private Date productOrder_delivery_date;
     private Date productOrder_confirm_date;
@@ -29,7 +30,6 @@ public class ProductOrder {
                 ", productOrder_post='" + productOrder_post + '\'' +
                 ", productOrder_receiver='" + productOrder_receiver + '\'' +
                 ", productOrder_mobile='" + productOrder_mobile + '\'' +
-                ", productOrder_userMessage='" + productOrder_userMessage + '\'' +
                 ", productOrder_pay_date=" + productOrder_pay_date +
                 ", productOrder_delivery_date=" + productOrder_delivery_date +
                 ", productOrder_confirm_date=" + productOrder_confirm_date +
@@ -55,7 +55,7 @@ public class ProductOrder {
         this.productOrder_user = productOrder_user;
     }
 
-    public ProductOrder(Integer productOrder_id, String productOrder_code, Address productOrder_address, String productOrder_detail_address, String productOrder_post, String productOrder_receiver, String productOrder_mobile, String productOrder_userMessage, Date productOrder_pay_date, Date productOrder_delivery_date, Date productOrder_confirm_date, Byte productOrder_status, User productOrder_user, List<ProductOrderItem> productOrderItemList) {
+    public ProductOrder(Integer productOrder_id, String productOrder_code, Address productOrder_address, String productOrder_detail_address, String productOrder_post, String productOrder_receiver, String productOrder_mobile, Date productOrder_pay_date, Date productOrder_delivery_date, Date productOrder_confirm_date, Byte productOrder_status, User productOrder_user, List<ProductOrderItem> productOrderItemList) {
         this.productOrder_id = productOrder_id;
         this.productOrder_code = productOrder_code;
         this.productOrder_address = productOrder_address;
@@ -63,7 +63,6 @@ public class ProductOrder {
         this.productOrder_post = productOrder_post;
         this.productOrder_receiver = productOrder_receiver;
         this.productOrder_mobile = productOrder_mobile;
-        this.productOrder_userMessage = productOrder_userMessage;
         this.productOrder_pay_date = productOrder_pay_date;
         this.productOrder_delivery_date = productOrder_delivery_date;
         this.productOrder_confirm_date = productOrder_confirm_date;
@@ -135,17 +134,12 @@ public class ProductOrder {
         return this;
     }
 
-    public String getProductOrder_userMessage() {
-        return productOrder_userMessage;
-    }
-
-    public ProductOrder setProductOrder_userMessage(String productOrder_userMessage) {
-        this.productOrder_userMessage = productOrder_userMessage;
-        return this;
-    }
-
-    public Date getProductOrder_pay_date() {
-        return productOrder_pay_date;
+    public String getProductOrder_pay_date() {
+        if (productOrder_pay_date != null) {
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+            return time.format(productOrder_pay_date);
+        }
+        return null;
     }
 
     public ProductOrder setProductOrder_pay_date(Date productOrder_pay_date) {
@@ -153,8 +147,12 @@ public class ProductOrder {
         return this;
     }
 
-    public Date getProductOrder_delivery_date() {
-        return productOrder_delivery_date;
+    public String getProductOrder_delivery_date() {
+        if (productOrder_delivery_date != null) {
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+            return time.format(productOrder_delivery_date);
+        }
+        return null;
     }
 
     public ProductOrder setProductOrder_delivery_date(Date productOrder_delivery_date) {
@@ -162,8 +160,12 @@ public class ProductOrder {
         return this;
     }
 
-    public Date getProductOrder_confirm_date() {
-        return productOrder_confirm_date;
+    public String getProductOrder_confirm_date() {
+        if (productOrder_confirm_date != null) {
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+            return time.format(productOrder_confirm_date);
+        }
+        return null;
     }
 
     public ProductOrder setProductOrder_confirm_date(Date productOrder_confirm_date) {

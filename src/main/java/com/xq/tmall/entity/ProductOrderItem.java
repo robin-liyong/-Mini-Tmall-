@@ -7,8 +7,18 @@ public class ProductOrderItem {
     private Product productOrderItem_product;
     private ProductOrder productOrderItem_order;
     private User productOrderItem_user;
+    private String productOrderItem_userMessage;
 
     public ProductOrderItem() {
+    }
+
+    public ProductOrderItem(Integer productOrderItem_id, Short productOrderItem_number, Double productOrderItem_price, Product productOrderItem_product, User productOrderItem_user, String productOrderItem_userMessage) {
+        this.productOrderItem_id = productOrderItem_id;
+        this.productOrderItem_number = productOrderItem_number;
+        this.productOrderItem_price = productOrderItem_price;
+        this.productOrderItem_product = productOrderItem_product;
+        this.productOrderItem_user = productOrderItem_user;
+        this.productOrderItem_userMessage = productOrderItem_userMessage;
     }
 
     @Override
@@ -20,15 +30,8 @@ public class ProductOrderItem {
                 ", productOrderItem_product=" + productOrderItem_product +
                 ", productOrderItem_order=" + productOrderItem_order +
                 ", productOrderItem_user=" + productOrderItem_user +
+                ", productOrderItem_userMessage='" + productOrderItem_userMessage + '\'' +
                 '}';
-    }
-
-    public ProductOrderItem(Integer productOrderItem_id, Short productOrderItem_number, Double productOrderItem_price, Product productOrderItem_product, User productOrderItem_user) {
-        this.productOrderItem_id = productOrderItem_id;
-        this.productOrderItem_number = productOrderItem_number;
-        this.productOrderItem_price = productOrderItem_price;
-        this.productOrderItem_product = productOrderItem_product;
-        this.productOrderItem_user = productOrderItem_user;
     }
 
     public ProductOrderItem(Integer productOrderItem_id, Short productOrderItem_number, Double productOrderItem_price, Product productOrderItem_product, ProductOrder productOrderItem_order, User productOrderItem_user) {
@@ -92,5 +95,13 @@ public class ProductOrderItem {
     public ProductOrderItem setProductOrderItem_user(User productOrderItem_user) {
         this.productOrderItem_user = productOrderItem_user;
         return this;
+    }
+
+    public String getProductOrderItem_userMessage() {
+        return productOrderItem_userMessage;
+    }
+
+    public void setProductOrderItem_userMessage(String productOrderItem_userMessage) {
+        this.productOrderItem_userMessage = productOrderItem_userMessage;
     }
 }

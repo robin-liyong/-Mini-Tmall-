@@ -37,15 +37,18 @@
                 dataList.productOrder_post = productOrder_post.toString();
                 dataList.productOrder_status_array = productOrder_status_array;
 
-                getData($(this),"admin/order/1/10",dataList);
+                getData($(this), "admin/order/0/10", dataList);
             });
             //点击刷新按钮时
             $("#btn_productOrder_refresh").click(function () {
-                //清除排序
+                //清除数据
+                dataList.productOrder_code = null;
+                dataList.productOrder_post = null;
+                dataList.productOrder_status_array = null;
                 dataList.orderBy = null;
                 dataList.isDesc = true;
                 //获取数据
-                getData($(this),"admin/order/1/10",null);
+                getData($(this), "admin/order/0/10", null);
                 //清除排序样式
                 var table = $("#table_productOrder_list");
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
@@ -62,7 +65,7 @@
                 //是否倒序排序
                 dataList.isDesc = $(this).attr("data-sort")==="asc";
 
-                getData($(this),"admin/order/1/10",dataList);
+                getData($(this), "admin/order/0/10", dataList);
                 //设置排序
                 table.find("span.orderByDesc,span.orderByAsc").css("opacity","0");
                 if(dataList.isDesc){
@@ -134,7 +137,7 @@
                             var productOrder_mobile = data.productOrderList[i].productOrder_mobile;
                             var productOrder_userMessage = data.productOrderList[i].productOrder_userMessage;
                             //显示用户数据
-                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_productOrder_select_" + productOrder_id + "'><label for='cbx_productOrder_select_" + productOrder_id + "'></label></td><td title='"+productOrder_code+"'>" + productOrder_code + "</td><td title='"+productOrder_post+"'>" + productOrder_post + "</td><td title='"+productOrder_receiver+"'>" + productOrder_receiver + "</td><td title='"+productOrder_mobile+"'>" + productOrder_mobile + "</td><td title='"+productOrder_userMessage+"'>" + productOrder_userMessage + "</td><td><span class='"+productOrderStatusClass+"' title= '"+productOrderStatusTitle+"'>"+productOrderStatus+"</span></td><td><span class='td_special' title='查看订单详情'><a href='#'>详情</a></span></td><td hidden>" + productOrder_id + "</td></tr>");
+                            tbody.append("<tr><td><input type='checkbox' class='cbx_select' id='cbx_productOrder_select_" + productOrder_id + "'><label for='cbx_productOrder_select_" + productOrder_id + "'></label></td><td title='" + productOrder_code + "'>" + productOrder_code + "</td><td title='" + productOrder_post + "'>" + productOrder_post + "</td><td title='" + productOrder_receiver + "'>" + productOrder_receiver + "</td><td title='" + productOrder_mobile + "'>" + productOrder_mobile + "</td><td title='" + productOrder_userMessage + "'>" + productOrder_userMessage + "</td><td><span class='" + productOrderStatusClass + "' title= '" + productOrderStatusTitle + "'>" + productOrderStatus + "</span></td><td><span class='td_special' title='查看订单详情'><a href='javascript:void(0)' onclick='getChildPage(this)'>详情</a></span></td><td hidden class='order_id'>" + productOrder_id + "</td></tr>");
                         }
                         //绑定事件
                         tbody.children("tr").click(function () {
@@ -150,6 +153,15 @@
 
                 }
             });
+        }
+
+        //获取订单子界面
+        function getChildPage(obj) {
+            //设置样式
+            $("#div_home_title").children("span").text("订单详情");
+            document.title = "Tmall管理后台 - 订单详情";
+            //ajax请求页面
+            ajaxUtil.getPage("order/" + $(obj).parents("tr").find(".order_id").text(), null, true);
         }
     </script>
     <style rel="stylesheet">
@@ -183,7 +195,6 @@
         <span class="frm_error_msg" id="text_productOrder_msg"></span>
     </div>
     <div class="frm_group_last">
-        <input class="frm_btn frm_add" id="btn_productOrder_add" type="button" value="添加一个订单"/>
         <input class="frm_btn frm_refresh" id="btn_productOrder_refresh" type="button" value="刷新订单列表"/>
     </div>
 </div>
@@ -219,7 +230,6 @@
         </th>
         <th>收货人</th>
         <th>联系方式</th>
-        <th>留言</th>
         <th class="data_info" data-sort="asc" data-name="productOrder_status">
             <span>订单状态</span>
             <span class="orderByDesc"></span>
@@ -237,7 +247,6 @@
             <td title="${productOrder.productOrder_post}">${productOrder.productOrder_post}</td>
             <td title="${productOrder.productOrder_receiver}">${productOrder.productOrder_receiver}</td>
             <td title="${productOrder.productOrder_mobile}">${productOrder.productOrder_mobile}</td>
-            <td title="${productOrder.productOrder_userMessage}">${productOrder.productOrder_userMessage}</td>
             <td>
                 <c:choose>
                     <c:when test="${productOrder.productOrder_status==0}">
@@ -255,12 +264,14 @@
                     <c:otherwise><span class="td_error" title="交易关闭">交易关闭</span></c:otherwise>
                 </c:choose>
             </td>
-            <td><span class="td_special" title="查看订单详情"><a href="#">详情</a></span></td>
-            <td hidden>${productOrder.productOrder_id}</td>
+            <td><span class="td_special" title="查看订单详情"><a href="javascript:void(0)" onclick="getChildPage(this)">详情</a></span>
+            </td>
+            <td hidden class="order_id">${productOrder.productOrder_id}</td>
         </tr>
     </c:forEach>
     </tbody>
     </table>
+    <%@ include file="include/page.jsp" %>
     <div class="loader"></div>
 </div>
 </body>

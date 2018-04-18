@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "mybatis-3-mapper.dtd">
 <mapper namespace="com.xq.tmall.dao.AddressMapper">
+    <resultMap id="address" type="com.xq.tmall.entity.Address">
+        <id property="address_areaId" column="address_areaId"/>
+        <result property="address_name" column="address_name"/>
+        <association property="address_regionId" javaType="com.xq.tmall.entity.Address">
+            <id property="address_areaId" column="address_regionId"/>
+        </association>
+    </resultMap>
     <insert id="insertOne" parameterType="address">
         INSERT address(address_areaId,address_name,address_regionId)
             VALUES (
@@ -20,7 +27,7 @@
         </where>
     </update>
 
-    <select id="select" resultType="address">
+    <select id="select" resultMap="address">
         SELECT address_areaId,address_name,address_regionId FROM address
         <where>
             <if test="address_name != null">
@@ -31,13 +38,13 @@
             </if>
         </where>
     </select>
-    <select id="selectOne" resultType="address" parameterType="string">
+    <select id="selectOne" resultMap="address" parameterType="string">
         SELECT address_areaId,address_name,address_regionId FROM address
         <where>
             address_areaId = #{address_areaId}
         </where>
     </select>
-    <select id="selectRoot" resultType="address">
+    <select id="selectRoot" resultMap="address">
         SELECT address_areaId,address_name,address_regionId FROM address
         <where>
             address_areaId = address_regionId

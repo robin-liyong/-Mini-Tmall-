@@ -7,6 +7,7 @@
         <id property="productOrderItem_id" column="productOrderItem_id"/>
         <result property="productOrderItem_number" column="productOrderItem_number"/>
         <result property="productOrderItem_price" column="productOrderItem_price"/>
+        <result property="productOrderItem_userMessage" column="productOrderItem_userMessage"/>
         <association property="productOrderItem_product" column="productOrderItem_product_id" javaType="com.xq.tmall.entity.Product">
             <id property="product_id" column="product_id"/>
         </association>
@@ -19,14 +20,16 @@
     </resultMap>
 
     <insert id="insertOne" parameterType="productOrderItem">
-        INSERT productOrderItem (productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id)
+        INSERT productOrderItem
+        (productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage)
             VALUES (
             null,
             #{productOrderItem.productOrderItem_number},
             #{productOrderItem.productOrderItem_price},
             #{productOrderItem.productOrderItem_product.product_id},
             #{productOrderItem.productOrderItem_order.order_id},
-            #{productOrderItem.productOrderItem_user.user_id})
+        #{productOrderItem.productOrderItem_user.user_id},
+        #{productOrderItem.productOrderItem_userMessage})
     </insert>
     <update id="updateOne" parameterType="productOrderItem">
         UPDATE productOrderItem
@@ -38,6 +41,9 @@
                 #{productOrderItem.productOrderItem_number},
             </if>
             <if test="productOrderItem.productOrderItem_price != null">productOrderItem_price = #{productOrderItem.productOrderItem_price}</if>
+            <if test="productOrderItem.productOrderItem_userMessage != null">productOrderItem_userMessage =
+                #{productOrderItem.productOrderItem_userMessage}
+            </if>
         </set>
         <where>
             productOrderItem_id = #{productOrderItem.productOrderItem_id}
@@ -53,13 +59,17 @@
         </where>
     </delete>
     <select id="select" parameterType="com.xq.tmall.util.PageUtil" resultMap="productOrderItemMap">
-        SELECT productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id FROM productOrderItem
+        SELECT
+        productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
+        FROM productOrderItem
         <if test="pageUtil != null">
             LIMIT #{pageUtil.index},#{pageUtil.count}
         </if>
     </select>
     <select id="selectByOrderId" resultMap="productOrderItemMap">
-        SELECT productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id FROM productOrderItem
+        SELECT
+        productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
+        FROM productOrderItem
         <where>
             productOrderItem_order_id = #{order_id}
         </where>
@@ -68,7 +78,9 @@
         </if>
     </select>
     <select id="selectByUserId" resultMap="productOrderItemMap">
-        SELECT productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id FROM productOrderItem
+        SELECT
+        productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
+        FROM productOrderItem
         <where>
             productOrderItem_user_id = #{user_id}
         </where>
@@ -77,7 +89,9 @@
         </if>
     </select>
     <select id="selectByProductId" resultMap="productOrderItemMap">
-        SELECT productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id FROM productOrderItem
+        SELECT
+        productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
+        FROM productOrderItem
         <where>
             productOrderItem_product_id = #{product_id}
         </where>
@@ -86,7 +100,9 @@
         </if>
     </select>
     <select id="selectOne" resultMap="productOrderItemMap" parameterType="int">
-        SELECT productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id FROM productOrderItem
+        SELECT
+        productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
+        FROM productOrderItem
         <where>
             productOrderItem__id = #{productOrderItem_id}
         </where>

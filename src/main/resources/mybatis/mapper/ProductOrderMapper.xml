@@ -10,7 +10,6 @@
         <result property="productOrder_post" column="productOrder_post"/>
         <result property="productOrder_receiver" column="productOrder_receiver"/>
         <result property="productOrder_mobile" column="productOrder_mobile"/>
-        <result property="productOrder_userMessage" column="productOrder_userMessage"/>
         <result property="productOrder_pay_date" column="productOrder_pay_date"/>
         <result property="productOrder_delivery_date" column="productOrder_delivery_date"/>
         <result property="productOrder_confirm_date" column="productOrder_confirm_date"/>
@@ -24,7 +23,8 @@
     </resultMap>
 
     <insert id="insertOne" parameterType="productOrder">
-        INSERT productOrder (productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_userMessage,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id)
+        INSERT productOrder
+        (productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id)
             VALUES (
             null,
             #{productOrder.productOrder_id},
@@ -33,7 +33,6 @@
             #{productOrder.productOrder_post},
             #{productOrder.productOrder_receiver},
             #{productOrder.productOrder_mobile},
-            #{productOrder.productOrder_userMessage},
             #{productOrder.productOrder_pay_date},
             #{productOrder.productOrder_delivery_date},
             #{productOrder.productOrder_confirm_date},
@@ -74,7 +73,9 @@
         </where>
     </delete>
     <select id="select" resultMap="productOrderMap">
-        SELECT productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_userMessage,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id FROM productOrder
+        SELECT
+        productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id
+        FROM productOrder
         <where>
             <if test="productOrder != null">
                 <if test="productOrder.productOrder_code">productOrder_code LIKE concat('%',#{productOrder.productOrder_code},'%')</if>
@@ -90,17 +91,21 @@
             ORDER BY #{orderUtil.orderBy}<if test="orderUtil.isDesc"> desc</if>
         </if>
         <if test="pageUtil != null">
-            LIMIT #{pageUtil.index},#{pageUtil.count}
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>
     </select>
     <select id="selectOne" resultMap="productOrderMap" parameterType="int">
-        SELECT productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_userMessage,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id FROM productOrder
+        SELECT
+        productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id
+        FROM productOrder
         <where>
             productOrder_id = #{productOrder_id}
         </where>
     </select>
     <select id="selectByCode" resultMap="productOrderMap" parameterType="string">
-        SELECT productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_userMessage,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id FROM productOrder
+        SELECT
+        productOrder_id,productOrder_code,productOrder_detail_address,productOrder_post,productOrder_receiver,productOrder_mobile,productOrder_pay_date,productOrder_delivery_date,productOrder_confirm_date,productOrder_status,productOrder_address,productOrder_user_id
+        FROM productOrder
         <where>
             productOrder_code = #{productOrder_code}
         </where>
