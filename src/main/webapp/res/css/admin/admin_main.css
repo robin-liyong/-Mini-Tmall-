@@ -388,55 +388,54 @@ span.details_unit{
 }
 
 #pageDiv > ul {
+    margin-left: -20px;
     display: inline-block;
-    height: 34px;
+    height: 32px;
     margin-bottom: 0;
     padding: 0;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #pageDiv li {
+    width: 32px;
+    height: 32px;
     float: left;
     list-style: none;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    color: #333;
+    border-radius: 8px;
+    margin: 0 3px;
+    box-shadow: 0 0 2px #ddd;
 }
 
-#pageDiv li:first-child {
-    border-radius: 5px 0 0 5px;
-    border-left: 1px solid #ddd;
-}
-
-#pageDiv li:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-#pageDiv a {
-    display: inline-block;
-    padding: 6px 14px;
-    text-decoration: none;
-}
-
-#pageDiv a:hover {
+#pageDiv li:hover {
     background-color: #eee;
-    cursor: pointer;
     text-decoration: none;
 }
 
-#pageDiv .disabled > a {
+#pageDiv li > a {
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    line-height: 32px;
+    color: #666;
+    cursor: pointer;
+}
+
+#pageDiv li.disabled > a {
     color: #dddddd;
-    cursor: not-allowed;
-}
-
-#pageDiv .disabled > a:hover {
-    background-color: #fff;
-}
-
-#pageDiv .pageThis > a {
-    color: black;
     cursor: default;
 }
 
-#pageDiv .pageThis > a:hover {
-    background-color: #fff;
+#pageDiv li.pageThis {
+    background-color: #ff7874;
+    border: 0;
+}
+
+#pageDiv .pageThis > a {
+    color: #fff;
 }

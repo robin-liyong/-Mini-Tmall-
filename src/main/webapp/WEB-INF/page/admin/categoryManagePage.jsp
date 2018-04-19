@@ -3,11 +3,11 @@
 <html>
 <head>
     <script>
+        //检索数据集
+        var dataList = {
+            "category_name": null
+        };
         $(function () {
-            //检索数据集
-            var dataList = {
-                "category_name": null
-            };
             /******
              * event
              * *****/
@@ -58,6 +58,14 @@
                         tbody.children("tr").click(function () {
                             trDataStyle($(this));
                         });
+                        //分页
+                        var pageUtil = {
+                            index: data.pageUtil.index,
+                            count: data.pageUtil.count,
+                            total: data.pageUtil.total,
+                            totalPage: data.totalPage
+                        };
+                        createPageDiv($(".loader"), pageUtil);
                     }
                 },
                 beforeSend: function () {
@@ -87,6 +95,11 @@
             document.title = "Tmall管理后台 - " + title;
             //ajax请求页面
             ajaxUtil.getPage(url, null, true);
+        }
+
+        //获取页码数据
+        function getPage(index) {
+            getData($(this), "admin/category/" + index + "/10", dataList);
         }
     </script>
 </head>
@@ -140,8 +153,8 @@
         </c:forEach>
         </tbody>
     </table>
+    <%@ include file="include/page.jsp" %>
     <div class="loader"></div>
 </div>
-<%@ include file="include/page.jsp" %>
 </body>
 </html>

@@ -33,15 +33,15 @@ function trDataStyle(obj) {
 }
 
 //生成PageDIV
-function createPageDiv(obj, pageUtil, totalPage) {
+function createPageDiv(obj, pageUtil) {
     $("#pageDiv").detach();
     obj.before("<div id='pageDiv'></div>");
     var pageDiv = $("#pageDiv");
 
     pageDiv.append("<ul><li data-name='firstPage'><a href='javascript:void(0)' onclick='getPage(0)' aria-label='首页'><span aria-hidden='true'>&laquo;</span></a></li><li data-name='prevPage'><a href='javascript:void(0)' onclick='getPage(" + (pageUtil.index - 1) + ")' aria-label='上一页'><span aria-hidden='true'>&lsaquo;</span></a></li></ul>");
     var pageDivUl = $("#pageDiv>ul");
-    for (var i = 1; i <= totalPage; i++) {
-        if (i - pageUtil.index >= -3 || i - pageUtil.index <= 3) {
+    for (var i = 1; i <= pageUtil.totalPage; i++) {
+        if (i - pageUtil.index >= -5 || i - pageUtil.index <= 5) {
             if (i === pageUtil.index + 1) {
                 pageDivUl.append("<li class='pageThis'><a href='javascript:void(0)'>" + i + "</a></li>");
             } else {
@@ -49,11 +49,11 @@ function createPageDiv(obj, pageUtil, totalPage) {
             }
         }
     }
-    pageDivUl.append("<li data-name='nextPage'><a href='javascript:void(0)' onclick='getPage(" + (pageUtil.index + 1) + ")' aria-label='下一页'><span aria-hidden='true'>&rsaquo;</span></a></li><li data-name='lastPage'><a href='javascript:void(0)' onclick='getPage(" + (totalPage - 1) + ")' aria-label='尾页'><span aria-hidden='true'>&raquo;</span></a></li>");
+    pageDivUl.append("<li data-name='nextPage'><a href='javascript:void(0)' onclick='getPage(" + (pageUtil.index + 1) + ")' aria-label='下一页'><span aria-hidden='true'>&rsaquo;</span></a></li><li data-name='lastPage'><a href='javascript:void(0)' onclick='getPage(" + (pageUtil.totalPage - 1) + ")' aria-label='尾页'><span aria-hidden='true'>&raquo;</span></a></li>");
     if (pageUtil.index <= 0) {
         $("#pageDiv li[data-name='firstPage'],#pageDiv li[data-name='prevPage']").addClass("disabled").children("a").attr("onclick", null);
     }
-    if (pageUtil.index + 1 >= totalPage) {
+    if (pageUtil.index + 1 >= pageUtil.totalPage) {
         $("#pageDiv li[data-name='nextPage'],#pageDiv li[data-name='lastPage']").addClass("disabled").children("a").attr("onclick", null);
     }
 }

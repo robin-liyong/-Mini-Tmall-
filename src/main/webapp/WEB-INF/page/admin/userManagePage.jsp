@@ -3,14 +3,14 @@
 <html>
 <head>
     <script>
+        //检索数据集
+        var dataList = {
+            "user_name": null,
+            "user_gender_array": null,
+            "orderBy": null,
+            "isDesc": true
+        };
         $(function () {
-            //检索数据集
-            var dataList = {
-                "user_name": null,
-                "user_gender_array": null,
-                "orderBy": null,
-                "isDesc": true
-            };
             /******
              * event
              ******/
@@ -106,6 +106,14 @@
                         tbody.children("tr").click(function () {
                             trDataStyle($(this));
                         });
+                        //分页
+                        var pageUtil = {
+                            index: data.pageUtil.index,
+                            count: data.pageUtil.count,
+                            total: data.pageUtil.total,
+                            totalPage: data.totalPage
+                        };
+                        createPageDiv($(".loader"), pageUtil);
                     }
                 },
                 beforeSend: function () {
@@ -116,6 +124,11 @@
 
                 }
             });
+        }
+
+        //获取页码数据
+        function getPage(index) {
+            getData($(this), "admin/user/" + index + "/10", dataList);
         }
     </script>
     <style rel="stylesheet">

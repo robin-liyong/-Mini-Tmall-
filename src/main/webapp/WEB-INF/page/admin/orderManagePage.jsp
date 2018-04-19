@@ -3,15 +3,15 @@
 <html>
 <head>
     <script>
+        //检索数据集
+        var dataList = {
+            "productOrder_code": null,
+            "productOrder_post": null,
+            "productOrder_status_array": null,
+            "orderBy": null,
+            "isDesc": true
+        };
         $(function () {
-            //检索数据集
-            var dataList = {
-                "productOrder_code": null,
-                "productOrder_post": null,
-                "productOrder_status_array": null,
-                "orderBy": null,
-                "isDesc": true
-            };
             /******
              * event
              ******/
@@ -143,6 +143,14 @@
                         tbody.children("tr").click(function () {
                             trDataStyle($(this));
                         });
+                        //分页
+                        var pageUtil = {
+                            index: data.pageUtil.index,
+                            count: data.pageUtil.count,
+                            total: data.pageUtil.total,
+                            totalPage: data.totalPage
+                        };
+                        createPageDiv($(".loader"), pageUtil);
                     }
                 },
                 beforeSend: function () {
@@ -162,6 +170,11 @@
             document.title = "Tmall管理后台 - 订单详情";
             //ajax请求页面
             ajaxUtil.getPage("order/" + $(obj).parents("tr").find(".order_id").text(), null, true);
+        }
+
+        //获取页码数据
+        function getPage(index) {
+            getData($(this), "admin/order/" + index + "/10", dataList);
         }
     </script>
     <style rel="stylesheet">

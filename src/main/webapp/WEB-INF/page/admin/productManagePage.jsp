@@ -144,9 +144,10 @@
                         var pageUtil = {
                             index: data.pageUtil.index,
                             count: data.pageUtil.count,
-                            total: data.pageUtil.total
+                            total: data.pageUtil.total,
+                            totalPage: data.totalPage
                         };
-                        createPageDiv($(".loader"), pageUtil, data.totalPage);
+                        createPageDiv($(".loader"), pageUtil);
                     }
                 },
                 beforeSend: function () {
@@ -180,7 +181,7 @@
 
         //获取页码数据
         function getPage(index) {
-            getData($(this), "admin/product/" + index + "/10", dataList, true);
+            getData($(this), "admin/product/" + index + "/10", dataList);
         }
     </script>
     <style rel="stylesheet">
