@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
+import com.xq.tmall.entity.Address;
 import com.xq.tmall.entity.User;
 import com.xq.tmall.service.AddressService;
 import com.xq.tmall.service.ReviewService;
@@ -19,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 后台管理-用户页
@@ -33,7 +35,7 @@ public class UserController extends BaseController{
     private ReviewService reviewService;
 
     //转到后台管理-用户页-ajax
-    @RequestMapping("admin/user")
+    @RequestMapping(value = "admin/user", method = RequestMethod.GET)
     public String goUserManagePage(HttpSession session, Map<String, Object> map){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -58,7 +60,7 @@ public class UserController extends BaseController{
 
 
     //转到后台管理-用户详情页-ajax
-    @RequestMapping(value = "admin/user/{uid}")
+    @RequestMapping(value = "admin/user/{uid}", method = RequestMethod.GET)
     public String getUserById(HttpSession session, Map<String,Object> map, @PathVariable Integer uid/* 用户ID */){
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -68,14 +70,39 @@ public class UserController extends BaseController{
 
         logger.info("获取user_id为{}的用户信息",uid);
         User user = userService.get(uid);
+
         logger.info("获取用户详情-所在地地址信息");
-        String address_area_id = user.getUser_address().getAddress_areaId();
-        user.setUser_address(addressService.get(address_area_id));
+        Address address = addressService.get(user.getUser_address().getAddress_areaId());
+        Stack<String> addressStack = new Stack<>();
+        //最后一级地址
+        addressStack.push(address.getAddress_name() + " ");
+        //如果不是第一级地址
+        while (!address.getAddress_areaId().equals(address.getAddress_regionId().getAddress_areaId())) {
+            address = addressService.get(address.getAddress_regionId().getAddress_areaId());
+            addressStack.push(address.getAddress_name() + " ");
+        }
+        StringBuilder builder = new StringBuilder();
+        while (!addressStack.empty()) {
+            builder.append(addressStack.pop());
+        }
+        logger.warn("所在地地址字符串：{}", builder);
+        user.setUser_address(new Address().setAddress_name(builder.toString()));
+
         logger.info("获取用户详情-家乡地址信息");
-        String homeplace_area_id = user.getUser_homeplace().getAddress_areaId();
-        user.setUser_homeplace(addressService.get(homeplace_area_id));
-        logger.info("获取用户详情-评论信息");
-        user.setReviewList(reviewService.getListByUserId(uid, new PageUtil(0, 5)));
+        address = addressService.get(user.getUser_homeplace().getAddress_areaId());
+        //最后一级地址
+        addressStack.push(address.getAddress_name() + " ");
+        //如果不是第一级地址
+        while (!address.getAddress_areaId().equals(address.getAddress_regionId().getAddress_areaId())) {
+            address = addressService.get(address.getAddress_regionId().getAddress_areaId());
+            addressStack.push(address.getAddress_name() + " ");
+        }
+        builder = new StringBuilder();
+        while (!addressStack.empty()) {
+            builder.append(addressStack.pop());
+        }
+        logger.warn("所在地地址字符串：{}", builder);
+        user.setUser_address(new Address().setAddress_name(builder.toString()));
         map.put("user",user);
 
         logger.info("转到后台管理-用户详情页-ajax方式");

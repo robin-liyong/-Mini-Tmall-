@@ -8,10 +8,10 @@
         <result property="productOrderItem_number" column="productOrderItem_number"/>
         <result property="productOrderItem_price" column="productOrderItem_price"/>
         <result property="productOrderItem_userMessage" column="productOrderItem_userMessage"/>
-        <association property="productOrderItem_product" column="productOrderItem_product_id" javaType="com.xq.tmall.entity.Product">
-            <id property="product_id" column="product_id"/>
+        <association property="productOrderItem_product" javaType="com.xq.tmall.entity.Product">
+            <id property="product_id" column="productOrderItem_product_id"/>
         </association>
-        <association property="productOrderItem_order" javaType="com.xq.tmall.entity.ProductOrderItem">
+        <association property="productOrderItem_order" javaType="com.xq.tmall.entity.ProductOrder">
             <id property="productOrder_id" column="productOrderItem_order_id"/>
         </association>
         <association property="productOrderItem_user" javaType="com.xq.tmall.entity.User">

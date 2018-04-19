@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Address;
+import com.xq.tmall.entity.Product;
 import com.xq.tmall.entity.ProductOrder;
+import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -31,6 +34,10 @@ public class OrderController extends BaseController{
     private UserService userService;
     @Resource(name = "productOrderItemService")
     private ProductOrderItemService productOrderItemService;
+    @Resource(name = "productService")
+    private ProductService productService;
+    @Resource(name = "productImageService")
+    private ProductImageService productImageService;
     @Resource(name = "lastIDService")
     private LastIDService lastIDService;
 
@@ -90,10 +97,47 @@ public class OrderController extends BaseController{
         logger.info("获取订单详情-用户信息");
         order.setProductOrder_user(userService.get(order.getProductOrder_user().getUser_id()));
         logger.info("获取订单详情-订单项信息");
-        order.setProductOrderItemList(productOrderItemService.getListByOrderId(oid, new PageUtil(1, 5)));
+        List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByOrderId(oid, null);
+        if (productOrderItemList != null) {
+            logger.info("获取订单详情-订单项对应的产品信息");
+            for (ProductOrderItem productOrderItem : productOrderItemList) {
+                Integer productId = productOrderItem.getProductOrderItem_product().getProduct_id();
+                logger.warn("获取产品ID为{}的产品信息", productId);
+                Product product = productService.get(productId);
+                if (product != null) {
+                    logger.warn("获取产品ID为{}的第一张预览图片信息", productId);
+                    product.setSingleProductImageList(productImageService.getList(productId, (byte) 0, new PageUtil(0, 1)));
+                }
+                productOrderItem.setProductOrderItem_product(product);
+            }
+        }
+        order.setProductOrderItemList(productOrderItemList);
         map.put("order", order);
         logger.info("转到后台管理-订单详情页-ajax方式");
         return "admin/include/orderDetails";
+    }
+
+    //更新订单信息-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/order/{order_id}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    public String updateOrder(@PathVariable("order_id") String order_id) {
+        JSONObject jsonObject = new JSONObject();
+        logger.info("整合订单信息");
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(Integer.valueOf(order_id))
+                .setProductOrder_status((byte) 2)
+                .setProductOrder_delivery_date(new Date());
+        logger.info("更新订单信息，订单ID值为：{}", order_id);
+        boolean yn = productOrderService.update(productOrder);
+        if (yn) {
+            logger.info("更新成功！");
+            jsonObject.put("success", true);
+        } else {
+            logger.info("更新失败！");
+            jsonObject.put("success", false);
+        }
+        jsonObject.put("order_id", order_id);
+        return jsonObject.toJSONString();
     }
 
     //按条件查询订单-ajax
@@ -143,27 +187,5 @@ public class OrderController extends BaseController{
         object.put("pageUtil", pageUtil);
 
         return object.toJSONString();
-    }
-
-    //根据order_id更新订单
-    @ResponseBody
-    @RequestMapping(value = "admin/order/{order_id}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
-    public String OrderUpdate(@PathVariable("order_id") String order_id) {
-
-        logger.info("创建order_id为{}的订单对象", order_id);
-        ProductOrder productOrder = new ProductOrder()
-                .setProductOrder_id(Integer.valueOf(order_id))
-                .setProductOrder_status((byte) 2);
-
-        logger.info("订单更新中...");
-        JSONObject jsonObject = new JSONObject();
-        if (productOrderService.update(productOrder)) {
-            jsonObject.put("success", true);
-            logger.info("订单更新成功！");
-        } else {
-            logger.info("订单更新失败！");
-            jsonObject.put("success", false);
-        }
-        return jsonObject.toJSONString();
     }
 }
