@@ -1,6 +1,8 @@
 package com.xq.tmall.controller.fore;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
+import com.xq.tmall.entity.User;
 import com.xq.tmall.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,18 @@ public class LoginController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String checkLogin(HttpSession session, @RequestParam String username, @RequestParam String password) {
-        //参考后端的登录验证，注意注释
-        return "to be continued";
+        logger.info("用户验证登录");
+        User user=userService.login(username,password);
+
+        JSONObject jsonObject=new JSONObject();
+        if (user==null){
+            logger.info("登录验证失败");
+            jsonObject.put("success",false);
+        }else{
+            logger.info("登录验证成功,用户ID传入会话");
+            session.setAttribute("userId",user.getUser_id());
+            jsonObject.put("success",true);
+        }
+        return  jsonObject.toJSONString();
     }
 }
