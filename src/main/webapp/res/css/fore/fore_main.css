@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+}
+
+input {
+    outline: none;
+}
+
+body {
+    min-width: 990px;
+}
+
+li {
+    list-style: none;
+}
+
+a:focus {
+    text-decoration: none;
+}

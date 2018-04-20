@@ -29,10 +29,10 @@ public class BaseController {
     protected Object checkUser(HttpSession session){
         Object o = session.getAttribute("userId");
         if(o==null){
-            logger.info("未登录");
+            logger.info("用户未登录");
             return null;
         }
-        logger.info("登录成功");
+        logger.info("用户已登录，用户ID：{}", o);
         return o;
     }
 

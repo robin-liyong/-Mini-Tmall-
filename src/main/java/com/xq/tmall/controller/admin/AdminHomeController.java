@@ -14,7 +14,7 @@ import java.util.Map;
  * 后台管理-主页
  */
 @Controller
-public class HomeController extends BaseController{
+public class AdminHomeController extends BaseController {
     @Resource(name = "adminService")
     private AdminService adminService;
 

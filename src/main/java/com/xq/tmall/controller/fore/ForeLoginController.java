@@ -18,12 +18,12 @@ import java.util.Map;
  * 前台天猫-登陆页
  */
 @Controller
-public class LoginController extends BaseController {
+public class ForeLoginController extends BaseController {
     @Resource(name = "userService")
     private UserService userService;
 
     //转到前台天猫-主页
-    @RequestMapping("/login")
+    @RequestMapping("login")
     public String goToPage(HttpSession session, Map<String, Object> map) {
         logger.info("转到前台天猫-登录页");
         return "fore/loginPage";
@@ -31,7 +31,7 @@ public class LoginController extends BaseController {
 
     //登陆验证-ajax
     @ResponseBody
-    @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "login/doLogin", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String checkLogin(HttpSession session, @RequestParam String username, @RequestParam String password) {
         logger.info("用户验证登录");
         User user=userService.login(username,password);

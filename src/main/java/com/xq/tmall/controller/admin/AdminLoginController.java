@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * 后台管理-登录页
  */
 @Controller
-public class LoginController extends BaseController{
+public class AdminLoginController extends BaseController {
     @Resource(name = "adminService")
     private AdminService adminService;
 

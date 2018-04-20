@@ -1,6 +1,5 @@
 package com.xq.tmall.controller.fore;
 
-import com.sun.javafx.collections.MappingChange;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.entity.Product;
@@ -10,7 +9,6 @@ import com.xq.tmall.service.ProductImageService;
 import com.xq.tmall.service.ProductService;
 import com.xq.tmall.service.UserService;
 import com.xq.tmall.util.PageUtil;
-import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +22,7 @@ import java.util.Map;
  * 前台天猫-主页
  */
 @Controller
-public class HomeController extends BaseController {
+public class ForeHomeController extends BaseController {
     @Resource(name = "userService")
     private UserService userService;
     @Resource(name="categoryService")
@@ -50,9 +48,10 @@ public class HomeController extends BaseController {
        for(Category category : categoryList){
            List<List<Product>> productList = new ArrayList<>(8);
            Integer category_id = category.getCategory_id();
-           for(int i=1;i<=8;i++){
-               List<Product> products = productService.getList(new Product().setProduct_category(new Category().setCategory_id(category_id)),null,null,new PageUtil(i,10));
-               if(products != null){
+           for (int i = 1; i <= 8; i++) {
+               logger.info("获取分类id为{}的产品集合");
+               List<Product> products = productService.getList(new Product().setProduct_category(new Category().setCategory_id(category_id)), null, null, new PageUtil(i, 8));
+               if (i == 1 && products != null) {
                    for(Product product : products){
                        Integer product_id = product.getProduct_id();
                        productImageService.getList(product_id,(byte)0,new PageUtil(0,1));
