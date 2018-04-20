@@ -1,9 +1,14 @@
 package com.xq.tmall.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Category {
     private Integer category_id;
     private String category_name;
     private String category_image_src;
+    //产品数组
+    private List<List<Product>> productList = new ArrayList<>(8);
 
     @Override
     public String toString() {
@@ -49,5 +54,13 @@ public class Category {
     public Category setCategory_image_src(String category_image_src) {
         this.category_image_src = category_image_src;
         return this;
+    }
+
+    public List<List<Product>> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<List<Product>> productList) {
+        this.productList = productList;
     }
 }

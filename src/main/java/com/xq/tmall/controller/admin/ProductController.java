@@ -47,7 +47,7 @@ public class ProductController extends BaseController{
             return null;
         }
 
-        logger.info("获取产品种类列表");
+        logger.info("获取产品分类列表");
         List<Category> categoryList = categoryService.getList(null, null);
         map.put("categoryList", categoryList);
         logger.info("获取前10条产品列表");
