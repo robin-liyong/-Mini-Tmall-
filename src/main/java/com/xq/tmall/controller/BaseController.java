@@ -24,4 +24,16 @@ public class BaseController {
         logger.info("权限验证成功，管理员ID：{}",o);
         return o;
     }
+
+    //检查用户是否登录
+    protected Object checkUser(HttpSession session){
+        Object o = session.getAttribute("userId");
+        if(o==null){
+            logger.info("未登录");
+            return null;
+        }
+        logger.info("登录成功");
+        return o;
+    }
+
 }

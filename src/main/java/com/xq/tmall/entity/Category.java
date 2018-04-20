@@ -7,8 +7,8 @@ public class Category {
     private Integer category_id;
     private String category_name;
     private String category_image_src;
-    //产品数组
-    private List<List<Product>> productList = new ArrayList<>(8);
+    //产品二维集合
+    private List<List<Product>> productList;
 
     @Override
     public String toString() {
