@@ -17,6 +17,8 @@ public class User {
     private Address user_homeplace;
     private String user_profile_picture_src;
     private List<Review> reviewList;
+    private List<ProductOrderItem> productOrderItemList;
+    private List<ProductOrder> productOrderList;
 
     @Override
     public String toString() {
@@ -116,7 +118,7 @@ public class User {
 
     public String getUser_birthday() {
         if(user_birthday != null){
-            SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+            SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日", Locale.UK);
             return time.format(user_birthday);
         }
         return null;
@@ -161,5 +163,21 @@ public class User {
     public User setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
         return this;
+    }
+
+    public List<ProductOrderItem> getProductOrderItemList() {
+        return productOrderItemList;
+    }
+
+    public void setProductOrderItemList(List<ProductOrderItem> productOrderItemList) {
+        this.productOrderItemList = productOrderItemList;
+    }
+
+    public List<ProductOrder> getProductOrderList() {
+        return productOrderList;
+    }
+
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
     }
 }

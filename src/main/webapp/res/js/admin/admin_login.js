@@ -84,6 +84,8 @@ function initialCookie() {
         url = cookieUtil.getCookie("backgroundImageUrl");
         if(url !== null) {
             $("#div_background").css("background-image", url);
+        } else {
+            $("#div_background").css("background-image", "/tmall/res/images/admin/loginPage/background-1.jpg");
         }
         if(username !== null){
             $("#input_username").val(username);

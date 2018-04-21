@@ -8,7 +8,6 @@ html,body,#div_background{
     min-height: 650px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(../../images/admin/loginPage/background-1.jpg);
 }
 #div_background>#div_nav{
     width: 100%;

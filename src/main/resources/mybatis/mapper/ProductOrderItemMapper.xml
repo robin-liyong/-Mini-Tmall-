@@ -82,7 +82,7 @@
         productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
         FROM productOrderItem
         <where>
-            productOrderItem_user_id = #{user_id}
+            productOrderItem_user_id = #{user_id} and productOrderItem_order_id is null
         </where>
         <if test="pageUtil != null">
             LIMIT #{pageUtil.index},#{pageUtil.count}

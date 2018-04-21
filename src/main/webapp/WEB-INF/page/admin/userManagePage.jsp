@@ -126,6 +126,15 @@
             });
         }
 
+        //获取用户子界面
+        function getChildPage(obj) {
+            //设置样式
+            $("#div_home_title").children("span").text("用户详情");
+            document.title = "Tmall管理后台 - 用户详情";
+            //ajax请求页面
+            ajaxUtil.getPage("user/" + $(obj).parents("tr").find(".user_id").text(), null, true);
+        }
+
         //获取页码数据
         function getPage(index) {
             getData($(this), "admin/user/" + index + "/10", dataList);
@@ -219,8 +228,9 @@
                         <c:otherwise>女</c:otherwise>
                     </c:choose>
                 </td>
-                <td><span class="td_special" title="查看用户详情"><a href="#">详情</a></span></td>
-                <td hidden>${user.user_id}</td>
+                <td><span class="td_special" title="查看用户详情"><a href='javascript:void(0)'
+                                                               onclick='getChildPage(this)'>详情</a></span></td>
+                <td hidden class="user_id">${user.user_id}</td>
             </tr>
         </c:forEach>
         </tbody>

@@ -82,15 +82,6 @@
         }
     </script>
     <style rel="stylesheet">
-        .details_value.details_value_text {
-            vertical-align: text-top;
-            width: 500px;
-        }
-
-        #lbl_order_userMessage {
-            vertical-align: text-top;
-        }
-
         #wait {
             width: 600px;
             height: 2px;

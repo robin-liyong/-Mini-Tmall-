@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Address;
+import com.xq.tmall.entity.Product;
+import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.entity.User;
-import com.xq.tmall.service.AddressService;
-import com.xq.tmall.service.ReviewService;
-import com.xq.tmall.service.UserService;
+import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
@@ -33,6 +33,12 @@ public class UserController extends BaseController{
     private AddressService addressService;
     @Resource(name ="reviewService")
     private ReviewService reviewService;
+    @Resource(name = "productOrderItemService")
+    private ProductOrderItemService productOrderItemService;
+    @Resource(name = "productService")
+    private ProductService productService;
+    @Resource(name = "productImageService")
+    private ProductImageService productImageService;
 
     //转到后台管理-用户页-ajax
     @RequestMapping(value = "admin/user", method = RequestMethod.GET)
@@ -70,6 +76,9 @@ public class UserController extends BaseController{
 
         logger.info("获取user_id为{}的用户信息",uid);
         User user = userService.get(uid);
+        if (user == null) {
+            throw new RuntimeException();
+        }
 
         logger.info("获取用户详情-所在地地址信息");
         Address address = addressService.get(user.getUser_address().getAddress_areaId());
@@ -85,7 +94,7 @@ public class UserController extends BaseController{
         while (!addressStack.empty()) {
             builder.append(addressStack.pop());
         }
-        logger.warn("所在地地址字符串：{}", builder);
+        logger.info("所在地地址字符串：{}", builder);
         user.setUser_address(new Address().setAddress_name(builder.toString()));
 
         logger.info("获取用户详情-家乡地址信息");
@@ -101,8 +110,28 @@ public class UserController extends BaseController{
         while (!addressStack.empty()) {
             builder.append(addressStack.pop());
         }
-        logger.warn("所在地地址字符串：{}", builder);
-        user.setUser_address(new Address().setAddress_name(builder.toString()));
+        logger.info("家乡地址字符串：{}", builder);
+        user.setUser_homeplace(new Address().setAddress_name(builder.toString()));
+
+        logger.info("获取用户详情-购物车订单项信息");
+        List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByUserId(user.getUser_id(), null);
+        if (productOrderItemList != null) {
+            logger.info("获取用户详情-购物车订单项对应的产品信息");
+            for (ProductOrderItem productOrderItem : productOrderItemList) {
+                Integer productId = productOrderItem.getProductOrderItem_product().getProduct_id();
+                logger.warn("获取产品ID为{}的产品信息", productId);
+                Product product = productService.get(productId);
+                if (product != null) {
+                    logger.warn("获取产品ID为{}的第一张预览图片信息", productId);
+                    product.setSingleProductImageList(productImageService.getList(productId, (byte) 0, new PageUtil(0, 1)));
+                }
+                productOrderItem.setProductOrderItem_product(product);
+            }
+        }
+        user.setProductOrderItemList(productOrderItemList);
+
+        logger.info("用户隐私加密");
+        user.setUser_realname(user.getUser_realname().substring(0, 1) + "*");
         map.put("user",user);
 
         logger.info("转到后台管理-用户详情页-ajax方式");
