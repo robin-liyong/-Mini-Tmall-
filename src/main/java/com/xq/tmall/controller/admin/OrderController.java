@@ -174,7 +174,7 @@ public class OrderController extends BaseController{
         }
 
         JSONObject object = new JSONObject();
-        logger.info("按条件获取第{}页的{}条订单",index,count);
+        logger.info("按条件获取第{}页的{}条订单", index + 1, count);
         PageUtil pageUtil = new PageUtil(index, count);
         List<ProductOrder> productOrderList = productOrderService.getList(productOrder, productOrder_status_array, orderUtil, pageUtil);
         object.put("productOrderList", JSONArray.parseArray(JSON.toJSONString(productOrderList)));

@@ -412,7 +412,7 @@ public class ProductController extends BaseController{
         }
 
         JSONObject object = new JSONObject();
-        logger.info("按条件获取第{}页的{}条产品",index,count);
+        logger.info("按条件获取第{}页的{}条产品", index + 1, count);
         PageUtil pageUtil = new PageUtil(index, count);
         List<Product> productList = productService.getList(product, product_isEnabled_array, orderUtil, pageUtil);
         object.put("productList", JSONArray.parseArray(JSON.toJSONString(productList)));

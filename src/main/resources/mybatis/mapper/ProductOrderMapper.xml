@@ -88,7 +88,8 @@
             </if>
         </where>
         <if test="orderUtil != null">
-            ORDER BY #{orderUtil.orderBy}<if test="orderUtil.isDesc"> desc</if>
+            ORDER BY ${orderUtil.orderBy}
+            <if test="orderUtil.isDesc">desc</if>
         </if>
         <if test="pageUtil != null">
             LIMIT #{pageUtil.pageStart},#{pageUtil.count}

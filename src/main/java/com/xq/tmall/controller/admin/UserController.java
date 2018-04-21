@@ -172,7 +172,7 @@ public class UserController extends BaseController{
         }
 
         JSONObject object = new JSONObject();
-        logger.info("按条件获取第{}页的{}条用户",index,count);
+        logger.info("按条件获取第{}页的{}条用户", index + 1, count);
         PageUtil pageUtil = new PageUtil(index, count);
         List<User> userList = userService.getList(user, orderUtil, pageUtil);
         object.put("userList", JSONArray.parseArray(JSON.toJSONString(userList)));

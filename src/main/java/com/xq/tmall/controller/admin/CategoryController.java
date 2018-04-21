@@ -152,7 +152,7 @@ public class CategoryController extends BaseController {
         }
 
         JSONObject object = new JSONObject();
-        logger.info("按条件获取第{}页的{}条分类", index, count);
+        logger.info("按条件获取第{}页的{}条分类", index + 1, count);
         PageUtil pageUtil = new PageUtil(index, count);
         List<Category> categoryList = categoryService.getList(category_name, pageUtil);
         object.put("categoryList", JSONArray.parseArray(JSON.toJSONString(categoryList)));
