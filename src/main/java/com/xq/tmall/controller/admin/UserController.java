@@ -76,10 +76,6 @@ public class UserController extends BaseController{
 
         logger.info("获取user_id为{}的用户信息",uid);
         User user = userService.get(uid);
-        if (user == null) {
-            throw new RuntimeException();
-        }
-
         logger.info("获取用户详情-所在地地址信息");
         Address address = addressService.get(user.getUser_address().getAddress_areaId());
         Stack<String> addressStack = new Stack<>();

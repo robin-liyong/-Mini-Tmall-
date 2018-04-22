@@ -9,6 +9,8 @@ import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.service.LastIDService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,6 +89,7 @@ public class CategoryController extends BaseController {
     }
 
     //添加分类信息-ajax
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/category", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String addCategory(@RequestParam String category_name/* 分类名称 */,
@@ -104,8 +107,8 @@ public class CategoryController extends BaseController {
             jsonObject.put("success", true);
             jsonObject.put("category_id", category_id);
         } else {
-            logger.warn("添加失败！");
             jsonObject.put("success", false);
+            logger.warn("添加失败！事务回滚");
             throw new RuntimeException();
         }
 
@@ -131,8 +134,8 @@ public class CategoryController extends BaseController {
             jsonObject.put("success", true);
             jsonObject.put("category_id", category_id);
         } else {
-            logger.info("更新失败！");
             jsonObject.put("success", false);
+            logger.info("更新失败！事务回滚");
             throw new RuntimeException();
         }
 

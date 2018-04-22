@@ -5,6 +5,8 @@ import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.service.AdminService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,6 +83,7 @@ public class AccountController extends BaseController{
     }
 
     //更新管理员信息
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/account/{admin_id}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     public String updateAdmin(HttpSession session, @RequestParam String admin_nickname/*管理员昵称*/,
@@ -102,7 +105,7 @@ public class AccountController extends BaseController{
             logger.info("获取需要修改的管理员信息");
             Admin admin = adminService.get(null, Integer.valueOf(adminId.toString()));
             if (adminService.login(admin.getAdmin_name(), admin_password) != null) {
-                logger.info("原密码正确，允许修改密码");
+                logger.info("原密码正确");
                 putAdmin.setAdmin_password(admin_newPassword);
             } else {
                 logger.info("原密码错误，返回错误信息");
@@ -125,9 +128,11 @@ public class AccountController extends BaseController{
             session.invalidate();
             logger.info("登录信息已清除");
         } else {
-            logger.warn("更新失败！");
             jsonObject.put("success", false);
+            logger.warn("更新失败！事务回滚");
+            throw new RuntimeException();
         }
+
         return jsonObject.toJSONString();
     }
 }
