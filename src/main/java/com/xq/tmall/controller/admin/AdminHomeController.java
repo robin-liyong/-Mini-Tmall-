@@ -41,7 +41,7 @@ public class AdminHomeController extends BaseController {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("转到后台管理-主页-ajax方式");

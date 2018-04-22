@@ -46,7 +46,7 @@ public class UserController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取前十条用户信息");
@@ -71,7 +71,7 @@ public class UserController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取user_id为{}的用户信息",uid);

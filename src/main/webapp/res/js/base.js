@@ -103,7 +103,9 @@ var ajaxUtil = {
                              ******/
                             //获得表单元素焦点时
                             $(".frm_input,.frm_radio").focus(function () {
-                                styleUtil.errorHide($(".frm_error_msg"));
+                                $(".frm_error_msg").each(function () {
+                                    styleUtil.errorHide($(this));
+                                });
                             });
                             //点击table中的全选框时
                             $("#cbx_select_all").click(function () {

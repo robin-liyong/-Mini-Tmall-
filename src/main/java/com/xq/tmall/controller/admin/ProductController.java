@@ -44,7 +44,7 @@ public class ProductController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取产品分类列表");
@@ -71,7 +71,7 @@ public class ProductController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取product_id为{}的产品信息",pid);

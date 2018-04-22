@@ -47,7 +47,7 @@ public class OrderController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取前10条订单列表");
@@ -71,7 +71,7 @@ public class OrderController extends BaseController{
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if(adminId == null){
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取order_id为{}的订单信息",oid);

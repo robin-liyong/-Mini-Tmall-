@@ -130,6 +130,7 @@
 </head>
 <body>
 <div class="details_div_first">
+    <input type="hidden" value="${requestScope.order.productOrder_id}" id="details_order_id"/>
     <div class="frm_div">
         <label class="frm_label text_info" id="lbl_order_id">订单号</label>
         <span class="details_value" id="span_order_id">${requestScope.order.productOrder_code}</span>
@@ -142,7 +143,6 @@
 </div>
 <div class="details_div">
     <span class="details_title text_info">基本信息</span>
-    <input type="hidden" value="${requestScope.order.productOrder_id}" id="details_order_id"/>
     <div class="frm_div">
         <label class="frm_label text_info" id="lbl_order_receiver">收货人姓名</label>
         <span class="details_value" id="span_order_receiver">${requestScope.order.productOrder_receiver}</span>

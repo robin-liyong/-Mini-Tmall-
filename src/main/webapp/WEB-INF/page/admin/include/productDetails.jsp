@@ -276,6 +276,7 @@
                     type: "get",
                     data: null,
                     success: function (data) {
+                        $(".loader").css("display", "none");
                         //清空原有数据
                         var listDiv = $(".details_property_list");
                         listDiv.empty().append("<span class='details_title text_info'>属性值信息</span>");
@@ -296,7 +297,7 @@
                         }
                     },
                     beforeSend: function () {
-
+                        $(".loader").css("display", "block");
                     },
                     error: function () {
 
@@ -440,6 +441,7 @@
 </head>
 <body>
 <div class="details_div_first">
+    <input type="hidden" value="${requestScope.product.product_id}" id="details_product_id"/>
     <div class="frm_div_last warn_height">
         <label class="frm_label text_info" id="lbl_product_category_id" for="select_product_category">产品类型</label>
         <select class="selectpicker" id="select_product_category" data-size="8">
@@ -459,7 +461,6 @@
 </div>
 <div class="details_div">
     <span class="details_title text_info">基本信息</span>
-    <input type="hidden" value="${requestScope.product.product_id}" id="details_product_id"/>
     <div class="frm_div">
         <label class="frm_label text_info" id="lbl_product_id">产品编号</label>
         <span class="details_value" id="span_product_id">系统指定</span>

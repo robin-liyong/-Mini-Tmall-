@@ -39,7 +39,7 @@ public class CategoryController extends BaseController {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("获取前10条分类列表");
@@ -63,7 +63,7 @@ public class CategoryController extends BaseController {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
-            return null;
+            return "admin/include/loginMessage";
         }
         logger.info("获取category_id为{}的分类信息", cid);
         Category category = categoryService.get(cid);
@@ -79,7 +79,7 @@ public class CategoryController extends BaseController {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
-            return null;
+            return "admin/include/loginMessage";
         }
 
         logger.info("转到后台管理-分类添加页-ajax方式");
