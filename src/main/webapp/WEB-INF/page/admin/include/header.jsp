@@ -13,5 +13,6 @@
     <script src="${pageContext.request.contextPath}/res/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/res/js/bootstrap-select.min.js"></script>
     <script src="${pageContext.request.contextPath}/res/js/defaults-zh_CN.min.js"></script>
+    <script src="${pageContext.request.contextPath}/res/js/echarts.js"></script>
     <script src="${pageContext.request.contextPath}/res/js/base.js"></script>
 </head>

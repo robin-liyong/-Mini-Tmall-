@@ -33,7 +33,7 @@ $(function () {
                 default:
                     color = "#BD160D";
             }
-            if (banner.css("opacity") != "1") {
+            if (banner.css("opacity") !== "1") {
                 $("#slider_" + index).css("background", "rgba(255,255,255,0.4)");
                 img.css("display", "block").stop(true, true).animate({opacity: 1}, 200);
                 banner.css("background-color", color).stop(true, true).animate({opacity: "1"}, 200);
