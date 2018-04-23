@@ -131,4 +131,16 @@
     <select id="selectSaleCount" resultType="int" parameterType="int">
         SELECT SUM(productOrderItem_number) FROM productOrderItem WHERE productOrderItem_product_id = #{product_id}
     </select>
+
+    <select id="getTotalByProductId" resultType="orderGroup">
+        SELECT
+        productOrder.productOrder_pay_date as productOrder_pay_date,count(productOrder.productOrder_id) as productOrder_count,productOrder.productOrder_status from productOrderItem,productOrder
+        <where>
+            productOrderItem.productOrder_pay_date BETWEEN #{beginDate} AND #{endDate}
+            <if test="product_id != null">
+                AND productOrder.productOrder_id = #{product_id}
+           </if>
+        </where>
+        GROUP BY productOrder.productOrder_pay_date,productOrder.productOrder_status
+    </select>
 </mapper>

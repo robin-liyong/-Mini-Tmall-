@@ -1,6 +1,7 @@
 package com.xq.tmall.service.impl;
 
 import com.xq.tmall.dao.ProductOrderItemMapper;
+import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.service.ProductOrderItemService;
 import com.xq.tmall.util.PageUtil;
@@ -75,7 +76,7 @@ public class ProductOrderItemServiceImpl implements ProductOrderItemService{
     }
 
     @Override
-    public Map<String, Integer> getTotalByProductId(Integer product_id, Date beginDate, Date endDate) {
+    public List<OrderGroup> getTotalByProductId(Integer product_id, Date beginDate, Date endDate) {
         return null;
     }
 

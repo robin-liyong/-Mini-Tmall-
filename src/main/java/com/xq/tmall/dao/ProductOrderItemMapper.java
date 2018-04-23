@@ -1,5 +1,6 @@
 package com.xq.tmall.dao;
 
+import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.util.PageUtil;
 import org.apache.ibatis.annotations.Param;
@@ -21,6 +22,7 @@ public interface ProductOrderItemMapper {
     Integer selectTotal();
     Integer selectTotalByOrderId(@Param("order_id") Integer order_id);
     Integer selectTotalByUserId(@Param("user_id") Integer user_id);
-    Map<String, Integer> selectTotalByProductId(@Param("product_id") Integer product_id, Date beginDate, Date endDate);
     Integer selectSaleCount(@Param("product_id") Integer product_id);
+
+    List<OrderGroup> getTotalByProductId(@Param("product_id") Integer product_id, @Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
 }

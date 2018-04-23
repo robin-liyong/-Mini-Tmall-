@@ -1,6 +1,7 @@
 package com.xq.tmall.service.impl;
 
 import com.xq.tmall.dao.ProductOrderMapper;
+import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.entity.ProductOrder;
 import com.xq.tmall.service.ProductOrderService;
 import com.xq.tmall.util.OrderUtil;
@@ -40,7 +41,7 @@ public class ProductOrderServiceImpl implements ProductOrderService{
     }
 
     @Override
-    public Map<String, Integer> getTotalByDate(Date beginDate, Date endDate) {
+    public List<OrderGroup> getTotalByDate(Date beginDate, Date endDate) {
         return null;
     }
 

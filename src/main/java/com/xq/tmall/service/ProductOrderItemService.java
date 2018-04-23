@@ -1,5 +1,6 @@
 package com.xq.tmall.service;
 
+import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.util.PageUtil;
 
@@ -20,6 +21,8 @@ public interface ProductOrderItemService {
     Integer getTotal();
     Integer getTotalByOrderId(Integer order_id);
     Integer getTotalByUserId(Integer user_id);
-    Map<String, Integer> getTotalByProductId(Integer product_id, Date beginDate, Date endDate);
+
+    List<OrderGroup> getTotalByProductId(Integer product_id, Date beginDate, Date endDate);
+
     Integer getSaleCountByProductId(Integer product_id);
 }
