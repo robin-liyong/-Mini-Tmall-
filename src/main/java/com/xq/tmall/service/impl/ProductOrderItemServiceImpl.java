@@ -77,7 +77,7 @@ public class ProductOrderItemServiceImpl implements ProductOrderItemService{
 
     @Override
     public List<OrderGroup> getTotalByProductId(Integer product_id, Date beginDate, Date endDate) {
-        return null;
+        return productOrderItemMapper.getTotalByProductId(product_id,beginDate,endDate);
     }
 
     @Override

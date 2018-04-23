@@ -42,7 +42,7 @@ public class ProductOrderServiceImpl implements ProductOrderService{
 
     @Override
     public List<OrderGroup> getTotalByDate(Date beginDate, Date endDate) {
-        return null;
+        return productOrderMapper.getTotalByDate(beginDate,endDate);
     }
 
     @Override
