@@ -8,7 +8,9 @@ import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service("productOrderService")
 public class ProductOrderServiceImpl implements ProductOrderService{
@@ -35,6 +37,11 @@ public class ProductOrderServiceImpl implements ProductOrderService{
     @Override
     public List<ProductOrder> getList(ProductOrder productOrder, Byte[] productOrder_status_array, OrderUtil orderUtil, PageUtil pageUtil) {
         return productOrderMapper.select(productOrder,productOrder_status_array,orderUtil,pageUtil);
+    }
+
+    @Override
+    public Map<String, Integer> getTotalByDate(Date beginDate, Date endDate) {
+        return null;
     }
 
     @Override

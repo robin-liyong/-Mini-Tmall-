@@ -3,7 +3,9 @@ package com.xq.tmall.service;
 import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.util.PageUtil;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductOrderItemService {
     boolean add(ProductOrderItem productOrderItem);
@@ -18,6 +20,6 @@ public interface ProductOrderItemService {
     Integer getTotal();
     Integer getTotalByOrderId(Integer order_id);
     Integer getTotalByUserId(Integer user_id);
-    Integer getTotalByProductId(Integer product_id);
+    Map<String, Integer> getTotalByProductId(Integer product_id, Date beginDate, Date endDate);
     Integer getSaleCountByProductId(Integer product_id);
 }

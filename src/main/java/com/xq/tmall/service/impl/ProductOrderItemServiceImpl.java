@@ -7,7 +7,9 @@ import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service("productOrderItemService")
 public class ProductOrderItemServiceImpl implements ProductOrderItemService{
@@ -73,8 +75,8 @@ public class ProductOrderItemServiceImpl implements ProductOrderItemService{
     }
 
     @Override
-    public Integer getTotalByProductId(Integer product_id) {
-        return productOrderItemMapper.selectTotalByProductId(product_id);
+    public Map<String, Integer> getTotalByProductId(Integer product_id, Date beginDate, Date endDate) {
+        return null;
     }
 
     @Override

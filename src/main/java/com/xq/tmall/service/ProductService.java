@@ -5,6 +5,7 @@ import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     boolean add(Product product);
