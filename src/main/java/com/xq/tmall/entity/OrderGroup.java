@@ -30,4 +30,13 @@ public class OrderGroup {
     public void setProductOrder_status(Byte productOrder_status) {
         this.productOrder_status = productOrder_status;
     }
+
+    @Override
+    public String toString() {
+        return "OrderGroup{" +
+                "productOrder_pay_date=" + productOrder_pay_date +
+                ", productOrder_count=" + productOrder_count +
+                ", productOrder_status=" + productOrder_status +
+                '}';
+    }
 }

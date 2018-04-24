@@ -132,7 +132,7 @@
         <where>
             productOrder_pay_date BETWEEN #{beginDate} AND #{endDate}
         </where>
-       GROUP BY productOrder_pay_date,productOrder_status
+        GROUP BY DATE_FORMAT(productOrder_pay_date,'%Y-%m-%d'),productOrder_status
     </select>
 
 
