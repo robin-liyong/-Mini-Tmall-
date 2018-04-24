@@ -12,7 +12,7 @@
     <!-- 装配Service -->
     <context:component-scan base-package="com.xq.tmall.service.impl"/>
     <!-- 事务配置 -->
-    <tx:annotation-driven/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="datasource"/>
     </bean>

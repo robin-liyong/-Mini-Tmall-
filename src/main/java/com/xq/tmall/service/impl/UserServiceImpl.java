@@ -6,6 +6,8 @@ import com.xq.tmall.service.UserService;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,11 +20,13 @@ public class UserServiceImpl implements UserService{
         this.userMapper = userMapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean add(User user) {
         return userMapper.insertOne(user)>0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean update(User user) {
         return userMapper.updateOne(user)>0;

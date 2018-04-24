@@ -5,12 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Category;
+import com.xq.tmall.entity.Property;
 import com.xq.tmall.service.CategoryService;
 import com.xq.tmall.service.LastIDService;
+import com.xq.tmall.service.PropertyService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +34,8 @@ public class CategoryController extends BaseController {
     private CategoryService categoryService;
     @Resource(name = "lastIDService")
     private LastIDService lastIDService;
+    @Resource(name = "propertyService")
+    private PropertyService propertyService;
 
     //转到后台管理-分类页-ajax
     @RequestMapping(value = "admin/category", method = RequestMethod.GET)
@@ -69,6 +71,8 @@ public class CategoryController extends BaseController {
         }
         logger.info("获取category_id为{}的分类信息", cid);
         Category category = categoryService.get(cid);
+        logger.info("获取分类子信息-属性列表");
+        category.setPropertyList(propertyService.getList(new Property().setProperty_category(category), null));
         map.put("category", category);
 
         logger.info("转到后台管理-分类详情页-ajax方式");
@@ -89,7 +93,6 @@ public class CategoryController extends BaseController {
     }
 
     //添加分类信息-ajax
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/category", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String addCategory(@RequestParam String category_name/* 分类名称 */,

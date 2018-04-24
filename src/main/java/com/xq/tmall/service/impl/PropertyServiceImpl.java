@@ -5,6 +5,8 @@ import com.xq.tmall.entity.Property;
 import com.xq.tmall.service.PropertyService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,21 +19,25 @@ public class PropertyServiceImpl implements PropertyService{
         this.propertyMapper = propertyMapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean add(Property property) {
         return propertyMapper.insertOne(property)>0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean addList(List<Property> propertyList) {
         return propertyMapper.insertList(propertyList) > 0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean update(Property property) {
         return propertyMapper.updateOne(property)>0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean deleteList(Integer[] property_id_list) {
         return propertyMapper.deleteList(property_id_list)>0;

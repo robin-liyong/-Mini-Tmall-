@@ -5,6 +5,8 @@ import com.xq.tmall.entity.Admin;
 import com.xq.tmall.service.AdminService;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,11 +20,13 @@ public class AdminServiceImpl implements AdminService {
         this.adminMapper = adminMapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean add(Admin admin) {
         return adminMapper.insertOne(admin)>0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean update(Admin admin) {
         return adminMapper.updateOne(admin)>0;

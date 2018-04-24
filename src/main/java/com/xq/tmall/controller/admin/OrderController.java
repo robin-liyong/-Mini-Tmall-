@@ -12,8 +12,6 @@ import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -120,7 +118,6 @@ public class OrderController extends BaseController{
     }
 
     //更新订单信息-ajax
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/order/{order_id}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     public String updateOrder(@PathVariable("order_id") String order_id) {

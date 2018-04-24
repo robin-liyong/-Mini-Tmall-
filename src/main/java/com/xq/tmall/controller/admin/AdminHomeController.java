@@ -8,14 +8,12 @@ import com.xq.tmall.entity.Admin;
 import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.service.AdminService;
 import com.xq.tmall.service.ProductOrderService;
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 /**
@@ -55,7 +53,13 @@ public class AdminHomeController extends BaseController {
         if (adminId == null) {
             return "admin/include/loginMessage";
         }
+
+        logger.info("获取管理员信息");
+        Admin admin = adminService.get(null, Integer.parseInt(adminId.toString()));
+        map.put("admin", admin);
+
         map.put("jsonObject", getChartData(null,null));
+
         logger.info("转到后台管理-主页-ajax方式");
         return "admin/homeManagePage";
     }

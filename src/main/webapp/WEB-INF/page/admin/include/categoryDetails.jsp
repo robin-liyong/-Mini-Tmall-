@@ -187,6 +187,20 @@
             });
         }
     </script>
+    <style rel="stylesheet">
+        .details_property_list {
+
+        }
+
+        .details_property_list > li {
+            list-style: none;
+            padding: 5px 0;
+        }
+
+        div.br {
+            height: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="details_div_first">
@@ -201,7 +215,7 @@
                value="${requestScope.category.category_name}"/>
     </div>
 </div>
-<div class="details_div details_div_last">
+<div class="details_div">
     <span class="details_title text_info">分类图片</span>
     <ul class="details_picList" id="category_list">
         <c:if test="${requestScope.category.category_image_src != null}">
@@ -222,6 +236,24 @@
         </li>
     </ul>
     <span class="frm_error_msg" id="text_category_image_details_msg"></span>
+</div>
+<div class="details_div details_div_last">
+    <span class="details_title text_info">属性列表</span>
+    <c:forEach items="${requestScope.category.propertyList}" var="property" varStatus="status">
+        <c:choose>
+            <c:when test="${status.index % 2 == 0}">
+                <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
+                       maxlength="50" value="${property.property_name}"
+                       data-pvid="${property.property_id}"/>
+            </c:when>
+            <c:otherwise>
+                <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
+                       maxlength="50" value="${property.property_name}"
+                       data-pvid="${property.property_id}"/>
+                <div class="br"></div>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
 </div>
 <div class="details_tools_div">
     <input class="frm_btn" id="btn_category_save" type="button" value="保存"/>

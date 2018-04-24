@@ -6,6 +6,8 @@ import com.xq.tmall.service.ProductService;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,11 +21,13 @@ public class ProductServiceImpl implements ProductService {
         this.productMapper = productMapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean add(Product product) {
         return productMapper.insertOne(product)>0;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean update(Product product) {
         return productMapper.updateOne(product)>0;

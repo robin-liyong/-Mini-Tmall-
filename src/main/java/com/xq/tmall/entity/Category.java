@@ -1,6 +1,5 @@
 package com.xq.tmall.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
@@ -9,6 +8,8 @@ public class Category {
     private String category_image_src;
     //产品二维集合
     private List<List<Product>> productList;
+    //属性列表
+    private List<Property> propertyList;
 
     @Override
     public String toString() {
@@ -62,5 +63,13 @@ public class Category {
 
     public void setProductList(List<List<Product>> productList) {
         this.productList = productList;
+    }
+
+    public List<Property> getPropertyList() {
+        return propertyList;
+    }
+
+    public void setPropertyList(List<Property> propertyList) {
+        this.propertyList = propertyList;
     }
 }

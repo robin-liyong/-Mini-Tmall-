@@ -9,8 +9,6 @@ import com.xq.tmall.service.*;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -138,7 +136,6 @@ public class ProductController extends BaseController{
     }
 
     //添加产品信息-ajax
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/product", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String addProduct(@RequestParam String product_name/* 产品名称 */,
@@ -242,7 +239,6 @@ public class ProductController extends BaseController{
     }
 
     //更新产品信息-ajax
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/product/{product_id}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
     public String updateProduct(@RequestParam String product_name/* 产品名称 */,
@@ -455,7 +451,6 @@ public class ProductController extends BaseController{
     }
 
     //按ID删除产品图片并返回最新结果-ajax
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @ResponseBody
     @RequestMapping(value = "admin/productImage/{productImage_id}",method = RequestMethod.DELETE,produces = "application/json;charset=utf-8")
     public String deleteProductImageById(@PathVariable Integer productImage_id/* 产品图片ID */){
