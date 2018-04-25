@@ -41,7 +41,7 @@
                     },
                     series: [
                         {
-                            name: '总订单数',
+                            name: '总交易额',
                             type: 'line',
                             areaStyle: {normal: {}},
                             label: {
