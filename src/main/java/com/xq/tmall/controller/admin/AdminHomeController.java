@@ -67,14 +67,16 @@ public class AdminHomeController extends BaseController {
     //获取图表的JSON数据
     private JSONObject getChartData(Date beginDate,Date endDate) throws ParseException {
         int day;
+        Calendar cal = Calendar.getInstance();
         if(beginDate == null && endDate == null){
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-            Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -7);
             beginDate = time.parse(time.format(cal.getTime()));
-            cal.add(Calendar.DATE, -1);
+            cal.add(Calendar.DATE, +5);
             endDate = time.parse(time.format(cal.getTime()));
             day = 7;
+            logger.info(beginDate);
+            logger.info(endDate);
         } else {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             beginDate = simpleDateFormat.parse(simpleDateFormat.format(beginDate));
@@ -117,7 +119,6 @@ public class AdminHomeController extends BaseController {
         logger.info("获取时间段数组和总交易订单数组");
         for (int i = 0; i < dateStr.length; i++) {
             orderTotalArray[i] = orderUnpaidArray[i] + orderNotShippedArray[i] + orderUnconfirmedArray[i] + orderSuccessArray[i];
-            Calendar cal = Calendar.getInstance();
             cal.setTime(beginDate);
             cal.add(Calendar.DATE, i);
             dateStr[i] = time.format(cal.getTime());
