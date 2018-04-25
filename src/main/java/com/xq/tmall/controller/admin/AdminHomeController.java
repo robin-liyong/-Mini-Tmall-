@@ -8,8 +8,13 @@ import com.xq.tmall.entity.Admin;
 import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.service.AdminService;
 import com.xq.tmall.service.ProductOrderService;
+import com.xq.tmall.service.ProductService;
+import com.xq.tmall.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -25,9 +30,13 @@ public class AdminHomeController extends BaseController {
     private AdminService adminService;
     @Resource(name = "productOrderService")
     private ProductOrderService productOrderService;
+    @Resource(name = "productService")
+    private ProductService productService;
+    @Resource(name = "userService")
+    private UserService userService;
 
     //转到后台管理-主页
-    @RequestMapping("admin")
+    @RequestMapping(value = "admin", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) throws ParseException {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -38,15 +47,22 @@ public class AdminHomeController extends BaseController {
         logger.info("获取管理员信息");
         Admin admin = adminService.get(null, Integer.parseInt(adminId.toString()));
         map.put("admin", admin);
-
+        logger.info("获取统计信息");
+        Integer productTotal = productService.getTotal(null, new Byte[]{0, 2});
+        Integer userTotal = userService.getTotal(null);
+        Integer orderTotal = productOrderService.getTotal(null, new Byte[]{3});
+        logger.info("获取图表信息");
         map.put("jsonObject", getChartData(null,null));
+        map.put("productTotal", productTotal);
+        map.put("userTotal", userTotal);
+        map.put("orderTotal", orderTotal);
 
         logger.info("转到后台管理-主页");
         return "admin/homePage";
     }
 
     //转到后台管理-主页-ajax
-    @RequestMapping("admin/home")
+    @RequestMapping(value = "admin/home", method = RequestMethod.GET)
     public String goToPageByAjax(HttpSession session, Map<String, Object> map) throws ParseException {
         logger.info("检查管理员权限");
         Object adminId = checkAdmin(session);
@@ -57,17 +73,38 @@ public class AdminHomeController extends BaseController {
         logger.info("获取管理员信息");
         Admin admin = adminService.get(null, Integer.parseInt(adminId.toString()));
         map.put("admin", admin);
-
+        logger.info("获取统计信息");
+        Integer productTotal = productService.getTotal(null, new Byte[]{0, 2});
+        Integer userTotal = userService.getTotal(null);
+        Integer orderTotal = productOrderService.getTotal(null, new Byte[]{3});
+        logger.info("获取图表信息");
+        map.put("jsonObject", getChartData(null, null));
+        logger.info("获取图表信息");
         map.put("jsonObject", getChartData(null,null));
-
+        map.put("productTotal", productTotal);
+        map.put("userTotal", userTotal);
+        map.put("orderTotal", orderTotal);
         logger.info("转到后台管理-主页-ajax方式");
         return "admin/homeManagePage";
     }
 
+    //按日期查询图表数据-ajax
+    @ResponseBody
+    @RequestMapping(value = "admin/home/charts", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String getChartDataByDate(@RequestParam(required = false) String beginDate, @RequestParam(required = false) String endDate) throws ParseException {
+        if (beginDate != null && endDate != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return getChartData(simpleDateFormat.parse(beginDate), simpleDateFormat.parse(endDate)).toJSONString();
+        } else {
+            return getChartData(null, null).toJSONString();
+        }
+    }
+
     //获取图表的JSON数据
     private JSONObject getChartData(Date beginDate,Date endDate) throws ParseException {
+        JSONObject jsonObject = new JSONObject();
         int day;
-        if(beginDate == null && endDate == null){
+        if (beginDate == null || endDate == null) {
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -7);
@@ -124,7 +161,6 @@ public class AdminHomeController extends BaseController {
             logger.info(dateStr[i]);
         }
         logger.info("返回结果集map");
-        JSONObject jsonObject = new JSONObject();
         jsonObject.put("orderTotalArray", JSONArray.parseArray(JSON.toJSONString(orderTotalArray)));
         jsonObject.put("orderUnpaidArray", JSONArray.parseArray(JSON.toJSONString(orderUnpaidArray)));
         jsonObject.put("orderNotShippedArray", JSONArray.parseArray(JSON.toJSONString(orderNotShippedArray)));

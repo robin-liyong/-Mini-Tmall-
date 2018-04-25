@@ -43,6 +43,7 @@ html,body,#div_home_main{
     font-size: 14px;
     color: #8a8a8a;
     margin-right: 5px;
+    cursor: pointer;
 }
 #nav_main>#img_home_profile_picture{
     float: right;
@@ -58,6 +59,30 @@ html,body,#div_home_main{
     height: 0;
     border: 5px solid;
     border-color: #8a8a8a transparent transparent transparent;
+}
+
+#nav_main > #nav_tools {
+    z-index: 1000;
+    position: absolute;
+    top: 57px;
+    right: 30px;
+    padding: 0;
+    box-shadow: 0 0 10px #ddd;
+    display: none;
+}
+
+#nav_tools > li {
+    min-width: 110px;
+    list-style: none;
+    color: #666;
+    padding: 15px;
+    background-color: white;
+    cursor: pointer;
+}
+
+#nav_tools > li:hover {
+    color: white;
+    background-color: #ff7874;
 }
 /*导航栏部分*/
 #div_home_main>#ul_home_menu{
@@ -226,7 +251,7 @@ html,body,#div_home_main{
     background-color: #FDFDFF;
     padding: 10px 50px 10px 20px;
     border-bottom: 1px solid #e9ebef;
-    z-index: 1000;
+    z-index: 50;
 }
 #div_home_title>span{
     color:#444;

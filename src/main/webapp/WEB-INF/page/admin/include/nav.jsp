@@ -12,4 +12,8 @@
          onerror="this.src='${pageContext.request.contextPath}/res/images/admin/homePage/default_profile_picture-32x32.png'"
          alt="头像" title="头像" width="32px" height="32px">
     <input id="admin_id" type="hidden" value="${requestScope.admin.admin_id}"/>
+    <ul id="nav_tools">
+        <li id="nav_tools_admin_manage">账号管理</li>
+        <li id="nav_tools_admin_logout">注销</li>
+    </ul>
 </nav>

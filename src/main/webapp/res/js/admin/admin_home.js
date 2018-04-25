@@ -21,6 +21,18 @@ $(function () {
         $("#div_home_title").children("span").text(title);
         document.title = "Tmall管理后台 - "+title;
     });
+    //点击用户昵称或下拉箭头时
+    $("#txt_home_nickname,#i_nickname_slide").click(function () {
+        $("#nav_tools").slideToggle();
+    });
+    //点击导航工具选项时
+    $("#nav_tools_admin_manage").click(function () {
+        $("#nav_tools").hide();
+        $(".menu_li[data-toggle=account]").click();
+    });
+    $("#nav_tools_admin_logout").click(function () {
+        location.href = "/tmall/admin/account/logout";
+    });
 });
 //tbody中tr的单击样式
 function trDataStyle(obj) {
