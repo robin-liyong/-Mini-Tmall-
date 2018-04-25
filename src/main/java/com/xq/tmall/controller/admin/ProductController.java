@@ -80,7 +80,7 @@ public class ProductController extends BaseController{
         Integer product_id =product.getProduct_id();
         List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
         List<ProductImage> singleProductImageList = new ArrayList<>(5);
-        List<ProductImage> detailsProductImageList = new ArrayList<>(5);
+        List<ProductImage> detailsProductImageList = new ArrayList<>(8);
         for (ProductImage productImage : productImageList) {
             if (productImage.getProductImage_type() == 0) {
                 singleProductImageList.add(productImage);
@@ -135,7 +135,7 @@ public class ProductController extends BaseController{
         return "admin/include/productDetails";
     }
 
-    //添加产品信息-ajax
+    //添加产品信息-ajax.
     @ResponseBody
     @RequestMapping(value = "admin/product", method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public String addProduct(@RequestParam String product_name/* 产品名称 */,
