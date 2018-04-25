@@ -6,10 +6,8 @@ import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
 import org.apache.ibatis.annotations.Param;
 
-
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface ProductOrderMapper {
     Integer insertOne(@Param("productOrder") ProductOrder productOrder);
