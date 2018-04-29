@@ -99,7 +99,7 @@
                     //显示订单统计数据
                     $("#productOrder_count_data").text(data.productOrderCount);
                     if (data.productOrderList.length > 0) {
-                        for (var i in data.productOrderList) {
+                        for (var i = 0; i < data.productOrderList.length; i++) {
                             var productOrderStatusClass;
                             var productOrderStatusTitle;
                             var productOrderStatus;

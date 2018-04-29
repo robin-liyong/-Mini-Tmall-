@@ -35,7 +35,10 @@
             <if test="product.product_title != null">product_title = #{product.product_title},</if>
             <if test="product.product_price != null">product_price = #{product.product_price},</if>
             <if test="product.product_sale_price != null">product_sale_price = #{product.product_sale_price},</if>
-            <if test="product.product_isEnabled != null">product_isEnabled = #{product.product_isEnabled}</if>
+            <if test="product.product_isEnabled != null">product_isEnabled = #{product.product_isEnabled},</if>
+            <if test="product.product_category != null">
+                product_category_id = #{product.product_category.category_id}
+            </if>
         </set>
         <where>
             product_id = #{product.product_id}
@@ -75,6 +78,26 @@
         <where>
             product_id = #{product_id}
         </where>
+    </select>
+    <select id="selectTitle" resultType="product">
+        SELECT product_id,product_title FROM product
+        <where>
+            <if test="product != null">
+                <if test="product.product_name != null">product_name LIKE concat('%',#{product.product_name},'%')</if>
+                <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
+                <if test="product.product_sale_price != null">and product_sale_price &gt;=
+                    #{product.product_sale_price}
+                </if>
+                <if test="product.product_category.category_id != null">and product_category_id =
+                    #{product.product_category.category_id}
+                </if>
+            </if>
+            and product_isEnabled != 1
+        </where>
+        ORDER BY product_id desc
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
     </select>
     <select id="selectTotal" resultType="int">
         SELECT COUNT(product_id) FROM product

@@ -53,7 +53,7 @@ function createPageDiv(obj, pageUtil) {
     pageDiv.append("<ul><li data-name='firstPage'><a href='javascript:void(0)' onclick='getPage(0)' aria-label='首页'><span aria-hidden='true'>&laquo;</span></a></li><li data-name='prevPage'><a href='javascript:void(0)' onclick='getPage(" + (pageUtil.index - 1) + ")' aria-label='上一页'><span aria-hidden='true'>&lsaquo;</span></a></li></ul>");
     var pageDivUl = $("#pageDiv>ul");
     for (var i = 1; i <= pageUtil.totalPage; i++) {
-        if (i - pageUtil.index >= -5 || i - pageUtil.index <= 5) {
+        if (i - pageUtil.index >= -5 && i - pageUtil.index <= 5) {
             if (i === pageUtil.index + 1) {
                 pageDivUl.append("<li class='pageThis'><a href='javascript:void(0)'>" + i + "</a></li>");
             } else {

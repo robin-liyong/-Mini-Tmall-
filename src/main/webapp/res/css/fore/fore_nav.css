@@ -80,8 +80,7 @@
 
 .quick_li > li > div > a {
     line-height: 32px;
-    padding: 0 10px;
-    padding-right: 14px;
+    padding: 0 14px 0 10px;
 }
 
 .quick_li > li > .sn_menu {
@@ -109,9 +108,8 @@
     top: 15px;
     width: 0;
     height: 0;
-    border-width: 3px;
-    border-style: solid dashed dashed;
-    border-color: #bbb transparent transparent;
+    border: 3px dashed transparent;
+    border-top: solid #bbb;
     font-size: 0;
     line-height: 0;
 }
@@ -246,7 +244,7 @@
     color: #f56a00;
     font-size: 16px;
     padding-bottom: 8px;
-    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53";
+    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53", serif;
     font-weight: 100;
 }
 
@@ -277,7 +275,7 @@
     color: #2263d4;
     font-size: 16px;
     padding-bottom: 8px;
-    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53";
+    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53", serif;
     font-weight: 100;
 }
 
@@ -334,7 +332,7 @@
     color: #666;
     font-size: 16px;
     padding-bottom: 8px;
-    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53";
+    font-family: '\5FAE\8F6F\96C5\9ED1', arial, "\5b8b\4f53", serif;
     font-weight: 100;
 }
 
@@ -373,6 +371,6 @@
 }
 
 .quick_li_cart > a:hover {
-    color: #666;
+    color: #FF0036;
     font-weight: 700;
 }

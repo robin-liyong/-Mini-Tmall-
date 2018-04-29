@@ -87,7 +87,7 @@
                     //显示用户统计数据
                     $("#user_count_data").text(data.userCount);
                     if (data.userList.length > 0) {
-                        for (var i in data.userList) {
+                        for (var i = 0; i < data.userList.length; i++) {
                             var gender;
                             if (data.userList[i].user_gender === 0) {
                                 gender = "男";

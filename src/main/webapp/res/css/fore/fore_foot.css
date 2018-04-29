@@ -1,10 +1,16 @@
 /*尾部样式*/
-.footer {
+.footer-copyright {
+    border-top: 2px solid #FF0036;
+    background: #000;
+    text-align: left;
+    min-height: 177px;
+}
+
+.footer-copyright > .footer {
     overflow: hidden;
     width: 1190px;
     margin: 0 auto;
-    text-align: left;
-    font: 12px/1.5 tahoma, arial, "\5b8b\4f53";
+    font: 12px/1.5 "Microsoft YaHei UI", arial, "\5b8b\4f53";
 }
 
 .footer > p {
@@ -15,7 +21,7 @@
 }
 
 .footer a {
-    color: #000000;
+    color: #FFFFFF;
     margin-right: 3px;
     text-decoration: none;
 }
@@ -30,7 +36,7 @@
 
 .copyright {
     width: 990px;
-    color: #666;
+    color: #a4a4a4;
     line-height: 25px;
 }
 
@@ -48,7 +54,7 @@
 
 .copyright > b {
     font-weight: 400;
-    color: #999;
+    color: #686868;
 }
 
 .footertwo > a {

@@ -39,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getTitle(Product product, PageUtil pageUtil) {
+        return productMapper.selectTitle(product, pageUtil);
+    }
+
+    @Override
     public Product get(Integer product_Id) {
         return productMapper.selectOne(product_Id);
     }

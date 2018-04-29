@@ -106,7 +106,7 @@
                     //显示产品统计数据
                     $("#product_count_data").text(data.productCount);
                     if (data.productList.length > 0) {
-                        for (var i in data.productList) {
+                        for (var i = 0; i < data.productList.length; i++) {
                             var isEnabledClass;
                             var isEnabledTitle;
                             var isEnabled;

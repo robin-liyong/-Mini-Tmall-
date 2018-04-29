@@ -48,7 +48,7 @@
                     //显示分类统计数据
                     $("#category_count_data").text(data.categoryCount);
                     if(data.categoryList.length > 0) {
-                        for (var i in data.categoryList) {
+                        for (var i = 0; i < data.categoryList.length; i++) {
                             var category_id = data.categoryList[i].category_id;
                             var category_name = data.categoryList[i].category_name;
                             //显示分类数据

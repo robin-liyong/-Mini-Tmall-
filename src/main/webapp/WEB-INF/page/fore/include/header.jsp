@@ -11,4 +11,5 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/fore/fore_main.css"/>
     <script src="${pageContext.request.contextPath}/res/js/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/res/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/res/js/base.js"></script>
 </head>

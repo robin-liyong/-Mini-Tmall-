@@ -10,9 +10,9 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 装配Service -->
-    <context:component-scan base-package="com.xq.tmall.service.impl"/>
+    <context:component-scan base-package="com.xq.tmall.service"/>
     <!-- 事务配置 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven/>
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="datasource"/>
     </bean>

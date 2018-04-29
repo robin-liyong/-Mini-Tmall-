@@ -18,15 +18,15 @@
     <div class="nav_main">
         <p id="container_login">
             <c:choose>
-                <c:when test="${requestScope.user.name==null}">
+                <c:when test="${requestScope.user.user_name==null}">
                     <em>喵，欢迎来天猫</em>
-                    <a href="fore_loginPage.action">请登录</a>
+                    <a href="${pageContext.request.contextPath}/login">请登录</a>
                     <a href="">免费注册</a>
                 </c:when>
                 <c:otherwise>
                     <em>Hi，</em>
-                    <a href="https://vip.tmall.com/" class="userName" target="_blank">${requestScope.user.name}</a>
-                    <a href="fore_logout.action">退出</a>
+                    <a href="https://vip.tmall.com/" class="userName" target="_blank">${requestScope.user.user_name}</a>
+                    <a href="${pageContext.request.contextPath}/login/logout">退出</a>
                 </c:otherwise>
             </c:choose>
         </p>

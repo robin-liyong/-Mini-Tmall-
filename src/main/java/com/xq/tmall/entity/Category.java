@@ -6,8 +6,10 @@ public class Category {
     private Integer category_id;
     private String category_name;
     private String category_image_src;
+    //产品列表
+    private List<Product> productList;
     //产品二维集合
-    private List<List<Product>> productList;
+    private List<List<Product>> complexProductList;
     //属性列表
     private List<Property> propertyList;
 
@@ -57,19 +59,30 @@ public class Category {
         return this;
     }
 
-    public List<List<Product>> getProductList() {
-        return productList;
+    public List<List<Product>> getComplexProductList() {
+        return complexProductList;
     }
 
-    public void setProductList(List<List<Product>> productList) {
-        this.productList = productList;
+    public Category setComplexProductList(List<List<Product>> productList) {
+        this.complexProductList = productList;
+        return this;
     }
 
     public List<Property> getPropertyList() {
         return propertyList;
     }
 
-    public void setPropertyList(List<Property> propertyList) {
+    public Category setPropertyList(List<Property> propertyList) {
         this.propertyList = propertyList;
+        return this;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public Category setProductList(List<Product> productList) {
+        this.productList = productList;
+        return this;
     }
 }

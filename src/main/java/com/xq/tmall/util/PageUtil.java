@@ -28,30 +28,42 @@ public final class PageUtil {
     }
 
     public Integer getPageStart() {
-        return index * count;
+        if (index != null) {
+            return index * count;
+        } else {
+            return pageStart;
+        }
+    }
+
+    public PageUtil setPageStart(Integer pageStart) {
+        this.pageStart = pageStart;
+        return this;
     }
 
     public Integer getIndex() {
         return index;
     }
 
-    public void setIndex(Integer index) {
+    public PageUtil setIndex(Integer index) {
         this.index = index;
+        return this;
     }
 
     public Integer getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public PageUtil setCount(Integer count) {
         this.count = count;
+        return this;
     }
 
     public Integer getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public PageUtil setTotal(Integer total) {
         this.total = total;
+        return this;
     }
 }

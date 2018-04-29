@@ -3,7 +3,7 @@
 <head>
     <script src="${pageContext.request.contextPath}/res/js/fore/fore_login.js"></script>
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_login.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/res/css/fore/fore_foot.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/res/css/fore/fore_foot_special.css" rel="stylesheet"/>
     <style rel="stylesheet">
         #baseNavigator {
             padding: 22px 0;
@@ -32,7 +32,7 @@
 </head>
 <body>
 <nav id="baseNavigator">
-    <a href="fore_home.action" target="_self">
+    <a href="${pageContext.request.contextPath}" target="_self">
         <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/tmallLogoA.png"/>
     </a>
 </nav>
@@ -50,12 +50,15 @@
             <span class="loginTitle">密码登录</span>
             <form method="post" class="loginForm">
                 <div class="loginInputDiv">
-                    <label for="name" class="loginLabel"><i class="glyphicon glyphicon-user" title="会员名"></i></label>
+                    <label for="name" class="loginLabel"><img
+                            src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/2018-04-27_235518.png"
+                            width="38px" height="39px" title="会员名"/></label>
                     <input type="text" name="name" id="name" class="loginInput" placeholder="会员名/邮箱/手机号">
                 </div>
                 <div class="loginInputDiv">
-                    <label for="password" class="loginLabel"><i class="glyphicon glyphicon-lock"
-                                                                title="登录密码"></i></label>
+                    <label for="password" class="loginLabel"><img
+                            src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/2018-04-27_235533.png"
+                            width="38px" height="39px" title="登录密码"/></label>
                     <input type="password" name="password" id="password" class="loginInput">
                 </div>
                 <input type="submit" class="loginButton" value="登 录">

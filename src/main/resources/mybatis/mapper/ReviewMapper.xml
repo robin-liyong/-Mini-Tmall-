@@ -54,17 +54,23 @@
             LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>
     </select>
-    <select id="selectByUserId" resultMap="reviewMap" parameterType="int">
+    <select id="selectByUserId" resultMap="reviewMap">
         SELECT review_id,review_content,review_createDate,review_user_id,review_product_id FROM review
         <where>
-            review_user_id = #{review.review_user.user_id}
+            review_user_id = #{user_id}
         </where>
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
     </select>
-    <select id="selectByProductId" resultMap="reviewMap" parameterType="int">
+    <select id="selectByProductId" resultMap="reviewMap">
         SELECT review_id,review_content,review_createDate,review_user_id,review_product_id FROM review
         <where>
-            review_product_id = #{review.review_product.product_id}
+            review_product_id = #{product_id}
         </where>
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
     </select>
     <select id="selectOne" resultMap="reviewMap" parameterType="int">
         SELECT review_id,review_content,review_createDate,review_user_id,review_product_id FROM review

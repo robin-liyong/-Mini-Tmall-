@@ -26,5 +26,5 @@
         <property name="defaultEncoding" value="utf-8"/>
     </bean>
     <!-- 静态资源配置 -->
-    <mvc:resources location="/res/" mapping="/res/**"/>
+    <mvc:resources location="res/" mapping="/res/**"/>
 </beans>
