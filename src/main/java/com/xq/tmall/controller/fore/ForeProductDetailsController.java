@@ -39,7 +39,7 @@ public class ForeProductDetailsController extends BaseController {
     @Resource(name = "productOrderItemService")
     private ProductOrderItemService productOrderItemService;
 
-    //转到前台产品详情页
+    //转到前台天猫-产品详情页
     @RequestMapping(value = "product/{pid}", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map,
                            @PathVariable("pid") String pid /*产品ID*/) {
@@ -54,71 +54,79 @@ public class ForeProductDetailsController extends BaseController {
         Integer product_id = Integer.parseInt(pid);
         logger.info("获取产品信息");
         Product product = productService.get(product_id);
-        if (product != null) {
-            logger.info("获取产品子信息-分类信息");
-            product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
-            logger.info("获取产品子信息-产品图片信息");
-            List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
-            List<ProductImage> singleProductImageList = new ArrayList<>(5);
-            List<ProductImage> detailsProductImageList = new ArrayList<>(8);
-            for (ProductImage productImage : productImageList) {
-                if (productImage.getProductImage_type() == 0) {
-                    singleProductImageList.add(productImage);
-                } else {
-                    detailsProductImageList.add(productImage);
-                }
-            }
-            product.setSingleProductImageList(singleProductImageList);
-            product.setDetailProductImageList(detailsProductImageList);
-            logger.info("获取产品子信息-产品属性值信息");
-            List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product), null);
-            logger.info("获取产品子信息-分类信息对应的属性列表");
-            List<Property> propertyList = propertyService.getList(new Property().setProperty_category(product.getProduct_category()), null);
-            logger.info("属性列表和属性值列表合并");
-            for (Property property : propertyList) {
-                for (PropertyValue propertyValue : propertyValueList) {
-                    if (property.getProperty_id().equals(propertyValue.getPropertyValue_property().getProperty_id())) {
-                        List<PropertyValue> property_value_item = new ArrayList<>(1);
-                        property_value_item.add(propertyValue);
-                        property.setPropertyValueList(property_value_item);
-                        break;
-                    }
-                }
-            }
-            logger.info("获取产品子信息-前十条产品评论信息");
-            product.setReviewList(reviewService.getListByProductId(product_id, new PageUtil(0, 10)));
-
-            logger.info("获取产品子信息-销量数和评论数信息");
-            product.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(product_id));
-            product.setProduct_review_count(reviewService.getTotalByProductId(product_id));
-
-            logger.info("获取猜你喜欢列表");
-            Integer category_id = product.getProduct_category().getCategory_id();
-            Integer total = productService.getTotal(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2});
-            logger.info("分类ID为{}的产品总数为{}条", category_id, total);
-            //生成随机数
-            int i = new Random().nextInt(total);
-            if (i + 2 >= total) {
-                i = total - 3;
-            }
-            List<Product> loveProductList = productService.getList(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2}, null, new PageUtil().setCount(3).setPageStart(i));
-            if (loveProductList != null) {
-                logger.warn("获取产品列表的相应的一张预览图片");
-                for (Product loveProduct : loveProductList) {
-                    loveProduct.setSingleProductImageList(productImageService.getList(loveProduct.getProduct_id(), (byte) 0, new PageUtil(0, 1)));
-                }
-            }
-
-            map.put("loveProductList", loveProductList);
-            map.put("propertyList", propertyList);
-            map.put("product", product);
-            map.put("guessNumber", i);
+        if (product == null) {
+            return "redirect:/";
         }
+        logger.info("获取产品子信息-分类信息");
+        product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
+        logger.info("获取产品子信息-产品图片信息");
+        List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
+        List<ProductImage> singleProductImageList = new ArrayList<>(5);
+        List<ProductImage> detailsProductImageList = new ArrayList<>(8);
+        for (ProductImage productImage : productImageList) {
+            if (productImage.getProductImage_type() == 0) {
+                singleProductImageList.add(productImage);
+            } else {
+                detailsProductImageList.add(productImage);
+            }
+        }
+        product.setSingleProductImageList(singleProductImageList);
+        product.setDetailProductImageList(detailsProductImageList);
+        logger.info("获取产品子信息-产品属性值信息");
+        List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product), null);
+        logger.info("获取产品子信息-分类信息对应的属性列表");
+        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(product.getProduct_category()), null);
+        logger.info("属性列表和属性值列表合并");
+        for (Property property : propertyList) {
+            for (PropertyValue propertyValue : propertyValueList) {
+                if (property.getProperty_id().equals(propertyValue.getPropertyValue_property().getProperty_id())) {
+                    List<PropertyValue> property_value_item = new ArrayList<>(1);
+                    property_value_item.add(propertyValue);
+                    property.setPropertyValueList(property_value_item);
+                    break;
+                }
+            }
+        }
+        logger.info("获取产品子信息-前十条产品评论信息");
+        product.setReviewList(reviewService.getListByProductId(product_id, new PageUtil(0, 10)));
+
+        logger.info("获取产品子信息-销量数和评论数信息");
+        product.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(product_id));
+        product.setProduct_review_count(reviewService.getTotalByProductId(product_id));
+
+        logger.info("获取猜你喜欢列表");
+        Integer category_id = product.getProduct_category().getCategory_id();
+        Integer total = productService.getTotal(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2});
+        logger.info("分类ID为{}的产品总数为{}条", category_id, total);
+        //生成随机数
+        int i = new Random().nextInt(total);
+        if (i + 2 >= total) {
+            i = total - 3;
+        }
+        if (i < 0) {
+            i = 0;
+        }
+        List<Product> loveProductList = productService.getList(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2}, null, new PageUtil().setCount(3).setPageStart(i));
+        if (loveProductList != null) {
+            logger.info("获取产品列表的相应的一张预览图片");
+            for (Product loveProduct : loveProductList) {
+                loveProduct.setSingleProductImageList(productImageService.getList(loveProduct.getProduct_id(), (byte) 0, new PageUtil(0, 1)));
+            }
+        }
+        logger.info("获取分类列表");
+        List<Category> categoryList = categoryService.getList(null, new PageUtil(0, 3));
+
+        map.put("loveProductList", loveProductList);
+        map.put("categoryList", categoryList);
+        map.put("propertyList", propertyList);
+        map.put("product", product);
+        map.put("guessNumber", i);
         logger.info("转到前台-产品详情页");
         return "fore/productDetailsPage";
     }
 
     //按产品ID加载产品评论列表-ajax
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "review/{pid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String loadProductReviewList(@PathVariable("pid") String pid/*产品ID*/,
@@ -135,6 +143,7 @@ public class ForeProductDetailsController extends BaseController {
     }
 
     //按产品ID加载产品属性列表-ajax
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "property/{pid}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String loadProductPropertyList(@PathVariable("pid") String pid/*产品ID*/) {
@@ -178,12 +187,20 @@ public class ForeProductDetailsController extends BaseController {
         if (i + 2 >= total) {
             i = total - 3;
         }
+        if (i < 0) {
+            i = 0;
+        }
         while (i == guessNumber) {
             i = new Random().nextInt(total);
             if (i + 2 >= total) {
                 i = total - 3;
             }
+            if (i < 0) {
+                i = 0;
+                break;
+            }
         }
+
         logger.info("guessNumber值为{}，新guessNumber值为{}", guessNumber, i);
         List<Product> loveProductList = productService.getList(new Product().setProduct_category(new Category().setCategory_id(cid)), new Byte[]{0, 2}, null, new PageUtil().setCount(3).setPageStart(i));
         if (loveProductList != null) {

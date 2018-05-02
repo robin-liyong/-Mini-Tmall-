@@ -57,7 +57,55 @@
                 <if test="product.product_name != null">product_name LIKE concat('%',#{product.product_name},'%')</if>
                 <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
                 <if test="product.product_sale_price != null">and product_sale_price &gt;= #{product.product_sale_price}</if>
-                <if test="product.product_category.category_id != null">and product_category_id = #{product.product_category.category_id}</if>
+                <if test="product.product_category != null">
+                    <if test="product.product_category.category_id != null">and product_category_id =
+                        #{product.product_category.category_id}
+                    </if>
+                </if>
+            </if>
+            <if test="product_isEnabled_array != null">
+                and product_isEnabled IN
+                <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <if test="orderUtil != null">
+            ORDER BY ${orderUtil.orderBy}
+            <if test="orderUtil.isDesc">desc</if>
+        </if>
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
+    </select>
+    <select id="selectMoreList" resultMap="productMap">
+        SELECT
+        product_id,product_name,product_title,product_price,product_sale_price,product_create_date,product_isEnabled,product_category_id
+        <if test="orderUtil != null">
+            <if test='orderUtil.orderBy == "product_sale_count"'>
+                ,(SELECT SUM(productOrderItem_number) FROM productOrderItem WHERE productOrderItem_product_id =
+                product_id) AS #{orderUtil.orderBy}
+            </if>
+        </if>
+        FROM product
+        <where>
+            <if test="product != null">
+                <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
+                <if test="product.product_sale_price != null">and product_sale_price &gt;=
+                    #{product.product_sale_price}
+                </if>
+                <if test="product.product_category != null">
+                    <if test="product.product_category.category_id != null">and product_category_id =
+                        #{product.product_category.category_id}
+                    </if>
+                </if>
+            </if>
+            <if test="product_name_split != null">
+                and
+                <foreach collection="product_name_split" index="index" item="item" open="(" separator="and" close=")">
+                    product_name LIKE concat('%',#{item},'%')
+                </foreach>
             </if>
             <if test="product_isEnabled_array != null">
                 and product_isEnabled IN
@@ -88,8 +136,10 @@
                 <if test="product.product_sale_price != null">and product_sale_price &gt;=
                     #{product.product_sale_price}
                 </if>
-                <if test="product.product_category.category_id != null">and product_category_id =
-                    #{product.product_category.category_id}
+                <if test="product.product_category != null">
+                    <if test="product.product_category.category_id != null">and product_category_id =
+                        #{product.product_category.category_id}
+                    </if>
                 </if>
             </if>
             and product_isEnabled != 1
@@ -106,7 +156,39 @@
                 <if test="product.product_name != null">product_name LIKE concat('%',#{product.product_name},'%')</if>
                 <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
                 <if test="product.product_sale_price != null">and product_sale_price &gt;= #{product.product_sale_price}</if>
-                <if test="product.product_category.category_id != null">and product_category_id = #{product.product_category.category_id}</if>
+                <if test="product.product_category != null">
+                    <if test="product.product_category.category_id != null">and product_category_id =
+                        #{product.product_category.category_id}
+                    </if>
+                </if>
+            </if>
+            <if test="product_isEnabled_array != null">and product_isEnabled IN
+                <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectMoreListTotal" resultType="int">
+        SELECT COUNT(product_id) FROM product
+        <where>
+            <if test="product != null">
+                <if test="product.product_price != null">and product_sale_price &lt;= #{product.product_price}</if>
+                <if test="product.product_sale_price != null">and product_sale_price &gt;=
+                    #{product.product_sale_price}
+                </if>
+                <if test="product.product_category != null">
+                    <if test="product.product_category.category_id != null">and product_category_id =
+                        #{product.product_category.category_id}
+                    </if>
+                </if>
+            </if>
+            <if test="product_name_split != null">
+                and
+                <foreach collection="product_name_split" index="index" item="item" open="(" separator="and" close=")">
+                    product_name LIKE concat('%',#{item},'%')
+                </foreach>
             </if>
             <if test="product_isEnabled_array != null">and product_isEnabled IN
                 <foreach collection="product_isEnabled_array" index="index" item="item" open="(" separator="," close=")">

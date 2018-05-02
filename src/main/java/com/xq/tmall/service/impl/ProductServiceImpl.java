@@ -52,4 +52,14 @@ public class ProductServiceImpl implements ProductService {
     public Integer getTotal(Product product,Byte[] product_isEnabled_array) {
         return productMapper.selectTotal(product,product_isEnabled_array);
     }
+
+    @Override
+    public List<Product> getMoreList(Product product, Byte[] bytes, OrderUtil orderUtil, PageUtil pageUtil, String[] product_name_split) {
+        return productMapper.selectMoreList(product, bytes, orderUtil, pageUtil, product_name_split);
+    }
+
+    @Override
+    public Integer getMoreListTotal(Product product, Byte[] bytes, String[] product_name_split) {
+        return productMapper.selectMoreListTotal(product, bytes, product_name_split);
+    }
 }

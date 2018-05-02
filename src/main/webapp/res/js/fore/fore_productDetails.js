@@ -94,6 +94,46 @@ $(function () {
     $(".context_img_main,.context_img_winSelector").mousemove(function (e) {
         SelectorMousemove(e);
     });
+    //模态窗口登录
+    $(".loginForm").unbind("submit").submit(function () {
+        var yn = true;
+        $(this).find(":text,:password").each(function () {
+            if ($.trim($(this).val()) === "") {
+                styleUtil.errorShow($("#error_message_p"), "请输入用户名和密码！");
+                yn = false;
+                return yn;
+            }
+        });
+        if (yn) {
+            $.ajax({
+                type: "POST",
+                url: "/tmall/login/doLogin",
+                data: {"username": $.trim($("#name").val()), "password": $.trim($("#password").val())},
+                dataType: "json",
+                success: function (data) {
+                    $(".loginButton").val("登 录");
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        styleUtil.errorShow($("#error_message_p"), "用户名和密码错误！");
+                    }
+                },
+                error: function (data) {
+                    $(".loginButton").val("登 录");
+                    styleUtil.errorShow($("#error_message_p"), "服务器异常，请刷新页面再试！");
+                },
+                beforeSend: function () {
+                    $(".loginButton").val("正在登录...");
+                }
+            });
+        }
+        return false;
+    });
+    //关闭模态窗口
+    $(".closeLoginDiv").click(function () {
+        $(".loginModel").hide();
+        $(".loginDiv").hide();
+    });
 });
 
 function getDetailsPage(obj, className) {
@@ -136,12 +176,12 @@ function getGuessLoveProducts() {
         success: function (data) {
             if (data.success) {
                 $("#guessNumber").val(data.guessNumber);
-                for (var i in data.loveProductList) {
+                for (var i = 0; i < data.loveProductList.length; i++) {
                     var src = data.loveProductList[i].singleProductImageList[0].productImage_src;
                     var product_id = data.loveProductList[i].product_id;
                     var product_sale_price = data.loveProductList[i].product_sale_price;
                     $(".context_ul_goodsList").children("ul").append("<li class='context_ul_main'><div class='context_ul_img'>" +
-                        "<a href='/tmall/product/" + product_id + "'><img src='/tmall/res/images/item/productSinglePicture/" + src + "'/></a><p>¥" + product_sale_price + "0</p></div></li>"
+                        "<a href='/tmall/product/" + product_id + "'><img src='/tmall/res/images/item/productSinglePicture/" + src + "'/></a><p>¥" + product_sale_price + ".00</p></div></li>"
                     );
                 }
             }

@@ -18,4 +18,6 @@ public interface ReviewMapper {
     Integer selectTotal(@Param("review") Review review);
     Integer selectTotalByUserId(@Param("user_id") Integer user_id);
     Integer selectTotalByProductId(@Param("product_id") Integer product_id);
+
+    Integer selectTotalByOrderItemId(@Param("productOrderItem_id") Integer productOrderItem_id);
 }

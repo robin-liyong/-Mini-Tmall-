@@ -1,36 +1,27 @@
 $(function () {
-    $(".context_product_imgList>li").click(function () {
-        if ($(this).hasClass('context_product_Li_click')) {
-            return;
-        }
-        var ul = $(this).parent();
-        ul.children().removeClass('context_product_Li_click');
-        $(this).addClass('context_product_Li_click');
-        ul.prev('a').children('img').attr("src", $(this).children('img').attr("src"));
-    });
-    var url = window.location.href;
-    var index = url.lastIndexOf('=');
-    var sortType = url.substring(index + 1);
-    switch (sortType) {
-        case 'new':
-            $(".context_menu").find('li').eq(1).addClass('now');
-            break;
-        case 'sale':
-            $(".context_menu").find('li').eq(2).addClass('now');
-            break;
-        case 'price':
-            $(".context_menu").find('li').eq(3).addClass('now');
-            break;
-        case 'normal':
-        default:
-            $(".context_menu").find('li').eq(0).addClass('now');
-            break;
-    }
     //搜索框验证
     $('form').submit(function () {
-        if ($(this).find("input[name='goodsName']").val() === "") {
-            alert("请输入关键字！");
+        if ($(this).find('input[name="goodsName"]').val() === '') {
+            alert('请输入关键字！');
             return false;
+        }
+    });
+    //点击li排序时
+    $('.context_menu li').click(function () {
+        //获取排序字段
+        var orderBy = $(this).attr('data-name');
+        //判断排序顺序及样式设置
+        var isDesc = true;
+        if (orderBy === 'product_sale_price') {
+            if ($(this).children(".orderByDesc").hasClass("orderBySelect")) {
+                isDesc = false;
+            }
+        }
+        //检索
+        if ($(this).parent('ul').attr('data-value') === undefined) {
+            location.href = '/tmall/product/0/20?orderBy=' + orderBy + "&isDesc=" + isDesc + "&category_id=" + $(this).parent('ul').attr('data-type');
+        } else {
+            location.href = '/tmall/product/0/20?orderBy=' + orderBy + "&isDesc=" + isDesc + "&product_name=" + $(this).parent('ul').attr('data-value');
         }
     });
 });

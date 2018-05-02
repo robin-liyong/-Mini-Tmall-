@@ -13,16 +13,20 @@
         <association property="review_product" javaType="com.xq.tmall.entity.Product">
             <id property="product_id" column="review_product_id"/>
         </association>
+        <association property="review_orderItem" javaType="com.xq.tmall.entity.ProductOrderItem">
+            <id property="productOrderItem_id" column="review_orderItem_id"/>
+        </association>
     </resultMap>
 
     <insert id="insertOne" parameterType="review">
-        INSERT review (review_id,review_content,review_createDate,review_user_id,review_product_id)
+        INSERT review (review_id,review_content,review_createDate,review_user_id,review_product_id,review_orderItem_id)
             VALUES (
             null,
             #{review.review_content},
             #{review.review_createDate},
-            #{review.review_user_id},
-            #{review.review_product_id})
+        #{review.review_user.user_id},
+        #{review.review_product.product_id},
+        #{review.review_orderItem.productOrderItem_id})
     </insert>
     <update id="updateOne" parameterType="review">
         UPDATE review
@@ -98,4 +102,11 @@
             review_product_id = #{product_id}
         </where>
     </select>
+    <select id="selectTotalByOrderItemId" resultType="int" parameterType="int">
+        SELECT COUNT(review_id) FROM review
+        <where>
+            review_orderItem_id = #{productOrderItem_id}
+        </where>
+    </select>
+
 </mapper>

@@ -1,19 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<head>
-    <script>
-        $(function () {
-            $(".quick_li").find("li").hover(
-                function () {
-                    $(this).find(".sn_menu").addClass("sn_menu_hover");
-                    $(this).find(".quick_menu,.quick_qrcode,.quick_DirectPromoDiv,.quick_sitmap_div").css("display", "block");
-                }, function () {
-                    $(this).find(".sn_menu").removeClass("sn_menu_hover");
-                    $(this).find(".quick_menu,.quick_qrcode,.quick_DirectPromoDiv,.quick_sitmap_div").css("display", "none");
-                }
-            );
-        });
-    </script>
-</head>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/fore/fore_nav.css"/>
+<script>
+    $(function () {
+        $(".quick_li").find("li").hover(
+            function () {
+                $(this).find(".sn_menu").addClass("sn_menu_hover");
+                $(this).find(".quick_menu,.quick_qrcode,.quick_DirectPromoDiv,.quick_sitmap_div").css("display", "block");
+            }, function () {
+                $(this).find(".sn_menu").removeClass("sn_menu_hover");
+                $(this).find(".quick_menu,.quick_qrcode,.quick_DirectPromoDiv,.quick_sitmap_div").css("display", "none");
+            }
+        );
+    });
+</script>
 <div id="nav">
     <div class="nav_main">
         <p id="container_login">
@@ -33,9 +32,9 @@
         <ul class="quick_li">
             <li class="quick_li_MyTaobao">
                 <div class="sn_menu">
-                    <a href="#">我的淘宝<b></b></a>
+                    <a href="">我的淘宝<b></b></a>
                     <div class="quick_menu">
-                        <a href="#">已买到的宝贝</a>
+                        <a href="${pageContext.request.contextPath}/order/0/10">已买到的宝贝</a>
                         <a href="#">已卖出的宝贝</a>
                     </div>
                 </div>

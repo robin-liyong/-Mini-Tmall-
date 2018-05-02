@@ -69,8 +69,21 @@ var styleUtil = {
                 .animate({
                     opacity: 1
             }, 100)
-                .next("input")
-                .css("border-color","#c33");
+                .next("input,textarea")
+                .css("border-color", "#c33");
+            return this;
+        },
+    //显示一种特殊的基础表单验证错误提示
+    specialBasicErrorShow:
+        function (obj) {
+            obj
+                .css("color", "#c33")
+                .css("opacity", "0.5")
+                .animate({
+                    opacity: 1
+                }, 100)
+                .next("span").next("input,textarea")
+                .css("border-color", "#c33");
             return this;
         },
     //隐藏基础的表单验证错误提示
@@ -79,7 +92,18 @@ var styleUtil = {
             obj
                 .css("color","#666")
                 .css("opacity","1")
-                .next("input")
+                .next("input,textarea")
+                .css("border-color", "");
+            return this;
+        },
+    //隐藏一种特殊的基础表单验证错误提示
+    specialBasicErrorHide:
+        function (obj) {
+            obj
+                .css("color", "#333")
+                .css("opacity", "1")
+                .next("span")
+                .next("input,textarea")
                 .css("border-color","");
             return this;
         }

@@ -103,62 +103,61 @@ public class AdminHomeController extends BaseController {
     //获取图表的JSON数据
     private JSONObject getChartData(Date beginDate,Date endDate) throws ParseException {
         JSONObject jsonObject = new JSONObject();
-        int day;
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+        SimpleDateFormat timeSpecial = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
         if (beginDate == null || endDate == null) {
-            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -7);
             beginDate = time.parse(time.format(cal.getTime()));
+            cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -1);
-            endDate = time.parse(time.format(cal.getTime()));
-            day = 7;
+            endDate = timeSpecial.parse(time.format(cal.getTime()) + " 23:59:59");
         } else {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            beginDate = simpleDateFormat.parse(simpleDateFormat.format(beginDate));
-            endDate = simpleDateFormat.parse(simpleDateFormat.format(endDate));
-            day = (int) ((endDate.getTime()-beginDate.getTime()) / (1000*3600*24)+1);
+            beginDate = time.parse(time.format(beginDate));
+            endDate = timeSpecial.parse(time.format(endDate) + " 23:59:59");
+        }
+        String[] dateStr = new String[7];
+        SimpleDateFormat time2 = new SimpleDateFormat("MM/dd", Locale.UK);
+        logger.info("获取时间段数组");
+        for (int i = 0; i < dateStr.length; i++) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(beginDate);
+            cal.add(Calendar.DATE, i);
+            dateStr[i] = time2.format(cal.getTime());
         }
         logger.info("获取总交易额订单列表");
         List<OrderGroup> orderGroupList = productOrderService.getTotalByDate(beginDate, endDate);
         logger.info("根据订单状态分类");
-        int[] orderTotalArray = new int[day];//总交易订单数组
-        int[] orderUnpaidArray = new int[day];//未付款订单数组
-        int[] orderNotShippedArray = new int[day];//未发货订单叔祖
-        int[] orderUnconfirmedArray = new int[day];//未确认订单数组
-        int[] orderSuccessArray = new int[day];//交易成功数组
-        for (int i=0,a=0,b=0,c=0,d=0; i < orderGroupList.size(); i++) {
-            OrderGroup orderGroup = orderGroupList.get(i);
+        int[] orderTotalArray = new int[7];//总交易订单数组
+        int[] orderUnpaidArray = new int[7];//未付款订单数组
+        int[] orderNotShippedArray = new int[7];//未发货订单叔祖
+        int[] orderUnconfirmedArray = new int[7];//未确认订单数组
+        int[] orderSuccessArray = new int[7];//交易成功数组
+        for (OrderGroup orderGroup : orderGroupList) {
+            int index = 0;
+            for (int j = 0; j < dateStr.length; j++) {
+                if (dateStr[j].equals(orderGroup.getProductOrder_pay_date())) {
+                    index = j;
+                }
+            }
             switch (orderGroup.getProductOrder_status()) {
                 case 0:
-                    orderUnpaidArray[a] = orderGroup.getProductOrder_count();
-                    a++;
+                    orderUnpaidArray[index] = orderGroup.getProductOrder_count();
                     break;
                 case 1:
-                    orderNotShippedArray[b] = orderGroup.getProductOrder_count();
-                    b++;
+                    orderNotShippedArray[index] = orderGroup.getProductOrder_count();
                     break;
                 case 2:
-                    orderUnconfirmedArray[c] = orderGroup.getProductOrder_count();
-                    c++;
+                    orderUnconfirmedArray[index] = orderGroup.getProductOrder_count();
                     break;
                 case 3:
-                    orderSuccessArray[d] = orderGroup.getProductOrder_count();
-                    d++;
-                    break;
-                default:
+                    orderSuccessArray[index] = orderGroup.getProductOrder_count();
                     break;
             }
         }
-        String[] dateStr = new String[day];
-        SimpleDateFormat time  = new SimpleDateFormat("MM/dd", Locale.UK);
-        logger.info("获取时间段数组和总交易订单数组");
+        logger.info("获取总交易订单数组");
         for (int i = 0; i < dateStr.length; i++) {
             orderTotalArray[i] = orderUnpaidArray[i] + orderNotShippedArray[i] + orderUnconfirmedArray[i] + orderSuccessArray[i];
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(beginDate);
-            cal.add(Calendar.DATE, i);
-            dateStr[i] = time.format(cal.getTime());
-            logger.info(dateStr[i]);
         }
         logger.info("返回结果集map");
         jsonObject.put("orderTotalArray", JSONArray.parseArray(JSON.toJSONString(orderTotalArray)));

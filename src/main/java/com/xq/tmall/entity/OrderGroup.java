@@ -1,14 +1,20 @@
 package com.xq.tmall.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class OrderGroup {
     private Date productOrder_pay_date;
     private Integer productOrder_count;
     private Byte productOrder_status;
 
-    public Date getProductOrder_pay_date() {
-        return productOrder_pay_date;
+    public String getProductOrder_pay_date() {
+        if (productOrder_pay_date != null) {
+            SimpleDateFormat time = new SimpleDateFormat("MM/dd", Locale.UK);
+            return time.format(productOrder_pay_date);
+        }
+        return null;
     }
 
     public void setProductOrder_pay_date(Date productOrder_pay_date) {

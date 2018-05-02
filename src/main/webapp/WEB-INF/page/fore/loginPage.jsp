@@ -3,7 +3,6 @@
 <head>
     <script src="${pageContext.request.contextPath}/res/js/fore/fore_login.js"></script>
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_login.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/res/css/fore/fore_foot_special.css" rel="stylesheet"/>
     <style rel="stylesheet">
         #baseNavigator {
             padding: 22px 0;
@@ -93,4 +92,5 @@
     </div>
 </div>
 <%@ include file="include/footer.jsp" %>
+<link href="${pageContext.request.contextPath}/res/css/fore/fore_foot_special.css" rel="stylesheet"/>
 </body>

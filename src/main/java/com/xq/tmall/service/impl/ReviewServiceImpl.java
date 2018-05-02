@@ -71,4 +71,9 @@ public class ReviewServiceImpl implements ReviewService{
     public Integer getTotalByProductId(Integer product_id) {
         return reviewMapper.selectTotalByProductId(product_id);
     }
+
+    @Override
+    public Integer getTotalByOrderItemId(Integer productOrderItem_id) {
+        return reviewMapper.selectTotalByOrderItemId(productOrderItem_id);
+    }
 }

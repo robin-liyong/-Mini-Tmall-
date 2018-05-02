@@ -8,6 +8,8 @@ public class ProductOrderItem {
     private ProductOrder productOrderItem_order;
     private User productOrderItem_user;
     private String productOrderItem_userMessage;
+    //订单产品是否已经评价
+    private Boolean isReview;
 
     public ProductOrderItem() {
     }
@@ -101,7 +103,17 @@ public class ProductOrderItem {
         return productOrderItem_userMessage;
     }
 
-    public void setProductOrderItem_userMessage(String productOrderItem_userMessage) {
+    public ProductOrderItem setProductOrderItem_userMessage(String productOrderItem_userMessage) {
         this.productOrderItem_userMessage = productOrderItem_userMessage;
+        return this;
+    }
+
+    public Boolean getReview() {
+        return isReview;
+    }
+
+    public ProductOrderItem setReview(Boolean review) {
+        isReview = review;
+        return this;
     }
 }

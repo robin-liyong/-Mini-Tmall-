@@ -112,6 +112,11 @@ input:-ms-input-placeholder { /* Internet Explorer 10+*/
     padding: 0 12px;
 }
 
+.shopSearchHeader li > a {
+    color: #999;
+    font-size: 12px;
+}
+
 .context {
     width: 100%;
 }
@@ -137,32 +142,56 @@ input:-ms-input-placeholder { /* Internet Explorer 10+*/
     border-right: 1px solid #cccccc;
 }
 
-.context_menu > ul a {
+.context_menu > ul > li {
     color: #806f66;
     text-align: center;
     display: block;
-    width: 44px;
+    width: 50px;
     padding: 2px;
     font-size: 12px;
+    cursor: pointer;
 }
 
-.context_menu > ul a:hover {
+.context_menu li:hover {
     text-decoration: none;
     color: #ff0036;
     background-color: #F1EDEC;
 }
 
-.context_menu > ul > .now {
+.context_menu li.orderBySelect {
     background: #F1EDEC;
 }
 
-.context_menu > ul > .now > a {
+.context_menu li.orderBySelect > span {
     color: #ff0036;
 }
 
-.shopSearchHeader li > a {
-    color: #999;
-    font-size: 12px;
+.context_menu li.orderBySelect > span.orderByDesc.orderBySelect {
+    border-bottom-color: #ff0036;
+}
+
+.context_menu li.orderBySelect > span.orderByAsc.orderBySelect {
+    border-top-color: #ff0036;
+}
+
+.context_menu li > span.orderByDesc {
+    display: inline-block;
+    position: relative;
+    bottom: 6px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-bottom-color: #806f66;
+}
+
+.context_menu li > span.orderByAsc {
+    display: inline-block;
+    position: relative;
+    width: 0;
+    height: 0;
+    top: 2px;
+    border: 4px solid transparent;
+    border-top-color: #806f66;
 }
 
 .context_menu_liHover {

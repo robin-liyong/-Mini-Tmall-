@@ -204,7 +204,7 @@
                         width="42px" height="42px"
                         name="${item.productOrderItem_product.singleProductImageList[0].productImage_id}"/></td>
                 <td title="${item.productOrderItem_product.product_name}">${item.productOrderItem_product.product_name}</td>
-                <td title="${item.productOrderItem_product.product_sale_price}">${item.productOrderItem_product.product_sale_price}</td>
+                <td title="${item.productOrderItem_price/item.productOrderItem_number}">${item.productOrderItem_price/item.productOrderItem_number}</td>
                 <td title="${item.productOrderItem_number}">${item.productOrderItem_number}</td>
                 <td title="${item.productOrderItem_price}">${item.productOrderItem_price}</td>
                 <td title="${item.productOrderItem_userMessage}">${item.productOrderItem_userMessage}</td>

@@ -8,6 +8,7 @@ public class Review {
     private Date review_createDate;
     private User review_user;
     private Product review_product;
+    private ProductOrderItem review_orderItem;
 
     public Review() {
     }
@@ -81,5 +82,13 @@ public class Review {
     public Review setReview_product(Product review_product) {
         this.review_product = review_product;
         return this;
+    }
+
+    public ProductOrderItem getReview_orderItem() {
+        return review_orderItem;
+    }
+
+    public void setReview_orderItem(ProductOrderItem review_orderItem) {
+        this.review_orderItem = review_orderItem;
     }
 }

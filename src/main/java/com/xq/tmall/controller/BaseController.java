@@ -2,14 +2,12 @@ package com.xq.tmall.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpSession;
 
 /**
  * 基控制器
  */
-@Controller
 public class BaseController {
     //log4j2
     protected Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
@@ -35,5 +33,4 @@ public class BaseController {
         logger.info("用户已登录，用户ID：{}", o);
         return o;
     }
-
 }

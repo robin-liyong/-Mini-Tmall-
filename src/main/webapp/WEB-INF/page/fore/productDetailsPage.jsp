@@ -1,9 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="include/header.jsp" %>
 <head>
+    <script src="${pageContext.request.contextPath}/res/js/fore/fore_login.js"></script>
     <script src="${pageContext.request.contextPath}/res/js/fore/fore_productDetails.js"></script>
-    <link href="${pageContext.request.contextPath}/res/css/fore/fore_nav.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/res/css/fore/fore_foot.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_productDetails.css" rel="stylesheet">
     <title>${requestScope.product.product_name}-tmall.com天猫</title>
 </head>
@@ -17,16 +16,81 @@
         <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/detailsHeaderA.png"
              class="shopAssessHeader">
         <div class="shopSearchHeader">
-            <form action="fore_search.action" method="get">
+            <form action="${pageContext.request.contextPath}/product" method="get">
                 <div class="shopSearchInput">
-                    <input type="text" class="searchInput" name="product_name" placeholder="搜索 天猫 商品/品牌/店铺">
+                    <input type="text" class="searchInput" name="product_name" placeholder="搜索 天猫 商品/品牌/店铺"
+                           maxlength="50">
                     <input type="submit" value="搜天猫" class="searchTmall">
                 </div>
                 <input type="submit" value="搜本店" class="searchShop">
             </form>
+            <ul>
+                <c:forEach items="${requestScope.categoryList}" var="category" varStatus="i">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/product?category_id=${category.category_id}">${category.category_name}</a>
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </nav>
+<div class="loginModel"></div>
+<div class="loginDiv">
+    <div class="loginDivHeader">
+        <a href="javascript:void(0)" class="closeLoginDiv"></a>
+    </div>
+    <div class="loginSwitch" id="loginSwitch"></div>
+    <div class="loginMessage">
+        <div class="loginMessageMain">
+            <div class="poptip-arrow"><em></em><span></span></div>
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/scan-safe.png"/><span>扫码登录更安全</span>
+        </div>
+    </div>
+    <div class="pwdLogin">
+        <span class="loginTitle">密码登录</span>
+        <form method="post" class="loginForm">
+            <div class="loginInputDiv">
+                <label for="name" class="loginLabel"><img
+                        src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/2018-04-27_235518.png"
+                        width="38px" height="39px" title="会员名"/></label>
+                <input type="text" name="name" id="name" class="loginInput" placeholder="会员名/邮箱/手机号">
+            </div>
+            <div class="loginInputDiv">
+                <label for="password" class="loginLabel"><img
+                        src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/2018-04-27_235533.png"
+                        width="38px" height="39px" title="登录密码"/></label>
+                <input type="password" name="password" id="password" class="loginInput">
+            </div>
+            <input type="submit" class="loginButton" value="登 录">
+        </form>
+        <div class="loginLinks">
+            <a href="#">忘记密码</a>
+            <a href="#">忘记会员名</a>
+            <a href="#">免费注册</a>
+        </div>
+        <div class="error_message">
+            <p id="error_message_p"></p>
+        </div>
+    </div>
+    <div class="qrcodeLogin">
+        <span class="loginTitle">手机扫码，安全登录</span>
+        <div class="qrcodeMain">
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/login_qrcode.png"
+                 id="qrcodeA"/>
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/login_qrcodeB.png"
+                 id="qrcodeB"/>
+        </div>
+        <div class="qrcodeFooter">
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/scan_icon2.png">
+            <p>打开 <a href="https://www.tmall.com/wow/portal/act/app-download">手机天猫</a> | <a
+                    href="https://www.taobao.com/m">手机淘宝</a>扫一扫登录</p>
+        </div>
+        <div class="loginLinks">
+            <a href="JavaScript:void(0)" id="pwdLogin">密码登录</a>
+            <a href="#">免费注册</a>
+        </div>
+    </div>
+</div>
 <div class="shopImg">
     <img src="${pageContext.request.contextPath}/res/images/item/categoryPicture/${requestScope.product.product_category.category_image_src}">
 </div>
@@ -95,12 +159,32 @@
             </dd>
         </dl>
         <div class="context_buy">
-            <form action="#" method="post">
+            <script>
+                $(function () {
+                    //点击购买和购物车按钮时
+                    $(".context_buy_form,.context_buyCar_form").submit(function () {
+                        if ('${sessionScope.userId}' === "") {
+                            $(".loginModel").show();
+                            $(".loginDiv").show();
+                            return false;
+                        }
+                        var number = isNaN($.trim($(".context_buymember").val()));
+                        if (number) {
+                            location.reload();
+                        } else {
+                            location.href = "${pageContext.request.contextPath}/order/buy/${requestScope.product.product_id}?product_number=" + $.trim($(".context_buymember").val());
+                        }
+                        return false;
+                    });
+                });
+            </script>
+            <form method="get" class="context_buy_form">
                 <input class="context_buyNow" type="submit" value="立即购买"/>
-                <input class="context_addBuyCar" type="submit" value="加入购物车"/>
-                <input type="hidden" name="gid" value="${requestScope.product.product_id}">
-                <input type="hidden" id="tid" value="${requestScope.product.product_category.category_id}">
             </form>
+            <form method="get" class="context_buyCar_form">
+                <input class="context_addBuyCar" type="submit" value="加入购物车"/>
+            </form>
+
         </div>
         <div class="context_clear">
             <span>服务承诺</span>
@@ -157,54 +241,5 @@
         </c:forEach>
     </div>
 </div>
-<div class="banner_footer">
-    <div class="tmall-ensure">
-        <a href="http://pages.tmall.com/wow/seller/act/newpinzhibaozhang"></a>
-        <a href="http://www.tmall.com/wow/seller/act/seven-day"></a>
-        <a href="http://www.tmall.com/wow/seller/act/special-service?spm=875.7931836/B.a2226n1.3.71ca4265dmsU86"></a>
-        <a href="http://service.tmall.com/support/tmall/tmallHelp.htm"></a>
-    </div>
-    <div class="tmall-desc">
-        <dl>
-            <dt><span>购物指南</span></dt>
-            <dd><a href="http://register.tmall.com/" target="_blank">免费注册</a> <a
-                    href="https://www.alipay.com/user/reg_select.htm" target="_blank">开通支付宝</a> <a
-                    href="https://www.alipay.com/user/login.htm?goto=https%3A%2F%2Fwww.alipay.com%2Fuser%2Finpour_request.htm"
-                    target="_blank">支付宝充值</a></dd>
-        </dl>
-        <dl>
-            <dt><span>天猫保障</span></dt>
-            <dd data-spm-anchor-id="875.7931836/B.a2226n1.i0.71ca4265hUvhyq"><a
-                    href="http://service.tmall.com/support/tmall/knowledge-1140860.htm" target="_blank">发票保障</a> <a
-                    href="http://service.tmall.com/support/tmall/knowledge-1124063.htm" target="_blank">售后规则</a> <a
-                    href="http://service.tmall.com/support/tmall/knowledge-1126800.htm" target="_blank">缺货赔付</a></dd>
-        </dl>
-        <dl>
-            <dt><span>支付方式</span></dt>
-            <dd><a href="https://payservice.alipay.com/intro/index.htm?c=kjzf" target="_blank">快捷支付</a> <a
-                    href="https://payservice.alipay.com/intro/index.htm?c=xyk" target="_blank">信用卡</a> <a
-                    href="https://payservice.alipay.com/intro/index.htm?c=yeb" target="_blank">余额宝</a> <a
-                    href="https://payservice.alipay.com/intro/index.htm?c=hb" target="_blank">蚂蚁花呗</a> <a
-                    href="http://tms.alicdn.com/market/cainiao/codchn.php" target="_blank">货到付款</a></dd>
-        </dl>
-        <dl>
-            <dt><span>商家服务</span></dt>
-            <dd>
-                <a href="http://guize.tmall.com/" target="_blank">天猫规则</a>
-                <a href="http://zhaoshang.tmall.com/" target="_blank">商家入驻</a>
-                <a href="http://shangjia.tmall.com/portal.htm" target="_blank">商家中心</a>
-                <a href="http://peixun.tmall.com/" target="_blank">天猫智库</a>
-                <a href="http://e56.tmall.com" target="_blank">物流服务</a>
-                <a href="http://maowo.tmall.com/" target="_blank">喵言喵语</a>
-                <a href="http://fw.tmall.com/" target="_blank">运营服务</a></dd>
-        </dl>
-        <dl>
-            <dt>手机天猫</dt>
-            <dd><a href="http://mobile.tmall.com/?spm=875.7931836/B.a2226n1.23.71ca4265hUvhyq" class="join"><img
-                    src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/TB14VZKHXXXXXcAXXXX64VRZFXX-105-105.png"
-                    width="105" height="105" alt="手机天猫"></a>
-            </dd>
-        </dl>
-    </div>
-</div>
+<%@ include file="include/footer_two.jsp" %>
 <%@ include file="include/footer.jsp" %>

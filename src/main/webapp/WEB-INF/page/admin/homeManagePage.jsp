@@ -152,16 +152,16 @@
                                 data: data.orderTotalArray
                             }, {
                                 name: "交易完成",
-                                data: data.orderUnpaidArray
+                                data: data.orderSuccessArray
                             }, {
                                 name: "等待买家确认",
-                                data: data.orderNotShippedArray
-                            }, {
-                                name: "等待卖家发货",
                                 data: data.orderUnconfirmedArray
                             }, {
+                                name: "等待卖家发货",
+                                data: data.orderNotShippedArray
+                            }, {
                                 name: "等待买家付款",
-                                data: data.orderSuccessArray
+                                data: data.orderUnpaidArray
                             }]
                         });
                     }, beforeSend: function () {
@@ -181,16 +181,16 @@
                         data: jsonObject.orderTotalArray
                     }, {
                         name: "交易完成",
-                        data: jsonObject.orderUnpaidArray
+                        data: jsonObject.orderSuccessArray
                     }, {
                         name: "等待买家确认",
-                        data: jsonObject.orderNotShippedArray
-                    }, {
-                        name: "等待卖家发货",
                         data: jsonObject.orderUnconfirmedArray
                     }, {
+                        name: "等待卖家发货",
+                        data: jsonObject.orderNotShippedArray
+                    }, {
                         name: "等待买家付款",
-                        data: jsonObject.orderSuccessArray
+                        data: jsonObject.orderUnpaidArray
                     }]
                 });
             }
