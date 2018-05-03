@@ -77,8 +77,12 @@
         FROM productOrder
         <where>
             <if test="productOrder != null">
-                <if test="productOrder.productOrder_code">productOrder_code LIKE concat('%',#{productOrder.productOrder_code},'%')</if>
-                <if test="productOrder.productOrder_post">and productOrder_post LIKE concat('%',#{productOrder.productOrder_post},'%')</if>
+                <if test="productOrder.productOrder_code != null">productOrder_code LIKE
+                    concat('%',#{productOrder.productOrder_code},'%')
+                </if>
+                <if test="productOrder.productOrder_post != null">and productOrder_post LIKE
+                    concat('%',#{productOrder.productOrder_post},'%')
+                </if>
             </if>
             <if test="productOrder_status_array != null">
                 and productOrder_status IN
