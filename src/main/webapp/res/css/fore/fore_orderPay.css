@@ -82,7 +82,7 @@
     text-align: center;
 }
 
-.order_pay_div > .order_pay_btn {
+.order_pay_div .order_pay_btn {
     display: inline-block;
     width: 110px;
     height: 32px;
@@ -96,9 +96,11 @@
     border-radius: 2px;
     padding: 0 20px;
     margin: 0 auto;
+    line-height: 32px;
 }
 
 .order_pay_btn:hover {
     background-color: #00A3D2;
     transition: background-color 0.5s;
+    text-decoration: none;
 }

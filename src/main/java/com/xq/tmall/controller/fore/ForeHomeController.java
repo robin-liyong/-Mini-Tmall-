@@ -71,6 +71,12 @@ public class ForeHomeController extends BaseController {
         return "fore/homePage";
     }
 
+    //转到前台天猫-错误页
+    @RequestMapping(value = "error", method = RequestMethod.GET)
+    public String goToErrorPage() {
+        return "fore/errorPage";
+    }
+
     //获取主页分类下产品信息-ajax
     @ResponseBody
     @RequestMapping(value = "product/nav/{category_id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")

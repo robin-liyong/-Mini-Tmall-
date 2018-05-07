@@ -256,8 +256,10 @@ tr.tr_orderItem_info > td.td_order_content > a.order_btn {
     padding: 0 12px;
     border-radius: 3px;
     cursor: pointer;
-    border: 1px solid #e8e8e8;
-    color: #333333;
+    background-color: #FF0036;
+    color: #fff;
+    border-color: #FF0036;
+    font-weight: bolder;
 }
 
 tr.tr_orderItem_info > td.td_order_content > a.order_btn:hover {
@@ -276,13 +278,6 @@ tr.tr_orderItem_info > td.td_order_content > p.order_close > a {
 tr.tr_orderItem_info > td.td_order_content > p.order_close > a:hover {
     text-decoration: none;
     color: #FF0036;
-}
-
-tr.tr_orderItem_info > td.td_order_content > a.order_btn.pay_btn {
-    background-color: #FF0036;
-    color: #fff;
-    border-color: #FF0036;
-    font-weight: bolder;
 }
 
 .no_search_result {

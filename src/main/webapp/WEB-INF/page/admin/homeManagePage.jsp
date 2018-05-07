@@ -44,7 +44,6 @@
                         {
                             name: '总交易额',
                             type: 'line',
-                            areaStyle: {normal: {}},
                             label: {
                                 normal: {
                                     show: true,
@@ -56,29 +55,21 @@
                         {
                             name: '交易完成',
                             type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
                             data: []
                         },
                         {
                             name: '等待买家确认',
                             type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
                             data: []
                         },
                         {
                             name: '等待卖家发货',
                             type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
                             data: []
                         },
                         {
                             name: '等待买家付款',
                             type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
                             data: []
                         }
                     ]

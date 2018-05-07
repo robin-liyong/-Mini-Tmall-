@@ -4,6 +4,13 @@
     <script src="${pageContext.request.contextPath}/res/js/fore/fore_productBuy.js"></script>
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_productBuyPage.css" rel="stylesheet"/>
     <title>确认订单 - Tmall.com天猫-理想生活上天猫</title>
+    <script>
+        $(function () {
+            $("span.address_province").text($("#select_order_address_province").find("option:selected").text());
+            $("span.address_city").text($("#select_order_address_city").find("option:selected").text());
+            $("span.address_district").text($("#select_order_address_district").find("option:selected").text());
+        })
+    </script>
 </head>
 <body>
 <nav>
@@ -135,13 +142,14 @@
                         class="realPay-price">${requestScope.orderTotalPrice}0</span>
                 </h1>
                 <h1 class="order_count_div_address">
-                    <span class="order-title">寄送至：</span><span class="order-value address-province">北京</span><span
-                        class="order-value address-city">北京市</span><span class="order-value address_district">东城区</span><span
-                        class="order-value address_details"></span>
+                    <span class="order-title">寄送至：</span><span class="order-value address_province"></span><span
+                        class="order-value address_city"></span><span class="order-value address_district"></span><span
+                        class="order-value address_details">${requestScope.detailsAddress}</span>
                 </h1>
                 <h1 class="order_count_div_phone">
-                    <span class="order-title">收货人：</span><span class="order-value user-name"></span><span
-                        class="order-value user-phone"></span>
+                    <span class="order-title">收货人：</span><span
+                        class="order-value user-name">${requestScope.order_receiver}</span><span
+                        class="order-value user-phone">${requestScope.order_phone}</span>
                 </h1>
             </div>
         </div>
@@ -179,6 +187,7 @@
                 yn = false;
             }
             if (!yn) {
+                window.scrollTo(0, 0);
                 return false;
             }
             $.ajax({
@@ -196,8 +205,14 @@
                     "orderItem_product_id": orderItem_product_id,
                     "orderItem_number": orderItem_number
                 },
+                dataType: "json",
                 success: function (data) {
-                    location.href = "/tmall" + data.url;
+                    if (data.success) {
+                        location.href = "/tmall" + data.url;
+                    } else {
+                        alert("订单创建失败，请稍后再试！");
+                        location.reload(true);
+                    }
                 },
                 beforeSend: function () {
 

@@ -34,13 +34,15 @@
     <update id="updateOne" parameterType="productOrderItem">
         UPDATE productOrderItem
         <set>
-            <if test="productOrderItem.productOrderItem_order.productOrder_id != null">productOrderItem_order_id =
-                #{productOrderItem.productOrderItem_order.productOrder_id},
+            <if test="productOrderItem.productOrderItem_order != null">
+                productOrderItem_order_id = #{productOrderItem.productOrderItem_order.productOrder_id},
             </if>
             <if test="productOrderItem.productOrderItem_number != null">productOrderItem_number =
                 #{productOrderItem.productOrderItem_number},
             </if>
-            <if test="productOrderItem.productOrderItem_price != null">productOrderItem_price = #{productOrderItem.productOrderItem_price}</if>
+            <if test="productOrderItem.productOrderItem_price != null">productOrderItem_price =
+                #{productOrderItem.productOrderItem_price},
+            </if>
             <if test="productOrderItem.productOrderItem_userMessage != null">productOrderItem_userMessage =
                 #{productOrderItem.productOrderItem_userMessage}
             </if>
@@ -85,7 +87,7 @@
             productOrderItem_user_id = #{user_id} and productOrderItem_order_id is null
         </where>
         <if test="pageUtil != null">
-            LIMIT #{pageUtil.index},#{pageUtil.count}
+            LIMIT #{pageUtil.index},#{pageUtil.count} AND productOrderItem_order_id is null
         </if>
     </select>
     <select id="selectByProductId" resultMap="productOrderItemMap">
@@ -119,7 +121,7 @@
     <select id="selectTotalByUserId" resultType="int" parameterType="int">
         SELECT COUNT(productOrderItem_id) FROM productOrderItem
         <where>
-            productOrderItem_user_id = #{user_id}
+            productOrderItem_user_id = #{user_id} AND productOrderItem_order_id is null
         </where>
     </select>
     <select id="selectTotalByProductId" resultType="int" parameterType="int">

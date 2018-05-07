@@ -18,10 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ForeOrderController extends BaseController {
@@ -45,6 +42,10 @@ public class ForeOrderController extends BaseController {
     private LastIDService lastIDService;
 
     //转到前台天猫-订单列表页
+    @RequestMapping(value = "order", method = RequestMethod.GET)
+    public String goToPageSimple() {
+        return "redirect:/order/0/10";
+    }
     @RequestMapping(value = "order/{index}/{count}", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map,
                            @RequestParam(required = false) Byte status,
@@ -104,10 +105,10 @@ public class ForeOrderController extends BaseController {
         return "fore/orderListPage";
     }
 
-    //转到前台天猫-订单确认页
-    @RequestMapping(value = "order/buy/{product_id}", method = RequestMethod.GET)
+    //转到前台天猫-订单建立页
+    @RequestMapping(value = "order/create/{product_id}", method = RequestMethod.GET)
     public String goToOrderConfirmPage(@PathVariable("product_id") Integer product_id,
-                                       @RequestParam(required = false) Short product_number,
+                                       @RequestParam(required = false, defaultValue = "1") Short product_number,
                                        Map<String, Object> map,
                                        HttpSession session,
                                        HttpServletRequest request) throws UnsupportedEncodingException {
@@ -120,9 +121,6 @@ public class ForeOrderController extends BaseController {
             map.put("user", user);
         } else {
             return "redirect:/login";
-        }
-        if (product_number == null) {
-            return "redirect:/product/" + product_id;
         }
         logger.info("通过产品ID获取产品信息：{}", product_id);
         Product product = productService.get(product_id);
@@ -201,7 +199,117 @@ public class ForeOrderController extends BaseController {
         map.put("order_phone", order_phone);
         map.put("detailsAddress", detailsAddress);
 
-        logger.info("转到前台天猫-订单确认页");
+        logger.info("转到前台天猫-订单建立页");
+        return "fore/productBuyPage";
+    }
+
+    //转到前台天猫-购物车订单建立页
+    @RequestMapping(value = "order/create/byCart", method = RequestMethod.GET)
+    public String goToOrderConfirmPageByCart(Map<String, Object> map,
+                                             HttpSession session, HttpServletRequest request,
+                                             @RequestParam(required = false) Integer[] order_item_list) throws UnsupportedEncodingException {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        User user;
+        if (userId != null) {
+            logger.info("获取用户信息");
+            user = userService.get(Integer.parseInt(userId.toString()));
+            map.put("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        if (order_item_list == null || order_item_list.length == 0) {
+            logger.warn("用户订单项数组不存在，回到购物车页");
+            return "redirect:/cart";
+        }
+        logger.info("通过订单项ID数组获取订单信息");
+        List<ProductOrderItem> orderItemList = new ArrayList<>(order_item_list.length);
+        for (Integer orderItem_id : order_item_list) {
+            orderItemList.add(productOrderItemService.get(orderItem_id));
+        }
+        logger.info("------检查订单项合法性------");
+        if (orderItemList.size() == 0) {
+            logger.warn("用户订单项获取失败，回到购物车页");
+            return "redirect:/cart";
+        }
+        for (ProductOrderItem orderItem : orderItemList) {
+            if (orderItem.getProductOrderItem_user().getUser_id() != userId) {
+                logger.warn("用户订单项与用户不匹配，回到购物车页");
+                return "redirect:/cart";
+            }
+            if (orderItem.getProductOrderItem_order().getProductOrder_id() != null) {
+                logger.warn("用户订单项不属于购物车，回到购物车页");
+                return "redirect:/cart";
+            }
+        }
+        logger.info("验证通过，获取订单项的产品信息");
+        double orderTotalPrice = 0.0;
+        for (ProductOrderItem orderItem : orderItemList) {
+            Product product = productService.get(orderItem.getProductOrderItem_product().getProduct_id());
+            product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
+            product.setSingleProductImageList(productImageService.getList(product.getProduct_id(), (byte) 0, new PageUtil(0, 1)));
+            orderItem.setProductOrderItem_product(product);
+            orderTotalPrice += orderItem.getProductOrderItem_price();
+        }
+        String addressId = "110000";
+        String cityAddressId = "110100";
+        String districtAddressId = "110101";
+        String detailsAddress = null;
+        String order_post = null;
+        String order_receiver = null;
+        String order_phone = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                String cookieValue = cookie.getValue();
+                switch (cookieName) {
+                    case "addressId":
+                        addressId = cookieValue;
+                        break;
+                    case "cityAddressId":
+                        cityAddressId = cookieValue;
+                        break;
+                    case "districtAddressId":
+                        districtAddressId = cookieValue;
+                        break;
+                    case "order_post":
+                        order_post = URLDecoder.decode(cookieValue, "UTF-8");
+                        break;
+                    case "order_receiver":
+                        order_receiver = URLDecoder.decode(cookieValue, "UTF-8");
+                        break;
+                    case "order_phone":
+                        order_phone = URLDecoder.decode(cookieValue, "UTF-8");
+                        break;
+                    case "detailsAddress":
+                        detailsAddress = URLDecoder.decode(cookieValue, "UTF-8");
+                        break;
+                }
+            }
+        }
+        logger.info("获取省份信息");
+        List<Address> addressList = addressService.getRoot();
+        logger.info("获取addressId为{}的市级地址信息", addressId);
+        List<Address> cityAddress = addressService.getList(null, addressId);
+        logger.info("获取cityAddressId为{}的区级地址信息", cityAddressId);
+        List<Address> districtAddress = addressService.getList(null, cityAddressId);
+
+        map.put("orderItemList", orderItemList);
+        map.put("addressList", addressList);
+        map.put("cityList", cityAddress);
+        map.put("districtList", districtAddress);
+        map.put("orderTotalPrice", orderTotalPrice);
+
+        map.put("addressId", addressId);
+        map.put("cityAddressId", cityAddressId);
+        map.put("districtAddressId", districtAddressId);
+        map.put("order_post", order_post);
+        map.put("order_receiver", order_receiver);
+        map.put("order_phone", order_phone);
+        map.put("detailsAddress", detailsAddress);
+
+        logger.info("转到前台天猫-订单建立页");
         return "fore/productBuyPage";
     }
 
@@ -224,12 +332,17 @@ public class ForeOrderController extends BaseController {
         ProductOrder order = productOrderService.getByCode(order_code);
         if (order == null) {
             logger.warn("订单不存在，返回订单列表页");
-            return "redirect:/order/0/1";
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 0) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            return "redirect:/order/0/10";
         }
         logger.info("验证用户与订单是否一致");
         if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
             logger.warn("用户与订单信息不一致，返回订单列表页");
-            return "redirect:/order/0/1";
+            return "redirect:/order/0/10";
         }
         order.setProductOrderItemList(productOrderItemService.getListByOrderId(order.getProductOrder_id(), null));
 
@@ -250,7 +363,234 @@ public class ForeOrderController extends BaseController {
 
         map.put("productOrder", order);
         map.put("orderTotalPrice", orderTotalPrice);
+
+        logger.info("转到前台天猫-订单支付页");
         return "fore/productPayPage";
+    }
+
+    //转到前台天猫-订单支付成功页
+    @RequestMapping(value = "order/pay/success/{order_code}", method = RequestMethod.GET)
+    public String goToOrderPaySuccessPage(Map<String, Object> map, HttpSession session,
+                                          @PathVariable("order_code") String order_code) {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        User user;
+        if (userId != null) {
+            logger.info("获取用户信息");
+            user = userService.get(Integer.parseInt(userId.toString()));
+            map.put("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 1) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        order.setProductOrderItemList(productOrderItemService.getListByOrderId(order.getProductOrder_id(), null));
+
+        double orderTotalPrice = 0.00;
+        if (order.getProductOrderItemList().size() == 1) {
+            logger.info("获取单订单项的产品信息");
+            ProductOrderItem productOrderItem = order.getProductOrderItemList().get(0);
+            orderTotalPrice = productOrderItem.getProductOrderItem_price();
+        } else {
+            for (ProductOrderItem productOrderItem : order.getProductOrderItemList()) {
+                orderTotalPrice += productOrderItem.getProductOrderItem_price();
+            }
+        }
+        logger.info("订单总金额为：{}元", orderTotalPrice);
+
+        logger.info("获取订单详情-地址信息");
+        Address address = addressService.get(order.getProductOrder_address().getAddress_areaId());
+        Stack<String> addressStack = new Stack<>();
+        //详细地址
+        addressStack.push(order.getProductOrder_detail_address());
+        //最后一级地址
+        addressStack.push(address.getAddress_name() + " ");
+        //如果不是第一级地址
+        while (!address.getAddress_areaId().equals(address.getAddress_regionId().getAddress_areaId())) {
+            address = addressService.get(address.getAddress_regionId().getAddress_areaId());
+            addressStack.push(address.getAddress_name() + " ");
+        }
+        StringBuilder builder = new StringBuilder();
+        while (!addressStack.empty()) {
+            builder.append(addressStack.pop());
+        }
+        logger.warn("订单地址字符串：{}", builder);
+        order.setProductOrder_detail_address(builder.toString());
+
+        map.put("productOrder", order);
+        map.put("orderTotalPrice", orderTotalPrice);
+
+        logger.info("转到前台天猫-订单支付成功页");
+        return "fore/productPaySuccessPage";
+    }
+
+    //转到前台天猫-购物车页
+    @RequestMapping(value = "cart", method = RequestMethod.GET)
+    public String goToCartPage(Map<String, Object> map, HttpSession session) {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        User user;
+        if (userId != null) {
+            logger.info("获取用户信息");
+            user = userService.get(Integer.parseInt(userId.toString()));
+            map.put("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        logger.info("获取用户购物车信息");
+        List<ProductOrderItem> orderItemList = productOrderItemService.getListByUserId(Integer.valueOf(userId.toString()), null);
+        Integer orderItemTotal = 0;
+        if (orderItemList.size() > 0) {
+            logger.info("获取用户购物车的商品总数");
+            orderItemTotal = productOrderItemService.getTotalByUserId(Integer.valueOf(userId.toString()));
+            logger.info("获取用户购物车内的商品信息");
+            for (ProductOrderItem orderItem : orderItemList) {
+                Integer product_id = orderItem.getProductOrderItem_product().getProduct_id();
+                Product product = productService.get(product_id);
+                product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, null));
+                product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
+                orderItem.setProductOrderItem_product(product);
+            }
+        }
+        map.put("orderItemList", orderItemList);
+        map.put("orderItemTotal", orderItemTotal);
+
+        logger.info("转到前台天猫-购物车页");
+        return "fore/productBuyCarPage";
+    }
+
+    //更新订单信息为已支付，待发货-ajax
+    @ResponseBody
+    @RequestMapping(value = "order/pay/{order_code}", method = RequestMethod.PUT)
+    public String orderPay(HttpSession session,
+                           @PathVariable("order_code") String order_code) {
+        JSONObject object = new JSONObject();
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            object.put("success", false);
+            object.put("url", "/login");
+            return object.toJSONString();
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 0) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        order.setProductOrderItemList(productOrderItemService.getListByOrderId(order.getProductOrder_id(), null));
+
+        double orderTotalPrice = 0.00;
+        if (order.getProductOrderItemList().size() == 1) {
+            logger.info("获取单订单项的产品信息");
+            ProductOrderItem productOrderItem = order.getProductOrderItemList().get(0);
+            Product product = productService.get(productOrderItem.getProductOrderItem_product().getProduct_id());
+            product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
+            productOrderItem.setProductOrderItem_product(product);
+            orderTotalPrice = productOrderItem.getProductOrderItem_price();
+        } else {
+            for (ProductOrderItem productOrderItem : order.getProductOrderItemList()) {
+                orderTotalPrice += productOrderItem.getProductOrderItem_price();
+            }
+        }
+        logger.info("总共支付金额为：{}元", orderTotalPrice);
+        logger.info("更新订单信息");
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(order.getProductOrder_id())
+                .setProductOrder_pay_date(new Date())
+                .setProductOrder_status((byte) 1);
+
+        boolean yn = productOrderService.update(productOrder);
+        if (yn) {
+            object.put("success", true);
+            object.put("url", "/order/pay/success/" + order_code);
+        } else {
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+        }
+        return object.toJSONString();
+    }
+
+    //更新订单信息为交易关闭-ajax
+    @ResponseBody
+    @RequestMapping(value = "order/close/{order_code}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
+    public String orderClose(HttpSession session, Map<String, Object> map,
+                             @PathVariable("order_code") String order_code) {
+        JSONObject object = new JSONObject();
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            object.put("success", false);
+            object.put("url", "/login");
+            return object.toJSONString();
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 0) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("更新订单信息");
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(order.getProductOrder_id())
+                .setProductOrder_status((byte) 4);
+
+        boolean yn = productOrderService.update(productOrder);
+        if (yn) {
+            object.put("success", true);
+        } else {
+            object.put("success", false);
+        }
+        return object.toJSONString();
     }
 
     //创建新订单-单订单项-ajax
@@ -266,16 +606,11 @@ public class ForeOrderController extends BaseController {
                                    @RequestParam String productOrder_mobile,
                                    @RequestParam String userMessage,
                                    @RequestParam Integer orderItem_product_id,
-                                   @RequestParam Short orderItem_number) {
+                                   @RequestParam Short orderItem_number) throws UnsupportedEncodingException {
         JSONObject object = new JSONObject();
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
-        User user;
-        if (userId != null) {
-            logger.info("获取用户信息");
-            user = userService.get(Integer.parseInt(userId.toString()));
-            map.put("user", user);
-        } else {
+        if (userId == null) {
             object.put("success", false);
             object.put("url", "/login");
             return object.toJSONString();
@@ -286,33 +621,29 @@ public class ForeOrderController extends BaseController {
             object.put("url", "/");
             return object.toJSONString();
         }
-        try {
-            logger.info("将收货地址等相关信息存入Cookie中");
-            Cookie cookie1 = new Cookie("addressId", addressId);
-            Cookie cookie2 = new Cookie("cityAddressId", cityAddressId);
-            Cookie cookie3 = new Cookie("districtAddressId", districtAddressId);
-            Cookie cookie4 = new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8"));
-            Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
-            Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
-            Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
-            int maxAge = 60 * 60 * 24 * 365;  //设置过期时间为一年
-            cookie1.setMaxAge(maxAge);
-            cookie2.setMaxAge(maxAge);
-            cookie3.setMaxAge(maxAge);
-            cookie4.setMaxAge(maxAge);
-            cookie5.setMaxAge(maxAge);
-            cookie6.setMaxAge(maxAge);
-            cookie7.setMaxAge(maxAge);
-            response.addCookie(cookie1);
-            response.addCookie(cookie2);
-            response.addCookie(cookie3);
-            response.addCookie(cookie4);
-            response.addCookie(cookie5);
-            response.addCookie(cookie6);
-            response.addCookie(cookie7);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        logger.info("将收货地址等相关信息存入Cookie中");
+        Cookie cookie1 = new Cookie("addressId", addressId);
+        Cookie cookie2 = new Cookie("cityAddressId", cityAddressId);
+        Cookie cookie3 = new Cookie("districtAddressId", districtAddressId);
+        Cookie cookie4 = new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8"));
+        Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
+        Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
+        Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
+        int maxAge = 60 * 60 * 24 * 365;  //设置过期时间为一年
+        cookie1.setMaxAge(maxAge);
+        cookie2.setMaxAge(maxAge);
+        cookie3.setMaxAge(maxAge);
+        cookie4.setMaxAge(maxAge);
+        cookie5.setMaxAge(maxAge);
+        cookie6.setMaxAge(maxAge);
+        cookie7.setMaxAge(maxAge);
+        response.addCookie(cookie1);
+        response.addCookie(cookie2);
+        response.addCookie(cookie3);
+        response.addCookie(cookie4);
+        response.addCookie(cookie5);
+        response.addCookie(cookie6);
+        response.addCookie(cookie7);
 
         StringBuffer productOrder_code = new StringBuffer()
                 .append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()))
@@ -350,6 +681,102 @@ public class ForeOrderController extends BaseController {
 
         object.put("success", true);
         object.put("url", "/order/pay/" + productOrder.getProductOrder_code());
+        return object.toJSONString();
+    }
+
+    //创建订单项-购物车-ajax
+    @ResponseBody
+    @RequestMapping(value = "orderItem/create/{product_id}", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String createOrderItem(@PathVariable("product_id") Integer product_id,
+                                  @RequestParam(required = false, defaultValue = "1") Short product_number,
+                                  HttpSession session,
+                                  HttpServletRequest request) {
+        JSONObject object = new JSONObject();
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            object.put("url", "/login");
+            object.put("success", false);
+            return object.toJSONString();
+        }
+
+        logger.info("通过产品ID获取产品信息：{}", product_id);
+        Product product = productService.get(product_id);
+        if (product == null) {
+            object.put("url", "/login");
+            object.put("success", false);
+            return object.toJSONString();
+        }
+
+        ProductOrderItem productOrderItem = new ProductOrderItem();
+        logger.info("检查用户的购物车项");
+        List<ProductOrderItem> orderItemList = productOrderItemService.getListByUserId(Integer.valueOf(userId.toString()), null);
+        for (ProductOrderItem orderItem : orderItemList) {
+            if (orderItem.getProductOrderItem_product().getProduct_id().equals(product_id)) {
+                logger.info("找到已有的产品，进行数量追加");
+                int number = orderItem.getProductOrderItem_number();
+                number += 1;
+                productOrderItem.setProductOrderItem_id(orderItem.getProductOrderItem_id());
+                productOrderItem.setProductOrderItem_number((short) number);
+                productOrderItem.setProductOrderItem_price(number * product.getProduct_sale_price());
+                boolean yn = productOrderItemService.update(productOrderItem);
+                if (yn) {
+                    object.put("success", true);
+                } else {
+                    object.put("success", false);
+                }
+                return object.toJSONString();
+            }
+        }
+        logger.info("封装订单项对象");
+        productOrderItem.setProductOrderItem_product(product);
+        productOrderItem.setProductOrderItem_number(product_number);
+        productOrderItem.setProductOrderItem_price(product.getProduct_sale_price() * product_number);
+        productOrderItem.setProductOrderItem_user(new User().setUser_id(Integer.valueOf(userId.toString())));
+        boolean yn = productOrderItemService.add(productOrderItem);
+        if (yn) {
+            object.put("success", true);
+        } else {
+            object.put("success", false);
+        }
+        return object.toJSONString();
+    }
+
+    //删除订单项-购物车-ajax
+    @ResponseBody
+    @RequestMapping(value = "orderItem/{orderItem_id}", method = RequestMethod.DELETE, produces = "application/json;charset=utf-8")
+    public String deleteOrderItem(@PathVariable("orderItem_id") Integer orderItem_id,
+                                  HttpSession session,
+                                  HttpServletRequest request) {
+        JSONObject object = new JSONObject();
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            object.put("url", "/login");
+            object.put("success", false);
+            return object.toJSONString();
+        }
+        logger.info("检查用户的购物车项");
+        List<ProductOrderItem> orderItemList = productOrderItemService.getListByUserId(Integer.valueOf(userId.toString()), null);
+        boolean isMine = false;
+        for (ProductOrderItem orderItem : orderItemList) {
+            logger.info("找到匹配的购物车项");
+            if (orderItem.getProductOrderItem_id().equals(orderItem_id)) {
+                isMine = true;
+                break;
+            }
+        }
+        if (isMine) {
+            logger.info("删除订单项信息");
+            boolean yn = productOrderItemService.deleteList(new Integer[]{orderItem_id});
+            if (yn) {
+                object.put("success", true);
+            } else {
+                object.put("success", false);
+            }
+        } else {
+            object.put("success", false);
+        }
         return object.toJSONString();
     }
 }

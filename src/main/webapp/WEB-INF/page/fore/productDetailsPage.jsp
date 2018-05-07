@@ -13,6 +13,7 @@
         <a href="${pageContext.request.contextPath}"><img
                 src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/tmallLogoB.png"></a>
         <span class="shopNameHeader">贤趣${requestScope.product.product_category.category_name}官方旗舰店</span>
+        <input id="tid" type="hidden" value="${requestScope.product.product_category.category_id}"/>
         <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/detailsHeaderA.png"
              class="shopAssessHeader">
         <div class="shopSearchHeader">
@@ -161,8 +162,8 @@
         <div class="context_buy">
             <script>
                 $(function () {
-                    //点击购买和购物车按钮时
-                    $(".context_buy_form,.context_buyCar_form").submit(function () {
+                    //点击购买按钮时
+                    $(".context_buy_form").submit(function () {
                         if ('${sessionScope.userId}' === "") {
                             $(".loginModel").show();
                             $(".loginDiv").show();
@@ -172,9 +173,52 @@
                         if (number) {
                             location.reload();
                         } else {
-                            location.href = "${pageContext.request.contextPath}/order/buy/${requestScope.product.product_id}?product_number=" + $.trim($(".context_buymember").val());
+                            location.href = "${pageContext.request.contextPath}/order/create/${requestScope.product.product_id}?product_number=" + $.trim($(".context_buymember").val());
                         }
                         return false;
+                    });
+                    //点击加入购物车按钮时
+                    $(".context_buyCar_form").submit(function () {
+                        if ('${sessionScope.userId}' === "") {
+                            $(".loginModel").show();
+                            $(".loginDiv").show();
+                            return false;
+                        }
+                        var number = isNaN($.trim($(".context_buymember").val()));
+                        if (number) {
+                            location.reload();
+                        } else {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/orderItem/create/${requestScope.product.product_id}?product_number=" + $.trim($(".context_buymember").val()),
+                                type: "POST",
+                                data: {"product_number": number},
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.success) {
+                                        $(".msg").stop(true, true).animate({
+                                            opacity: 1
+                                        }, 550, function () {
+                                            $(".msg").animate({
+                                                opacity: 0
+                                            }, 1500);
+                                        });
+                                    } else {
+                                        if (data.url != null) {
+                                            location.href = "/tmall" + data.url;
+                                        } else {
+                                            alert("加入购物车失败，请稍后再试！");
+                                        }
+                                    }
+                                },
+                                beforeSend: function () {
+
+                                },
+                                error: function () {
+                                    alert("加入购物车失败，请稍后再试！");
+                                }
+                            });
+                            return false;
+                        }
                     });
                 });
             </script>
@@ -184,7 +228,6 @@
             <form method="get" class="context_buyCar_form">
                 <input class="context_addBuyCar" type="submit" value="加入购物车"/>
             </form>
-
         </div>
         <div class="context_clear">
             <span>服务承诺</span>
@@ -241,5 +284,9 @@
         </c:forEach>
     </div>
 </div>
+<div class="msg">
+    <span>商品已添加</span>
+</div>
 <%@ include file="include/footer_two.jsp" %>
 <%@ include file="include/footer.jsp" %>
+</body>

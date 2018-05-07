@@ -3,6 +3,43 @@
 <head>
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_orderList.css" rel="stylesheet"/>
     <title>已买到的宝贝</title>
+    <script>
+        function closeOrder(orderCode) {
+            if (isNaN(orderCode) || orderCode === null) {
+                return;
+            }
+            $('#btn-ok').click(function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/order/close/" + orderCode,
+                    type: "PUT",
+                    data: null,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success !== true) {
+                            alert("订单处理异常，请稍候再试！");
+                        }
+                        location.href = "/tmall/order/0/10";
+                    },
+                    beforeSend: function () {
+
+                    },
+                    error: function () {
+                        alert("订单取消出现问题，请稍后再试！");
+                        location.href = "/tmall/order/0/10";
+                    }
+                });
+            });
+            $('#modalDiv').modal();
+        }
+
+        function getPage(index) {
+            var name = $(".tab_select").children("a").attr("name");
+            if (name === undefined) {
+                name = "";
+            }
+            location.href = "${pageContext.request.contextPath}/order/" + index + "/10" + "?" + name;
+        }
+    </script>
 </head>
 <body>
 <nav>
@@ -35,14 +72,15 @@
         <li <c:if test="${requestScope.status == null}">class="tab_select"</c:if>><a
                 href="${pageContext.request.contextPath}/order/0/10">所有订单</a></li>
         <li <c:if test="${requestScope.status == 0}">class="tab_select"</c:if>><a
-                href="${pageContext.request.contextPath}/order/0/10?status=0">待付款</a></li>
+                href="${pageContext.request.contextPath}/order/0/10?status=0" name="status=0">待付款</a></li>
         <li <c:if test="${requestScope.status == 1}">class="tab_select"</c:if>><a
-                href="${pageContext.request.contextPath}/order/0/10?status=1">待发货</a></li>
+                href="${pageContext.request.contextPath}/order/0/10?status=1" name="status=1">待发货</a></li>
         <li <c:if test="${requestScope.status == 2}">class="tab_select"</c:if>><a
-                href="${pageContext.request.contextPath}/order/0/10?status=2">待收货</a></li>
+                href="${pageContext.request.contextPath}/order/0/10?status=2" name="status=2">待收货</a></li>
         <li <c:if test="${requestScope.status == 3}">class="tab_select"</c:if>><a
-                href="${pageContext.request.contextPath}/order/0/10?status=3">待评价</a></li>
+                href="${pageContext.request.contextPath}/order/0/10?status=3" name="status=3">待评价</a></li>
     </ul>
+    <%@include file="include/page.jsp" %>
     <table class="table_orderList">
         <thead>
         <tr>
@@ -91,7 +129,8 @@
                                             <a class="order_btn pay_btn"
                                                href="${pageContext.request.contextPath}/order/pay/${productOrder.productOrder_code}">立即付款</a>
                                             <p class="order_close"><a class="order_close" href="javascript:void(0)"
-                                                                      onclick="closeOrder()">取消订单</a></p>
+                                                                      onclick="closeOrder('${productOrder.productOrder_code}')">取消订单</a>
+                                            </p>
                                         </td>
                                     </c:when>
                                     <c:when test="${productOrder.productOrder_status==1}">
@@ -127,6 +166,9 @@
                                             rowspan="${fn:length(requestScope.productOrderItemList)}">
                                             <span class="td_error" title="交易关闭">交易关闭</span>
                                         </td>
+                                        <td class="td_order_content"
+                                            rowspan="${fn:length(requestScope.productOrderItemList)}">
+                                        </td>
                                     </c:otherwise>
                                 </c:choose>
                             </c:if>
@@ -152,6 +194,23 @@
             </c:otherwise>
         </c:choose>
     </table>
+    <%@include file="include/page.jsp" %>
+</div>
+<!-- 模态框 -->
+<div class="modal fade" id="modalDiv" tabindex="-1" role="dialog" aria-labelledby="modalDiv" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">您确定要取消该订单吗？取消订单后，不能恢复。</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btn-ok">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 <%@include file="include/footer_two.jsp" %>
 <%@include file="include/footer.jsp" %>

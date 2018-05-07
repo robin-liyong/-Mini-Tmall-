@@ -39,9 +39,32 @@
         </div>
     </div>
     <div class="order_pay_div">
-        <button class="order_pay_btn">确认支付</button>
+        <script>
+            function pay() {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/order/pay/${requestScope.productOrder.productOrder_code}",
+                    type: "PUT",
+                    data: null,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success !== true) {
+                            alert("订单处理异常，请稍候再试！");
+                        }
+                        location.href = "/tmall" + data.url;
+                    },
+                    beforeSend: function () {
+
+                    },
+                    error: function () {
+                        alert("订单支付出现问题，请重新支付！");
+                        location.href = "/tmall/order/0/10";
+                    }
+                });
+            }
+        </script>
+        <a class="order_pay_btn" href="javascript:void(0)" onclick="pay()">确认支付</a>
     </div>
 </div>
-</body>
 <%@include file="include/footer_two.jsp" %>
 <%@include file="include/footer.jsp" %>
+</body>

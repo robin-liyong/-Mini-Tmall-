@@ -115,7 +115,7 @@
                                     productOrderStatus = "等待卖家发货";
                                     break;
                                 case 2:
-                                    productOrderStatusClass = "td_warn";
+                                    productOrderStatusClass = "td_wait";
                                     productOrderStatusTitle = "卖家已发货，等待买家确认";
                                     productOrderStatus = "等待买家确认";
                                     break;

@@ -42,21 +42,27 @@
     <update id="updateOne" parameterType="productOrder">
         UPDATE productOrder
         <set>
-            <if test="productOrder.productOrder_address != null">productOrder_address =
-                #{productOrder.productOrder_address},
+            <if test="productOrder.productOrder_address != null">
+                productOrder_address = #{productOrder.productOrder_address},
             </if>
-            <if test="productOrder.productOrder_detail_address != null">productOrder_detail_address =
-                #{productOrder.productOrder_detail_address},
+            <if test="productOrder.productOrder_detail_address != null">
+                productOrder_detail_address = #{productOrder.productOrder_detail_address},
             </if>
-            <if test="productOrder.productOrder_post != null">productOrder_post = #{productOrder.productOrder_post},
+            <if test="productOrder.productOrder_post != null">
+                productOrder_post = #{productOrder.productOrder_post},
             </if>
-            <if test="productOrder.productOrder_status != null">productOrder_status =
-                #{productOrder.productOrder_status},
+            <if test="productOrder.productOrder_status != null">
+                productOrder_status = #{productOrder.productOrder_status},
             </if>
-            <if test="productOrder.productOrder_delivery_date != null">productOrder_delivery_date =
-                #{productOrder.productOrder_delivery_date},
+            <if test="productOrder.productOrder_pay_date != null">
+                productOrder_pay_date = #{productOrder.productOrder_pay_date},
             </if>
-            <if test="productOrder.productOrder_confirm_date != null">productOrder_confirm_date = #{productOrder.productOrder_confirm_date}</if>
+            <if test="productOrder.productOrder_delivery_date != null">
+                productOrder_delivery_date = #{productOrder.productOrder_delivery_date},
+            </if>
+            <if test="productOrder.productOrder_confirm_date != null">
+                productOrder_confirm_date = #{productOrder.productOrder_confirm_date}
+            </if>
         </set>
         <where>
             productOrder_id = #{productOrder.productOrder_id}
@@ -138,6 +144,4 @@
         </where>
         GROUP BY DATE_FORMAT(productOrder_pay_date,'%Y-%m-%d'),productOrder_status
     </select>
-
-
 </mapper>
