@@ -37,14 +37,14 @@
             <if test="productOrderItem.productOrderItem_order != null">
                 productOrderItem_order_id = #{productOrderItem.productOrderItem_order.productOrder_id},
             </if>
-            <if test="productOrderItem.productOrderItem_number != null">productOrderItem_number =
-                #{productOrderItem.productOrderItem_number},
+            <if test="productOrderItem.productOrderItem_number != null">
+                productOrderItem_number = #{productOrderItem.productOrderItem_number},
             </if>
-            <if test="productOrderItem.productOrderItem_price != null">productOrderItem_price =
-                #{productOrderItem.productOrderItem_price},
+            <if test="productOrderItem.productOrderItem_price != null">
+                productOrderItem_price = #{productOrderItem.productOrderItem_price},
             </if>
-            <if test="productOrderItem.productOrderItem_userMessage != null">productOrderItem_userMessage =
-                #{productOrderItem.productOrderItem_userMessage}
+            <if test="productOrderItem.productOrderItem_userMessage != null">
+                productOrderItem_userMessage = #{productOrderItem.productOrderItem_userMessage}
             </if>
         </set>
         <where>
@@ -106,7 +106,7 @@
         productOrderItem_id,productOrderItem_number,productOrderItem_price,productOrderItem_product_id,productOrderItem_order_id,productOrderItem_user_id,productOrderItem_userMessage
         FROM productOrderItem
         <where>
-            productOrderItem__id = #{productOrderItem_id}
+            productOrderItem_id = #{productOrderItem_id}
         </where>
     </select>
     <select id="selectTotal" resultType="int">

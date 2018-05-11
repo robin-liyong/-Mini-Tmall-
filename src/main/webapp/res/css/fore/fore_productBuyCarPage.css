@@ -352,6 +352,10 @@ tr.orderItem_category span.category_shop {
     min-height: 119px;
 }
 
+#J_CartMain > tbody tr.orderItem_info.orderItem_selected {
+    background: #fff8e1;
+}
+
 tr.orderItem_info > td {
     padding: 20px 0;
 }
@@ -457,6 +461,161 @@ tr.orderItem_info .remove_order {
 
 tr.orderItem_info .remove_order:hover {
     color: #FF0036;
+}
+
+.content > #J_FloatBar {
+    margin-top: 15px;
+    height: 50px;
+    overflow: hidden;
+    background: #e5e5e5;
+}
+
+#J_FloatBar > #J_SelectAll2 {
+    float: left;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 5px;
+    font: 12px tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
+}
+
+#J_SelectAll2 > .cart_checkbox {
+    float: left;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    line-height: 50px;
+}
+
+.cart_checkbox > input[type="checkbox"] + label:before {
+    margin-right: .2em;
+}
+
+#J_SelectAll2 > span {
+    float: left;
+    line-height: 50px;
+    color: #000;
+}
+
+#J_FloatBar > .operations {
+    float: left;
+    line-height: 50px;
+    height: 50px;
+}
+
+.operations > a {
+    margin-left: 25px;
+    float: left;
+    color: #3c3c3c;
+    font: 12px/50px tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif
+}
+
+.operations > a:hover {
+    color: #FF0036;
+}
+
+#J_FloatBar > .float-bar-right {
+    float: right;
+    padding-left: 20px;
+    background: #e5e5e5;
+    height: 100%;
+}
+
+.float-bar-right > #J_ShowSelectedItems {
+    cursor: pointer;
+    height: 48px;
+    color: #3c3c3c;
+    float: left;
+    font: 12px/1.5 tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
+}
+
+#J_ShowSelectedItems > .txt {
+    float: left;
+    display: inline-block;
+    line-height: 48px;
+}
+
+#J_ShowSelectedItems > #J_SelectedItemsCount {
+    float: left;
+    display: inline-block;
+    line-height: 50px;
+    padding: 0 5px;
+    color: #FF0036;
+    font-weight: 700;
+    font-size: 18px;
+    font-style: normal;
+    font-family: tohoma, Arial, serif;
+}
+
+.float-bar-right > .price_sum {
+    padding-left: 40px;
+    height: 48px;
+    color: #3c3c3c;
+    float: left;
+}
+
+.price_sum > .txt {
+    float: left;
+    color: #3c3c3c;
+    font: 12px/48px tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif
+}
+
+.price_sum > .price {
+    color: #FF0036;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 48px;
+    font-family: Arial, serif;
+    vertical-align: middle;
+    float: left;
+    display: inline-block;
+}
+
+.price_sum > .price > #J_Total {
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0 3px;
+    font-family: tohoma, Arial, serif;
+    font-style: normal;
+}
+
+#J_Total > .total_symbol {
+    font-size: 14px;
+    font-family: Verdana, serif;
+    font-weight: 400;
+    color: #FF0036;
+}
+
+.float-bar-right > .btn_area {
+    float: left;
+}
+
+.btn_area > a {
+    display: block;
+    background: #B0B0B0;
+    color: #FFF;
+    border-left: 1px solid #e7e7e7;
+    width: 119px;
+    cursor: not-allowed;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-family: "Lantinghei SC", "Microsoft YaHei UI", serif;
+    font-size: 20px;
+    border-radius: 2px;
+}
+
+.btn_area > a:hover {
+    text-decoration: none;
+}
+
+.btn_area > a.selected {
+    background: #FF0036;
+    cursor: pointer;
+}
+
+.btn_area > a.selected:hover {
+    background: #FF0026;
 }
 
 input[type="checkbox"] + label::before {

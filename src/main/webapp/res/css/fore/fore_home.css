@@ -143,6 +143,10 @@ nav {
     height: 500px;
     position: absolute;
     background-color: #0F1322;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .banner > img {

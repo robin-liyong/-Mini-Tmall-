@@ -6,15 +6,9 @@
     <title>Tmall.com天猫 - 购物车</title>
     <script>
         $(function () {
-        });
-
-        function removeItem(orderItem_id) {
-            if (isNaN(orderItem_id) || orderItem_id === null) {
-                return;
-            }
             $('#btn-ok').click(function () {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/orderItem/" + orderItem_id,
+                    url: "${pageContext.request.contextPath}/orderItem/" + $("#order_id_hidden").val(),
                     type: "DELETE",
                     data: null,
                     dataType: "json",
@@ -33,6 +27,13 @@
                     }
                 });
             });
+        });
+
+        function removeItem(orderItem_id) {
+            if (isNaN(orderItem_id) || orderItem_id === null) {
+                return;
+            }
+            $("#order_id_hidden").val(orderItem_id);
             $('#modalDiv').modal();
         }
     </script>
@@ -108,6 +109,7 @@
                     <th width="120px"><span>数量</span></th>
                     <th width="120px"><span>金额</span></th>
                     <th width="84px"><span>操作</span></th>
+                    <th hidden>ID</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -132,10 +134,10 @@
                         </td>
                         <td>
                             <div class="item_amount">
-                                <a href="javascript:void(0)" onclick="up()"
+                                <a href="javascript:void(0)" onclick="up(this)"
                                    class="J_Minus <c:if test="${orderItem.productOrderItem_number<=1}">no_minus</c:if>">-</a>
                                 <input type="text" value="${orderItem.productOrderItem_number}"/>
-                                <a href="javascript:void(0)" onclick="down()" class="J_Plus">+</a>
+                                <a href="javascript:void(0)" onclick="down(this)" class="J_Plus">+</a>
                             </div>
                         </td>
                         <td>
@@ -143,44 +145,43 @@
                         </td>
                         <td><a href="javascript:void(0)" onclick="removeItem('${orderItem.productOrderItem_id}')"
                                class="remove_order">删除</a></td>
+                        <td>
+                            <input type="hidden" class="input_orderItem" name="${orderItem.productOrderItem_id}"/>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <div id="J_FloatBarHolder">
-                <div id="J_FloatBar">
-                    <div class="float_bar_wrapper">
-                        <div id="J_SelectAll2">
-                            <div class="cart_checkbox">
-                                <input class="J_checkboxShop" id="J_SelectAllCbx2" type="checkbox" value="true"/>
-                                <label for="J_SelectAllCbx2">勾选购物车内所有商品</label>
-                                <span class="span_selectAll">&nbsp;全选</span>
-                            </div>
-                        </div>
-                        <div class="operations">
-                            <a href="javascript:void(0)" onclick="remove()">删除</a>
-                        </div>
-                        <div class="float-bar-right">
-                            <div id="J_ShowSelectedItems">
-                                <span class="txt">已选商品</span>
-                                <em id="J_SelectedItemsCount">0</em>
-                                <span class="txt">件</span>
-                            </div>
-                            <div class="price_sum">
-                                <span class="txt">合计（不含运费）</span>
-                                <strong class="price">
-                                    <em id="J_Total">
-                                        <span class="total_symbol">&nbsp;</span>
-                                        <span class="total_value">0.00</span>
-                                    </em>
-                                </strong>
-                            </div>
-                            <div class="btn_area">
-                                <a href="javascript:void(0)" id="J_Go" onclick="create()">
-                                    <span>结&nbsp;算</span>
-                                </a>
-                            </div>
-                        </div>
+            <div id="J_FloatBar">
+                <div id="J_SelectAll2">
+                    <div class="cart_checkbox">
+                        <input class="J_checkboxShop" id="J_SelectAllCbx2" type="checkbox" value="true"/>
+                        <label for="J_SelectAllCbx2" title="勾选购物车内所有商品"></label>
+                    </div>
+                    <span class="span_selectAll">&nbsp;全选</span>
+                </div>
+                <div class="operations">
+                    <a href="javascript:void(0)" onclick="remove()">删除</a>
+                </div>
+                <div class="float-bar-right">
+                    <div id="J_ShowSelectedItems">
+                        <span class="txt">已选商品</span>
+                        <em id="J_SelectedItemsCount">0</em>
+                        <span class="txt">件</span>
+                    </div>
+                    <div class="price_sum">
+                        <span class="txt">合计（不含运费）:</span>
+                        <strong class="price">
+                            <em id="J_Total">
+                                <span class="total_symbol">&nbsp;  ￥</span>
+                                <span class="total_value"> 0.00</span>
+                            </em>
+                        </strong>
+                    </div>
+                    <div class="btn_area">
+                        <a href="javascript:void(0)" id="J_Go" onclick="create(this)">
+                            <span>结&nbsp;算</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -199,6 +200,7 @@
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="btn-ok">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
+                <input type="hidden" id="order_id_hidden">
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->

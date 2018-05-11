@@ -116,19 +116,18 @@
                 <tr class="tr_userMessage">
                     <td><label for="input_userMessage_${i.count}">给卖家留言：</label><textarea maxlength="500"
                                                                                           id="input_userMessage_${i.count}"
-                                                                                          placeholder="选填:填写内容已和卖家协商确认"></textarea>
+                                                                                          placeholder="选填:填写内容已和卖家协商确认"
+                                                                                          class="input_userMessage"></textarea>
                     </td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td colspan="4"><input type="hidden" class="input_orderItem_id"
+                                           value="${orderItem.productOrderItem_id}"/>
                 </tr>
                 <tr class="tr_orderCount">
                     <td colspan="3"></td>
                     <td><span class="span_price_name">店铺合计(含运费)</span><span
                             class="span_price_value">￥${orderItem.productOrderItem_price}0</span></td>
-                </tr>
-                <tr hidden>
-                    <td colspan="4"><input type="hidden" id="input_orderItem_id">${orderItem.productOrderItem_id}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -223,10 +222,84 @@
                 }
             });
         }
+
+        function payList() {
+            var addressId = $("#select_order_address_province").val();
+            var cityAddressId = $("#select_order_address_city").val();
+            var districtAddressId = $("#select_order_address_district").val();
+            var productOrder_detail_address = $.trim($("#textarea_details_address").val());
+            var productOrder_post = $.trim($("#input_order_post").val());
+            var productOrder_receiver = $.trim($("#input_order_receiver").val());
+            var productOrder_mobile = $.trim($("#input_order_phone").val());
+
+            var yn = true;
+            if (productOrder_detail_address === "") {
+                styleUtil.specialBasicErrorShow($("#label_details_address"));
+                yn = false;
+            }
+            if (productOrder_receiver === "") {
+                styleUtil.specialBasicErrorShow($("#label_order_receiver"));
+                yn = false;
+            }
+            var re = /^(13[0-9]{9})|(15[89][0-9]{8})$/;
+            if (!re.test(productOrder_mobile)) {
+                styleUtil.specialBasicErrorShow($("#label_order_phone"));
+                yn = false;
+            }
+            re = /^[1-9][0-9]{5}$/;
+            if (!re.test(productOrder_post) && productOrder_post !== "") {
+                styleUtil.specialBasicErrorShow($("#label_order_post"));
+                yn = false;
+            }
+            if (!yn) {
+                window.scrollTo(0, 0);
+                return false;
+            }
+            var orderItemMap = {};
+            var tr = $(".tr_userMessage");
+            tr.each(function () {
+                var orderItem_id = $(this).find(".input_orderItem_id").val();
+                if (isNaN(orderItem_id) || orderItem_id === "") {
+                    location.reload(true);
+                    return false;
+                }
+                orderItemMap[orderItem_id] = $(this).find(".input_userMessage").val();
+            });
+            $.ajax({
+                url: "/tmall/order/list",
+                type: "POST",
+                data: {
+                    "addressId": addressId,
+                    "cityAddressId": cityAddressId,
+                    "districtAddressId": districtAddressId,
+                    "productOrder_detail_address": productOrder_detail_address,
+                    "productOrder_post": productOrder_post,
+                    "productOrder_receiver": productOrder_receiver,
+                    "productOrder_mobile": productOrder_mobile,
+                    "orderItemJSON": JSON.stringify(orderItemMap)
+                },
+                traditional: true,
+                success: function (data) {
+                    if (data.success) {
+                        location.href = "/tmall" + data.url;
+                        return true;
+                    } else {
+                        alert("订单创建失败，请稍后再试！");
+                        location.reload(true);
+                    }
+                },
+                beforeSend: function () {
+                },
+                error: function () {
+                    alert("订单创建失败，请稍后再试！");
+                    location.reload(true);
+                }
+            });
+        }
     </script>
     <div class="order_info_last">
         <c:choose>
-            <c:when test="${fn:length(requestScope.orderItemList)>1}">
+            <c:when test="${requestScope.orderItemList[0].productOrderItem_id != null}">
                 <a href="javascript:void(0)" title="提交订单" class="go-btn" onclick="payList()">提交订单</a>
             </c:when>
             <c:otherwise>

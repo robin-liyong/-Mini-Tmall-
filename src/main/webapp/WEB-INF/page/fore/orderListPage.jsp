@@ -4,13 +4,10 @@
     <link href="${pageContext.request.contextPath}/res/css/fore/fore_orderList.css" rel="stylesheet"/>
     <title>已买到的宝贝</title>
     <script>
-        function closeOrder(orderCode) {
-            if (isNaN(orderCode) || orderCode === null) {
-                return;
-            }
+        $(function () {
             $('#btn-ok').click(function () {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/order/close/" + orderCode,
+                    url: "${pageContext.request.contextPath}/order/close/" + $("#order_id_hidden").val(),
                     type: "PUT",
                     data: null,
                     dataType: "json",
@@ -29,6 +26,13 @@
                     }
                 });
             });
+        });
+
+        function closeOrder(orderCode) {
+            if (isNaN(orderCode) || orderCode === null) {
+                return;
+            }
+            $("#order_id_hidden").val(orderCode);
             $('#modalDiv').modal();
         }
 
@@ -208,6 +212,7 @@
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="btn-ok">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
+                <input type="hidden" id="order_id_hidden">
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
