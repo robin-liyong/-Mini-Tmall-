@@ -260,7 +260,7 @@
     <input class="frm_btn frm_clear" id="btn_category_cancel" type="button" value="取消"/>
 </div>
 
-<!-- 模态框 -->
+<%-- 模态框 --%>
 <div class="modal fade" id="modalDiv" tabindex="-1" role="dialog" aria-labelledby="modalDiv" aria-hidden="true"
      data-backdrop="static">
     <div class="modal-dialog">
@@ -273,8 +273,10 @@
                 <button type="submit" class="btn btn-primary" id="btn-ok">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+        </div>
+        <%-- /.modal-content --%>
+    </div>
+    <%-- /.modal --%>
 </div>
 <div class="loader"></div>
 </body>

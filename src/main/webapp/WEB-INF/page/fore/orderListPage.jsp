@@ -200,7 +200,7 @@
     </table>
     <%@include file="include/page.jsp" %>
 </div>
-<!-- 模态框 -->
+<%-- 模态框 --%>
 <div class="modal fade" id="modalDiv" tabindex="-1" role="dialog" aria-labelledby="modalDiv" aria-hidden="true"
      data-backdrop="static">
     <div class="modal-dialog">
@@ -214,8 +214,10 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close">关闭</button>
                 <input type="hidden" id="order_id_hidden">
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+        </div>
+        <%-- /.modal-content --%>
+    </div>
+    <%-- /.modal --%>
 </div>
 <%@include file="include/footer_two.jsp" %>
 <%@include file="include/footer.jsp" %>
