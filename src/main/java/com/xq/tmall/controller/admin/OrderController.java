@@ -52,7 +52,7 @@ public class OrderController extends BaseController{
 
         logger.info("获取前10条订单列表");
         PageUtil pageUtil = new PageUtil(0, 10);
-        List<ProductOrder> productOrderList = productOrderService.getList(null, null, null, pageUtil);
+        List<ProductOrder> productOrderList = productOrderService.getList(null, null, new OrderUtil("productOrder_pay_date", true), pageUtil);
         map.put("productOrderList",productOrderList);
         logger.info("获取订单总数量");
         Integer productOrderCount = productOrderService.getTotal(null, null);

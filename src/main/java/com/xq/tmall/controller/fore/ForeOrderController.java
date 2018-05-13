@@ -69,7 +69,7 @@ public class ForeOrderController extends BaseController {
 
         PageUtil pageUtil = new PageUtil(index, count);
         logger.info("根据用户ID:{}获取订单列表", userId);
-        List<ProductOrder> productOrderList = productOrderService.getList(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array, new OrderUtil("productOrder_status"), pageUtil);
+        List<ProductOrder> productOrderList = productOrderService.getList(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array, new OrderUtil("productOrder_pay_date", true), pageUtil);
 
         //订单总数量
         Integer orderCount = 0;
@@ -84,8 +84,8 @@ public class ForeOrderController extends BaseController {
                         Product product = productService.get(product_id);
                         product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, new PageUtil(0, 1)));
                         productOrderItem.setProductOrderItem_product(product);
-                        if (status != null && status == 3) {
-                            productOrderItem.setReview(reviewService.getTotalByOrderItemId(productOrderItem.getProductOrderItem_id()) > 0);
+                        if (order.getProductOrder_status() == 3) {
+                            productOrderItem.setIsReview(reviewService.getTotalByOrderItemId(productOrderItem.getProductOrderItem_id()) > 0);
                         }
                     }
                 }
@@ -440,6 +440,123 @@ public class ForeOrderController extends BaseController {
         return "fore/productPaySuccessPage";
     }
 
+    //转到前台天猫-订单确认页
+    @RequestMapping(value = "order/confirm/{order_code}", method = RequestMethod.GET)
+    public String goToOrderConfirmPage(Map<String, Object> map, HttpSession session,
+                                       @PathVariable("order_code") String order_code) {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        User user;
+        if (userId != null) {
+            logger.info("获取用户信息");
+            user = userService.get(Integer.parseInt(userId.toString()));
+            map.put("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 2) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        order.setProductOrderItemList(productOrderItemService.getListByOrderId(order.getProductOrder_id(), null));
+
+        double orderTotalPrice = 0.00;
+        if (order.getProductOrderItemList().size() == 1) {
+            logger.info("获取单订单项的产品信息");
+            ProductOrderItem productOrderItem = order.getProductOrderItemList().get(0);
+            Integer product_id = productOrderItem.getProductOrderItem_product().getProduct_id();
+            Product product = productService.get(product_id);
+            product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, new PageUtil(0, 1)));
+            productOrderItem.setProductOrderItem_product(product);
+            orderTotalPrice = productOrderItem.getProductOrderItem_price();
+        } else {
+            logger.info("获取多订单项的产品信息");
+            for (ProductOrderItem productOrderItem : order.getProductOrderItemList()) {
+                Integer product_id = productOrderItem.getProductOrderItem_product().getProduct_id();
+                Product product = productService.get(product_id);
+                product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, new PageUtil(0, 1)));
+                productOrderItem.setProductOrderItem_product(product);
+                orderTotalPrice += productOrderItem.getProductOrderItem_price();
+            }
+        }
+        logger.info("订单总金额为：{}元", orderTotalPrice);
+
+        map.put("productOrder", order);
+        map.put("orderTotalPrice", orderTotalPrice);
+
+        logger.info("转到前台天猫-订单确认页");
+        return "fore/orderConfirmPage";
+    }
+
+    //转到前台天猫-订单完成页
+    @RequestMapping(value = "order/success/{order_code}", method = RequestMethod.GET)
+    public String goToOrderSuccessPage(Map<String, Object> map, HttpSession session,
+                                       @PathVariable("order_code") String order_code) {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        User user;
+        if (userId != null) {
+            logger.info("获取用户信息");
+            user = userService.get(Integer.parseInt(userId.toString()));
+            map.put("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 3) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("获取订单中订单项数量");
+        Integer count = productOrderItemService.getTotalByOrderId(order.getProductOrder_id());
+        Product product = null;
+        if (count == 1) {
+            logger.info("获取订单中的唯一订单项");
+            ProductOrderItem productOrderItem = productOrderItemService.getListByOrderId(order.getProductOrder_id(), new PageUtil(0, 1)).get(0);
+            if (productOrderItem != null) {
+                logger.info("获取订单项评论数量");
+                count = reviewService.getTotalByOrderItemId(productOrderItem.getProductOrderItem_id());
+                if (count == 0) {
+                    logger.info("获取订单项产品信息");
+                    product = productService.get(productOrderItem.getProductOrderItem_product().getProduct_id());
+                    if (product != null) {
+                        product.setSingleProductImageList(productImageService.getList(product.getProduct_id(), (byte) 0, new PageUtil(0, 1)));
+                    }
+                }
+            }
+        }
+
+        map.put("product", product);
+
+        logger.info("转到前台天猫-订单完成页");
+        return "fore/orderSuccessPage";
+    }
+
     //转到前台天猫-购物车页
     @RequestMapping(value = "cart", method = RequestMethod.GET)
     public String goToCartPage(Map<String, Object> map, HttpSession session) {
@@ -478,8 +595,7 @@ public class ForeOrderController extends BaseController {
     //更新订单信息为已支付，待发货-ajax
     @ResponseBody
     @RequestMapping(value = "order/pay/{order_code}", method = RequestMethod.PUT)
-    public String orderPay(HttpSession session,
-                           @PathVariable("order_code") String order_code) {
+    public String orderPay(HttpSession session, @PathVariable("order_code") String order_code) {
         JSONObject object = new JSONObject();
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
@@ -544,11 +660,96 @@ public class ForeOrderController extends BaseController {
         return object.toJSONString();
     }
 
+    //更新订单信息为已发货，待确认-ajax
+    @RequestMapping(value = "order/delivery/{order_code}", method = RequestMethod.GET)
+    public String orderDelivery(HttpSession session, @PathVariable("order_code") String order_code) {
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            return "redirect:/order/0/10";
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 1) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            return "redirect:/order/0/10";
+        }
+        logger.info("更新订单信息");
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(order.getProductOrder_id())
+                .setProductOrder_delivery_date(new Date())
+                .setProductOrder_status((byte) 2);
+
+        productOrderService.update(productOrder);
+
+        return "redirect:/order/0/10";
+    }
+
+    //更新订单信息为交易成功-ajax
+    @ResponseBody
+    @RequestMapping(value = "order/success/{order_code}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
+    public String orderSuccess(HttpSession session, @PathVariable("order_code") String order_code) {
+        JSONObject object = new JSONObject();
+        logger.info("检查用户是否登录");
+        Object userId = checkUser(session);
+        if (userId == null) {
+            object.put("success", false);
+            object.put("url", "/login");
+            return object.toJSONString();
+        }
+        logger.info("------验证订单信息------");
+        logger.info("查询订单是否存在");
+        ProductOrder order = productOrderService.getByCode(order_code);
+        if (order == null) {
+            logger.warn("订单不存在，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证订单状态");
+        if (order.getProductOrder_status() != 2) {
+            logger.warn("订单状态不正确，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("验证用户与订单是否一致");
+        if (order.getProductOrder_user().getUser_id() != Integer.parseInt(userId.toString())) {
+            logger.warn("用户与订单信息不一致，返回订单列表页");
+            object.put("success", false);
+            object.put("url", "/order/0/10");
+            return object.toJSONString();
+        }
+        logger.info("更新订单信息");
+        ProductOrder productOrder = new ProductOrder()
+                .setProductOrder_id(order.getProductOrder_id())
+                .setProductOrder_status((byte) 3)
+                .setProductOrder_confirm_date(new Date());
+
+        boolean yn = productOrderService.update(productOrder);
+        if (yn) {
+            object.put("success", true);
+        } else {
+            object.put("success", false);
+        }
+        return object.toJSONString();
+    }
+
     //更新订单信息为交易关闭-ajax
     @ResponseBody
     @RequestMapping(value = "order/close/{order_code}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
-    public String orderClose(HttpSession session, Map<String, Object> map,
-                             @PathVariable("order_code") String order_code) {
+    public String orderClose(HttpSession session, @PathVariable("order_code") String order_code) {
         JSONObject object = new JSONObject();
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);

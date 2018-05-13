@@ -82,7 +82,7 @@
         <li <c:if test="${requestScope.status == 2}">class="tab_select"</c:if>><a
                 href="${pageContext.request.contextPath}/order/0/10?status=2" name="status=2">待收货</a></li>
         <li <c:if test="${requestScope.status == 3}">class="tab_select"</c:if>><a
-                href="${pageContext.request.contextPath}/order/0/10?status=3" name="status=3">待评价</a></li>
+                href="${pageContext.request.contextPath}/order/0/10?status=3" name="status=3">已完成</a></li>
     </ul>
     <%@include file="include/page.jsp" %>
     <table class="table_orderList">
@@ -97,7 +97,7 @@
         </tr>
         </thead>
         <c:choose>
-            <c:when test="${fn:length(requestScope.productOrderList)>0}">
+            <c:when test="${requestScope.productOrderList != null && fn:length(requestScope.productOrderList)>0}">
                 <c:forEach items="${requestScope.productOrderList}" var="productOrder">
                     <tbody>
                     <tr class="tr_order_info">

@@ -51,7 +51,8 @@
         <label class="frm_label text_info" id="lbl_user_profile_picture">用户头像</label>
         <img
                 src="${pageContext.request.contextPath}/res/images/item/userProfilePicture/${requestScope.user.user_profile_picture_src}"
-                id="user_profile_picture" width="84px" height="84px"/>
+                id="user_profile_picture" width="84px" height="84px"
+                onerror="this.src='${pageContext.request.contextPath}/res/images/admin/loginPage/default_profile_picture-128x128.png'"/>
     </div>
     <div class="frm_div">
         <label class="frm_label text_info" id="lbl_user_nickname">用户昵称</label>

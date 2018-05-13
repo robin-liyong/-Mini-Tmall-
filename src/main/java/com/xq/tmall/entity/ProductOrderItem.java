@@ -108,11 +108,11 @@ public class ProductOrderItem {
         return this;
     }
 
-    public Boolean getReview() {
+    public Boolean getIsReview() {
         return isReview;
     }
 
-    public ProductOrderItem setReview(Boolean review) {
+    public ProductOrderItem setIsReview(Boolean review) {
         isReview = review;
         return this;
     }
