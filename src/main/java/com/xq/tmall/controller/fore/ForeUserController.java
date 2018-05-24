@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Address;
 import com.xq.tmall.entity.User;
+import com.xq.tmall.service.AddressService;
 import com.xq.tmall.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,25 +14,51 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Controller
 public class ForeUserController extends BaseController{
+    @Resource(name = "addressService")
+    private AddressService addressService;
     @Resource(name="userService")
     private UserService userService;
 
     //转到前台天猫-用户详情页
-    @RequestMapping(value = "fore/userDetail", method = RequestMethod.GET)
-    public String goToUserdetail(HttpSession session, Map<String,Object> map){
+    @RequestMapping(value = "userDetails", method = RequestMethod.GET)
+    public String goToUserDetail(HttpSession session, Map<String,Object> map){
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
         if (userId != null) {
             logger.info("获取用户信息");
             User user = userService.get(Integer.parseInt(userId.toString()));
             map.put("user", user);
+
+            logger.info("获取用户所在地区级地址");
+            String districtAddressId = user.getUser_address().getAddress_areaId();
+            Address districtAddress = addressService.get(districtAddressId);
+            logger.info("获取市级地址信息");
+            Address cityAddress = addressService.get(districtAddress.getAddress_regionId().getAddress_areaId());
+            logger.info("获取其他地址信息");
+            List<Address> addressList = addressService.getRoot();
+            List<Address> cityList = addressService.getList(null,cityAddress.getAddress_regionId().getAddress_areaId());
+            List<Address> districtList = addressService.getList(null,cityAddress.getAddress_areaId());
+
+            map.put("addressList", addressList);
+            map.put("cityList", cityList);
+            map.put("districtList", districtList);
+            map.put("addressId", cityAddress.getAddress_regionId().getAddress_areaId());
+            map.put("cityAddressId", cityAddress.getAddress_areaId());
+            map.put("districtAddressId", districtAddressId);
+            return  "fore/userDetails";
+        } else {
+            return "redirect:/login";
         }
-        return  "fore/userDetail";
     }
     //前台天猫-用户更换头像
     @ResponseBody
@@ -41,8 +69,7 @@ public class ForeUserController extends BaseController{
         logger.info("获取图片原始文件名：{}", originalFileName);
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         String fileName = UUID.randomUUID() + extension;
-        String filePath = session.getServletContext().getRealPath("/") + "" + fileName;
-
+        String filePath = session.getServletContext().getRealPath("/") + "res/images/item/userProfilePicture/" + fileName;
         logger.info("文件上传路径：{}", filePath);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -62,34 +89,35 @@ public class ForeUserController extends BaseController{
     @RequestMapping(value="user/update",method=RequestMethod.POST,produces ="application/json;charset=utf-8")
     public String userUpdate(HttpSession session,Map<String,Object> map,
                              @RequestParam(value = "user_nickname", required = false) String user_nickname  /*用户昵称 */,
-                             @RequestParam(value = "user_password", required = false) String user_password  /*用户密码*/,
                              @RequestParam(value = "user_realname", required = false) String user_realname  /*真实姓名*/,
-                             @RequestParam(value = "user_gender", required = false) Byte user_gender  /*用户性别*/,
-                             @RequestParam(value = "user_birthday", required = false) Date user_birthday /*用户生日*/,
+                             @RequestParam(value = "user_gender", required = false) String user_gender  /*用户性别*/,
+                             @RequestParam(value = "user_birthday", required = false) String user_birthday /*用户生日*/,
                              @RequestParam(value = "user_address", required = false) String user_address  /*用户所在地 */,
-                             @RequestParam(value = "user_homeplace", required = false)String user_homeplace /* 用户家乡*/,
                              @RequestParam(value = "user_profile_picture_src", required = false)String user_profile_picture_src /* 用户头像*/
-    ){
+    ) throws ParseException, UnsupportedEncodingException {
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
         if (userId != null) {
             logger.info("获取用户信息");
             User user = userService.get(Integer.parseInt(userId.toString()));
             map.put("user", user);
+        } else {
+            return "redirect:/login";
         }
         logger.info("创建用户对象");
-        User   userUpdate=new User().setUser_id(Integer.parseInt(userId.toString()))
-                .setUser_nickname(user_nickname).setUser_password(user_password)
-                .setUser_realname(user_realname).setUser_gender(user_gender)
-                .setUser_birthday(user_birthday)
+        User userUpdate = new User()
+                .setUser_id(Integer.parseInt(userId.toString()))
+                .setUser_nickname(new String(user_nickname.getBytes("ISO8859-1"),"UTF-8"))
+                .setUser_realname(new String(user_realname.getBytes("ISO8859-1"),"UTF-8"))
+                .setUser_gender(Byte.valueOf(user_gender))
+                .setUser_birthday(new SimpleDateFormat("yyyy-MM-dd").parse(user_birthday))
                 .setUser_address(new Address().setAddress_areaId(user_address))
-                .setUser_homeplace(new Address().setAddress_areaId(user_homeplace))
                 .setUser_profile_picture_src(user_profile_picture_src);
-         logger.info("执行修改");
-         if (userService.update(userUpdate)){
+        logger.info("执行修改");
+        if (userService.update(userUpdate)){
              logger.info("修改成功!跳转到用户详情页面");
-             return "redirect:goToUserdetail";
+             return "redirect:/userDetails";
          }
-         throw  new  RuntimeException();
+         throw new RuntimeException();
     }
 }

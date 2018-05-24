@@ -23,6 +23,7 @@ public class Product {
     private Integer product_sale_count;
     //评价数
     private Integer product_review_count;
+    public Object setProduct_sale_co;
 
     @Override
     public String toString() {

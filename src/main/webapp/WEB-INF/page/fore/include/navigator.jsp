@@ -20,7 +20,7 @@
                 <c:when test="${requestScope.user.user_name==null}">
                     <em>喵，欢迎来天猫</em>
                     <a href="${pageContext.request.contextPath}/login">请登录</a>
-                    <a href="">免费注册</a>
+                    <a href="${pageContext.request.contextPath}/register">免费注册</a>
                 </c:when>
                 <c:otherwise>
                     <em>Hi，</em>
@@ -32,7 +32,7 @@
         <ul class="quick_li">
             <li class="quick_li_MyTaobao">
                 <div class="sn_menu">
-                    <a href="">我的淘宝<b></b></a>
+                    <a href="${pageContext.request.contextPath}/userDetails">我的淘宝<b></b></a>
                     <div class="quick_menu">
                         <a href="${pageContext.request.contextPath}/order/0/10">已买到的宝贝</a>
                         <a href="#">已卖出的宝贝</a>

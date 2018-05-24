@@ -118,7 +118,7 @@ public class User {
 
     public String getUser_birthday() {
         if(user_birthday != null){
-            SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日", Locale.UK);
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
             return time.format(user_birthday);
         }
         return null;

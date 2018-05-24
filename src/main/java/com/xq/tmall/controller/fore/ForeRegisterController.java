@@ -4,15 +4,19 @@ import com.xq.tmall.entity.Address;
 import com.xq.tmall.entity.User;
 import com.xq.tmall.service.AddressService;
 import com.xq.tmall.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class ForeRegisterController extends BaseController{
     @Resource(name = "addressService")
     private AddressService addressService;
@@ -29,7 +33,6 @@ public class ForeRegisterController extends BaseController{
         List<Address> cityAddress = addressService.getList(null, addressId);
         logger.info("获取cityAddressId为{}的区级地址信息", cityAddressId);
         List<Address> districtAddress = addressService.getList(null, cityAddressId);
-
         map.put("addressList", addressList);
         map.put("cityList", cityAddress);
         map.put("districtList", districtAddress);
@@ -44,24 +47,31 @@ public class ForeRegisterController extends BaseController{
             @RequestParam(value = "user_name", required = false) String user_name  /*用户名 */,
             @RequestParam(value = "user_nickname", required = false) String user_nickname  /*用户昵称 */,
             @RequestParam(value = "user_password", required = false) String user_password  /*用户密码*/,
-            @RequestParam(value = "user_gender", required = false) Byte user_gender  /*用户性别*/,
-            @RequestParam(value = "user_birthday", required = false) Date user_birthday /*用户生日*/,
-            @RequestParam(value = "user_address", required = false) String user_address  /*用户所在地 */,
-            @RequestParam(value = "user_homeplace", required = false)String user_homeplace /* 用户家乡*/
-    ){
+            @RequestParam(value = "user_gender", required = false) String user_gender  /*用户性别*/,
+            @RequestParam(value = "user_birthday", required = false) String user_birthday /*用户生日*/,
+            @RequestParam(value = "user_address", required = false) String user_address  /*用户所在地 */
+    ) throws ParseException, UnsupportedEncodingException {
         logger.info("创建用户对象");
-        User user=new User().setUser_name(user_name)
-                .setUser_nickname(user_nickname)
-                .setUser_password(user_password)
-                .setUser_gender(user_gender)
-                .setUser_birthday(user_birthday)
-                .setUser_address(new Address().setAddress_areaId(user_address))
-                .setUser_homeplace(new Address().setAddress_areaId(user_homeplace));
-        logger.info("用户注册");
-        if(userService.add(user)){
+        User user= null;
+        try {
+            user = new User()
+                    .setUser_name(new String(user_name.getBytes("ISO8859-1"),"UTF-8"))
+                    .setUser_nickname(new String(user_nickname.getBytes("ISO8859-1"),"UTF-8"))
+                    .setUser_password(new String(user_password.getBytes("ISO8859-1"),"UTF-8"))
+                    .setUser_gender(Byte.valueOf(user_gender))
+                    .setUser_birthday(new SimpleDateFormat("yyyy-MM-dd").parse(user_birthday))
+                    .setUser_address(new Address().setAddress_areaId(user_address))
+                    .setUser_homeplace(new Address().setAddress_areaId("130000"));
+            logger.info("用户注册");
+            if(userService.add(user)){
                 logger.info("注册成功!跳转到登录界面");
-                return "redirect:/goToPage";
+                return "redirect:/login";
+            } else {
+                throw new RuntimeException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        throw  new RuntimeException();
+        return "";
     }
 }

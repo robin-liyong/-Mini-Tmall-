@@ -1,0 +1,229 @@
+.content {
+    color:#333;
+    position: relative;
+    width: 990px;
+    font-family: Arial, serif;
+    margin: 0 auto 40px;
+}
+ .mt-menu {
+     width: 110px;
+     float: left;
+     min-height:500px ;
+     margin-right: 20px;
+}
+ .mt-avatar img{
+     width: 100px;
+     height: 100px;
+     vertical-align:middle;
+ }
+.mt-menu-tree {
+    overflow: inherit;
+    margin-top: -5px;
+    font-size: 12px;
+    padding-left: 3px;
+}
+.mt-avatar{
+    position: relative;
+    right: 16px;
+}
+dl {
+    display: inline-block;
+    -webkit-margin-before: 0.3em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 2px;
+    font-size: 15px;
+    color: #666666;
+}
+dt{
+    padding: 10px 0 0 0;
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 13px;
+}
+.sns-tab {
+    position: relative;
+    z-index: 1;
+    margin-top: 10px;
+    border-bottom: 1px solid #cccccc;
+}
+.sns-tab span{
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: bolder;
+}
+#profile{
+    width: 858px;
+    min-height:500px ;
+    float: left;
+    border: 1px solid #ccc;
+}
+#content_info{
+    min-height:600px;
+    margin: 20px auto 0;
+}
+#tips-box {
+    font-size: 15px;
+    margin: 30px 0 0 50px;
+}
+#form_radion{
+    font-size: 10px;
+}
+form{
+    margin: 0 auto;
+}
+.form-item {
+    padding: 10px 0 10px  10px;
+    line-height: 5px;
+    zoom: 1;
+    clear: both;
+    font-size: 12px;
+    text-align: left;
+}
+.form-label {
+    float: left;
+    font-size: 13px;
+    min-width: 100px;
+    line-height: 37px;
+    text-align: right;
+    font-weight: normal;
+    margin-left: 0px;
+}
+.tsls{
+    float: left;
+    min-width: 90px;
+    line-height: 37px;
+    text-align: right;
+    font-weight: bolder;
+}
+.err-input {
+    border-color: #cccccc;
+}
+.form-text {
+    border: 1px solid #ccc;
+    width: 240px;
+    height: 10px;
+    line-height: 17px;
+    padding: 9px;
+    font-size: 14px;
+    _margin-left: -3px;
+}
+.form_span{
+    display: none;
+    padding-left: 15px;
+    font-size: 12px;
+}
+#form_radion{
+    line-height: 10px;
+    margin: 12px 0 0 10px;
+}
+.last-item {
+    border-bottom: 1px solid #cccccc;
+
+}
+.font_we{
+    font-size: 14px;
+    font-family: Arial, serif;
+    color: #333333;
+    font-weight: normal;
+}
+
+/*修改bootstrap-select下拉框样式*/
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 120px;
+    margin: 0 20px 0 0;
+    position: relative;
+    top: 1px;
+}
+
+.btn.dropdown-toggle.btn-default {
+    font-size: 12px;
+    color: #333;
+    border-color: #ccc;
+    padding: 6px;
+    box-sizing: content-box;
+    border-radius: 0;
+}
+
+.btn-group-vertical > .btn, .btn-group > .btn {
+    height: 17px;
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .caret {
+    color: #cccccc;
+}
+
+.dropdown-menu > li > a {
+    font-size: 14px;
+}
+
+.bs-searchbox > .form-control {
+    height: 20px;
+    width: 140px;
+}
+
+.steps{
+    height: 46px;
+    border-bottom: 2px solid #e6e6e6;
+    position: relative;
+}
+
+.steps_tsl{
+    color: #3e3e3e;
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 300px;
+    display: inline-block;
+    border-bottom: 3px solid #FF0036;
+    height: 45px;
+    width: 200px;
+    text-align: center;
+}
+
+.btn-large {
+    min-width: 140px;
+}
+.btns {
+    height: 36px;
+    padding: 0 20px;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    background: #ff0036;
+    border: 0;
+    border-radius: 3px;
+    margin-left: 110px;
+    margin-top: 20px;
+}
+
+.form-item img{
+    width: 100px;
+    height: 100px;
+}
+
+
+.details_picList {
+    font-size: 0;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+
+.details_picList_fileUpload {
+    position: relative;
+    display: inline-block;
+    list-style: none;
+    padding: 1px;
+    margin: 0 5px 10px;
+}
+#user_profile_picture_src{
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    right: 100px;
+    opacity: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+   cursor: pointer;
+    z-index: 999;
+}
