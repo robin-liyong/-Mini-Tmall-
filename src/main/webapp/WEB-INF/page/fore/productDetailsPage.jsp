@@ -270,7 +270,7 @@
             </li>
             <li class="J_GoodsReviews">
                 <a href="javascript:void(0)"
-                   onclick="getDetailsPage(this,'J_review')">累计评价<span>${requestScope.product.product_review_count}</span></a>
+                   onclick="getDetailsPage(this,'J_reviews')">累计评价<span>${requestScope.product.product_review_count}</span></a>
             </li>
         </ul>
     </div>

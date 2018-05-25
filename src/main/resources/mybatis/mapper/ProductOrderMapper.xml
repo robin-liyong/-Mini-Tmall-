@@ -89,6 +89,9 @@
                 <if test="productOrder.productOrder_post != null">and productOrder_post LIKE
                     concat('%',#{productOrder.productOrder_post},'%')
                 </if>
+                <if test="productOrder.productOrder_user != null">and productOrder_user_id =
+                    #{productOrder.productOrder_user.user_id}
+                </if>
             </if>
             <if test="productOrder_status_array != null">
                 and productOrder_status IN
@@ -127,6 +130,9 @@
             <if test="productOrder != null">
                 <if test="productOrder.productOrder_code">productOrder_code LIKE concat('%',#{productOrder.productOrder_code},'%')</if>
                 <if test="productOrder.productOrder_post">and productOrder_post LIKE concat('%',#{productOrder.productOrder_post},'%')</if>
+                <if test="productOrder.productOrder_user != null">and productOrder_user_id =
+                    #{productOrder.productOrder_user.user_id}
+                </if>
             </if>
             <if test="productOrder_status_array != null">and productOrder_status IN
                 <foreach collection="productOrder_status_array" index="index" item="item" open="(" separator="," close=")">

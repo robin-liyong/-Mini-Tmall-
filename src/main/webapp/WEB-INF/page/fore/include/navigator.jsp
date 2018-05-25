@@ -24,7 +24,8 @@
                 </c:when>
                 <c:otherwise>
                     <em>Hi，</em>
-                    <a href="https://vip.tmall.com/" class="userName" target="_blank">${requestScope.user.user_name}</a>
+                    <a href="${pageContext.request.contextPath}/userDetails" class="userName"
+                       target="_blank">${requestScope.user.user_name}</a>
                     <a href="${pageContext.request.contextPath}/login/logout">退出</a>
                 </c:otherwise>
             </c:choose>
@@ -61,7 +62,7 @@
                     <b></b>
                 </div>
             </li>
-            <li class="quick_home"><a href="">淘宝网</a></li>
+            <li class="quick_home"><a href="${pageContext.request.contextPath}">淘宝网</a></li>
             <li class="quick_DirectPromo">
                 <div class="sn_menu">
                     <a href="#">商家支持<b></b></a>

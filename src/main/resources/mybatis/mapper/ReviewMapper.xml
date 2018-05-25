@@ -72,6 +72,7 @@
         <where>
             review_product_id = #{product_id}
         </where>
+        ORDER BY review_id desc
         <if test="pageUtil != null">
             LIMIT #{pageUtil.pageStart},#{pageUtil.count}
         </if>

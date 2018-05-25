@@ -38,6 +38,7 @@
     <update id="updateOne" parameterType="user">
         UPDATE user
         <set>
+            <if test="user.user_password != null">user_password = #{user.user_password},</if>
             <if test="user.user_nickname != null">user_nickname = #{user.user_nickname},</if>
             <if test="user.user_realname != null">user_realname = #{user.user_realname},</if>
             <if test="user.user_gender != null">user_gender = #{user.user_gender},</if>

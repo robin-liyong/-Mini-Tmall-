@@ -75,63 +75,90 @@ $(function () {
     $("#select_user_address_district").change(function () {
         $("span.address_district").text($(this).find("option:selected").text());
     });
-    $("#textarea_details_address").bind('input propertychange', function () {
-        $(".address_details").text($(this).val());
-    });
-    $("#input_user_receiver").bind('input propertychange', function () {
-        $(".user-name").text($(this).val());
-    });
-    $("#input_user_phone").bind('input propertychange', function () {
-        $(".user-phone").text($(this).val());
-    });
-    $("input,textarea").focus(function () {
-        styleUtil.specialBasicErrorHide($(this).prev("span").prev("label"));
-    });
 
+    //用户名input获取光标
+    $("#user_name").focus(function () {
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请输入用户名").css("display", "inline-block").css("color", "#00A0E9");
+    });
+    //密码input获取光标
+    $("#user_password").focus(function () {
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请输入密码").css("display", "inline-block").css("color", "#00A0E9");
+    });
+    //再次输入密码input获取光标
+    $("#user_password_one").focus(function () {
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请再次输入密码").css("display", "inline-block").css("color", "#00A0E9");
+    });
+    //昵称input获取光标
     $("#user_nickname").focus(function () {
-        $(this).next().text("输入昵称");
-        $(this).next().css("display","inline-block");
-        $(this).next().css("color","#00A0E9");
-        $(this).css("border","1px solid #3879D9");
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请输入昵称").css("display", "inline-block").css("color", "#00A0E9");
+    });
+    //出生日期input获取光标
+    $("#user_birthday").focus(function () {
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请输入出生日期").css("display", "inline-block").css("color", "#00A0E9");
+    });
+    //真实姓名input获取光标
+    $("#user_realname").focus(function () {
+        $(this).css("border", "1px solid #3879D9")
+            .next().text("请输入真实姓名").css("display", "inline-block").css("color", "#00A0E9");
     });
 
-    $("#user_nickname").blur(function () {
-        $(this).next().css("display","none");
-        $(this).css("border-color","#cccccc");
-    })
-
-    $("#user_realname").focus(function () {
-        $(this).next().text("输入真实姓名");
-        $(this).next().css("display","inline-block");
-        $(this).next().css("color","#00A0E9");
-        $(this).css("border","1px solid #3879D9");
-    })
-
-    $("#user_realname").blur(function () {
-        $(this).next().css("display","none");
-        $(this).css("border-color","#cccccc");
-    })
+    //input离开光标
+    $(".form-text").blur(function () {
+        $(this).css("border-color", "#cccccc")
+            .next().css("display", "none");
+    });
 
     //非空验证
     $("#register_sub").click(function () {
-        var user_nickname = $("#user_nickname").val();
-        var user_realname = $("#user_realname").val();
-        if(user_nickname == null || user_nickname == ""){
-            $("#user_nickname").next().text("请输入昵称");
-            $("#user_nickname").next().css("display","inline-block");
-            $("#user_nickname").next().css("color","red");
-            $("#user_nickname").css("border","1px solid red");
+        //真实姓名
+        var user_realname = $.trim($("input[name=user_realname]").val());
+        //密码
+        var user_password = $.trim($("input[name=user_password]").val());
+        //确认密码
+        var user_password_one = $.trim($("input[name=user_password_one]").val());
+        //昵称
+        var user_nickname = $.trim($("input[name=user_nickname]").val());
+        //出生日期
+        var user_birthday = $.trim($("input[name=user_birthday]").val());
+
+        //验证密码的格式 包含数字和英文字母
+        var reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+        if (user_realname == null || user_realname === "") {
+            $("#user_realname").css("border", "1px solid red")
+                .next().text("请输入真实姓名").css("display", "inline-block").css("color", "red");
             return false;
-        }else if(user_realname == null || user_realname == ""){
-            $("#user_realname").next().text("请输入真实姓名");
-            $("#user_realname").next().css("display","inline-block");
-            $("#user_realname").next().css("color","red");
-            $("#user_realname").css("border","1px solid red");
-            return false
-        }else{
-            return true;
+        } else if (user_password == null || user_password === "") {
+            $("#user_password").css("border", "1px solid red")
+                .next().text("请输入密码").css("display", "inline-block").css("color", "red");
+            return false;
+        } else if (user_password_one == null || user_password_one === "") {
+            $("#user_password_one").css("border", "1px solid red")
+                .next().text("请重复输入密码").css("display", "inline-block").css("color", "red");
+            return false;
+        } else if (!reg.test(user_password)) {
+            $("#user_password").css("border", "1px solid red")
+                .next().text("密码格式必须包含数字和字母").css("display", "inline-block").css("color", "red");
+            return false;
+        } else if (user_password !== user_password_one) {
+            $("#user_password_one").css("border", "1px solid red")
+                .next().text("两次输入密码不相同").css("display", "inline-block").css("color", "red");
+            return false;
+        } else if (user_nickname == null || user_nickname === "") {
+            $("#user_nickname").css("border", "1px solid red")
+                .next().text("请输入昵称").css("display", "inline-block").css("color", "red");
+            return false;
+        } else if (user_birthday == null || user_birthday === "") {
+            $("#user_birthday").css("border", "1px solid red")
+                .next().text("请选择出生日期").css("display", "inline-block").css("color", "red");
+            return false;
         }
-    })
+        return true;
+    });
 });
 
 //图片上传

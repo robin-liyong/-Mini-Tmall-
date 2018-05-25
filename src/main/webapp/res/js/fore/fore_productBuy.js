@@ -27,8 +27,8 @@ $(function () {
                     }
                     $('#select_order_address_city').selectpicker('refresh');
                     $("#select_order_address_district").selectpicker('refresh');
-                    $("span.address-province").text($("#select_order_address_province").find("option:selected").text());
-                    $("span.address-city").text($("#select_order_address_city").find("option:selected").text());
+                    $("span.address_province").text($("#select_order_address_province").find("option:selected").text());
+                    $("span.address_city").text($("#select_order_address_city").find("option:selected").text());
                     $("span.address_district").text($("#select_order_address_district").find("option:selected").text());
                 } else {
                     alert("加载地区信息失败，请刷新页面再试！")
@@ -58,7 +58,7 @@ $(function () {
                         $("#select_order_address_district").append("<option value='" + address_id + "'>" + address_name + "</option>")
                     }
                     $('#select_order_address_district').selectpicker('refresh');
-                    $("span.address-city").text($("#select_order_address_city").find("option:selected").text());
+                    $("span.address_city").text($("#select_order_address_city").find("option:selected").text());
                     $("span.address_district").text($("#select_order_address_district").find("option:selected").text());
                 } else {
                     alert("加载地区信息失败，请刷新页面再试！")

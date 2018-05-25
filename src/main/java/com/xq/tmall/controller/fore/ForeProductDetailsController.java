@@ -87,8 +87,13 @@ public class ForeProductDetailsController extends BaseController {
                 }
             }
         }
-        logger.info("获取产品子信息-前十条产品评论信息");
-        product.setReviewList(reviewService.getListByProductId(product_id, new PageUtil(0, 10)));
+        logger.info("获取产品子信息-产品评论信息");
+        product.setReviewList(reviewService.getListByProductId(product_id, null));
+        if (product.getReviewList() != null) {
+            for (Review review : product.getReviewList()) {
+                review.setReview_user(userService.get(review.getReview_user().getUser_id()));
+            }
+        }
 
         logger.info("获取产品子信息-销量数和评论数信息");
         product.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(product_id));
@@ -121,6 +126,7 @@ public class ForeProductDetailsController extends BaseController {
         map.put("propertyList", propertyList);
         map.put("product", product);
         map.put("guessNumber", i);
+        map.put("pageUtil", new PageUtil(0, 10).setTotal(product.getProduct_review_count()));
         logger.info("转到前台-产品详情页");
         return "fore/productDetailsPage";
     }

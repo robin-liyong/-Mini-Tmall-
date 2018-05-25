@@ -7,7 +7,10 @@ import com.xq.tmall.entity.User;
 import com.xq.tmall.service.AddressService;
 import com.xq.tmall.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -17,7 +20,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -87,13 +89,14 @@ public class ForeUserController extends BaseController{
     }
     //前台天猫-用户详情更新
     @RequestMapping(value="user/update",method=RequestMethod.POST,produces ="application/json;charset=utf-8")
-    public String userUpdate(HttpSession session,Map<String,Object> map,
-                             @RequestParam(value = "user_nickname", required = false) String user_nickname  /*用户昵称 */,
-                             @RequestParam(value = "user_realname", required = false) String user_realname  /*真实姓名*/,
-                             @RequestParam(value = "user_gender", required = false) String user_gender  /*用户性别*/,
-                             @RequestParam(value = "user_birthday", required = false) String user_birthday /*用户生日*/,
-                             @RequestParam(value = "user_address", required = false) String user_address  /*用户所在地 */,
-                             @RequestParam(value = "user_profile_picture_src", required = false)String user_profile_picture_src /* 用户头像*/
+    public String userUpdate(HttpSession session, Map<String,Object> map,
+                             @RequestParam(value = "user_nickname") String user_nickname  /*用户昵称 */,
+                             @RequestParam(value = "user_realname") String user_realname  /*真实姓名*/,
+                             @RequestParam(value = "user_gender") String user_gender  /*用户性别*/,
+                             @RequestParam(value = "user_birthday") String user_birthday /*用户生日*/,
+                             @RequestParam(value = "user_address") String user_address  /*用户所在地 */,
+                             @RequestParam(value = "user_profile_picture_src", required = false) String user_profile_picture_src /* 用户头像*/,
+                             @RequestParam(value = "user_password") String user_password/* 用户密码 */
     ) throws ParseException, UnsupportedEncodingException {
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
@@ -105,6 +108,9 @@ public class ForeUserController extends BaseController{
             return "redirect:/login";
         }
         logger.info("创建用户对象");
+        if (user_profile_picture_src != null && user_profile_picture_src.equals("")) {
+            user_profile_picture_src = null;
+        }
         User userUpdate = new User()
                 .setUser_id(Integer.parseInt(userId.toString()))
                 .setUser_nickname(new String(user_nickname.getBytes("ISO8859-1"),"UTF-8"))
@@ -112,7 +118,8 @@ public class ForeUserController extends BaseController{
                 .setUser_gender(Byte.valueOf(user_gender))
                 .setUser_birthday(new SimpleDateFormat("yyyy-MM-dd").parse(user_birthday))
                 .setUser_address(new Address().setAddress_areaId(user_address))
-                .setUser_profile_picture_src(user_profile_picture_src);
+                .setUser_profile_picture_src(user_profile_picture_src)
+                .setUser_password(user_password);
         logger.info("执行修改");
         if (userService.update(userUpdate)){
              logger.info("修改成功!跳转到用户详情页面");

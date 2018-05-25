@@ -1,6 +1,8 @@
 package com.xq.tmall.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Review {
     private Integer review_id;
@@ -57,8 +59,12 @@ public class Review {
         return this;
     }
 
-    public Date getReview_createDate() {
-        return review_createDate;
+    public String getReview_createDate() {
+        if (review_createDate != null) {
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+            return time.format(review_createDate);
+        }
+        return null;
     }
 
     public Review setReview_createDate(Date review_createDate) {
@@ -88,7 +94,8 @@ public class Review {
         return review_orderItem;
     }
 
-    public void setReview_orderItem(ProductOrderItem review_orderItem) {
+    public Review setReview_orderItem(ProductOrderItem review_orderItem) {
         this.review_orderItem = review_orderItem;
+        return this;
     }
 }

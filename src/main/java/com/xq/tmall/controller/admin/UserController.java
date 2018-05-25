@@ -126,8 +126,13 @@ public class UserController extends BaseController{
         }
         user.setProductOrderItemList(productOrderItemList);
 
-        logger.info("用户隐私加密");
-        user.setUser_realname(user.getUser_realname().substring(0, 1) + "*");
+        if (user.getUser_realname() != null) {
+            logger.info("用户隐私加密");
+            user.setUser_realname(user.getUser_realname().substring(0, 1) + "*");
+        } else {
+            user.setUser_realname("未命名");
+        }
+
         map.put("user",user);
 
         logger.info("转到后台管理-用户详情页-ajax方式");

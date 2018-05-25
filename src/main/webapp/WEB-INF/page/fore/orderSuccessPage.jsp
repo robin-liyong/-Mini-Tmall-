@@ -32,17 +32,13 @@
                     <ul class="info-rate-coin">
                         <li>
                             <span class="review_msg">认真填写商品评价，就有机会获得20点天猫达人经验值！</span>
-                            <a class="J_makePoint">
+                            <a class="J_makePoint"
+                               href="${pageContext.request.contextPath}/review/${requestScope.orderItem.productOrderItem_id}">
                                 <img src="${pageContext.request.contextPath}/res/images/item/productSinglePicture/${requestScope.product.singleProductImageList[0].productImage_src}"
                                      width="100px" height="100px"/>
                                 <p class="product_name"
                                    title="${requestScope.product.product_name}">${requestScope.product.product_name}</p>
-                                <script>
-                                    function review() {
-
-                                    }
-                                </script>
-                                <span class="vi-btn" onclick="review()">立即评价</span>
+                                <span class="vi-btn">立即评价</span>
                             </a>
                         </li>
                     </ul>

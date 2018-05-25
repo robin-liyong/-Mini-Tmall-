@@ -69,7 +69,7 @@ public class ForeOrderController extends BaseController {
 
         PageUtil pageUtil = new PageUtil(index, count);
         logger.info("根据用户ID:{}获取订单列表", userId);
-        List<ProductOrder> productOrderList = productOrderService.getList(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array, new OrderUtil("productOrder_pay_date", true), pageUtil);
+        List<ProductOrder> productOrderList = productOrderService.getList(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array, new OrderUtil("productOrder_id", true), pageUtil);
 
         //订单总数量
         Integer orderCount = 0;
@@ -549,6 +549,7 @@ public class ForeOrderController extends BaseController {
                     }
                 }
             }
+            map.put("orderItem", productOrderItem);
         }
 
         map.put("product", product);
