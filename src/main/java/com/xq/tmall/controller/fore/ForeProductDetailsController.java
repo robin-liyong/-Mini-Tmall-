@@ -54,8 +54,8 @@ public class ForeProductDetailsController extends BaseController {
         Integer product_id = Integer.parseInt(pid);
         logger.info("获取产品信息");
         Product product = productService.get(product_id);
-        if (product == null) {
-            return "redirect:/";
+        if (product == null || product.getProduct_isEnabled() == 1) {
+            return "redirect:/404";
         }
         logger.info("获取产品子信息-分类信息");
         product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
