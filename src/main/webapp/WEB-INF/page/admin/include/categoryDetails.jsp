@@ -238,22 +238,24 @@
     <span class="frm_error_msg" id="text_category_image_details_msg"></span>
 </div>
 <div class="details_div details_div_last">
-    <span class="details_title text_info">属性列表</span>
-    <c:forEach items="${requestScope.category.propertyList}" var="property" varStatus="status">
-        <c:choose>
-            <c:when test="${status.index % 2 == 0}">
-                <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
-                       maxlength="50" value="${property.property_name}"
-                       data-pvid="${property.property_id}"/>
-            </c:when>
-            <c:otherwise>
-                <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
-                       maxlength="50" value="${property.property_name}"
-                       data-pvid="${property.property_id}"/>
-                <div class="br"></div>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
+    <c:if test="${fn:length(requestScope.category.propertyList)!=0}">
+        <span class="details_title text_info">属性列表</span>
+        <c:forEach items="${requestScope.category.propertyList}" var="property" varStatus="status">
+            <c:choose>
+                <c:when test="${status.index % 2 == 0}">
+                    <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
+                           maxlength="50" value="${property.property_name}"
+                           data-pvid="${property.property_id}"/>
+                </c:when>
+                <c:otherwise>
+                    <input class="frm_input" id="input_category_property_${property.property_id}" type="text"
+                           maxlength="50" value="${property.property_name}"
+                           data-pvid="${property.property_id}"/>
+                    <div class="br"></div>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </c:if>
 </div>
 <div class="details_tools_div">
     <input class="frm_btn" id="btn_category_save" type="button" value="保存"/>
