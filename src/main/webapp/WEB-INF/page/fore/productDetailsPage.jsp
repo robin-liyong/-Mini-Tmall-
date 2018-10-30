@@ -67,7 +67,7 @@
         <div class="loginLinks">
             <a href="#">忘记密码</a>
             <a href="#">忘记会员名</a>
-            <a href="${pageContext.request.contextPath}/register">免费注册</a>
+            <a href="${pageContext.request.contextPath}/register" target="_blank">免费注册</a>
         </div>
         <div class="error_message">
             <p id="error_message_p"></p>
@@ -88,7 +88,7 @@
         </div>
         <div class="loginLinks">
             <a href="JavaScript:void(0)" id="pwdLogin">密码登录</a>
-            <a href="#">免费注册</a>
+            <a href="${pageContext.request.contextPath}/register" target="_blank">免费注册</a>
         </div>
     </div>
 </div>
