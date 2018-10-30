@@ -110,8 +110,7 @@ public class AdminHomeController extends BaseController {
             cal.add(Calendar.DATE, -7);
             beginDate = time.parse(time.format(cal.getTime()));
             cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-            endDate = timeSpecial.parse(time.format(cal.getTime()) + " 23:59:59");
+            endDate = cal.getTime();
         } else {
             beginDate = time.parse(time.format(beginDate));
             endDate = timeSpecial.parse(time.format(endDate) + " 23:59:59");
