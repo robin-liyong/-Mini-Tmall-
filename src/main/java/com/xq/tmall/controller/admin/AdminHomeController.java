@@ -127,11 +127,16 @@ public class AdminHomeController extends BaseController {
         logger.info("获取总交易额订单列表");
         List<OrderGroup> orderGroupList = productOrderService.getTotalByDate(beginDate, endDate);
         logger.info("根据订单状态分类");
-        int[] orderTotalArray = new int[7];//总交易订单数组
-        int[] orderUnpaidArray = new int[7];//未付款订单数组
-        int[] orderNotShippedArray = new int[7];//未发货订单叔祖
-        int[] orderUnconfirmedArray = new int[7];//未确认订单数组
-        int[] orderSuccessArray = new int[7];//交易成功数组
+        //总交易订单数组
+        int[] orderTotalArray = new int[7];
+        //未付款订单数组
+        int[] orderUnpaidArray = new int[7];
+        //未发货订单叔祖
+        int[] orderNotShippedArray = new int[7];
+        //未确认订单数组
+        int[] orderUnconfirmedArray = new int[7];
+        //交易成功数组
+        int[] orderSuccessArray = new int[7];
         for (OrderGroup orderGroup : orderGroupList) {
             int index = 0;
             for (int j = 0; j < dateStr.length; j++) {
@@ -152,6 +157,8 @@ public class AdminHomeController extends BaseController {
                 case 3:
                     orderSuccessArray[index] = orderGroup.getProductOrder_count();
                     break;
+                default:
+                    throw new RuntimeException("错误的订单类型!");
             }
         }
         logger.info("获取总交易订单数组");

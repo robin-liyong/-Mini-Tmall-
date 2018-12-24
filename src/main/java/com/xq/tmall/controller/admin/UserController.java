@@ -156,9 +156,9 @@ public class UserController extends BaseController{
 
         if (user_name != null) {
             //如果为非空字符串则解决中文乱码：URLDecoder.decode(String,"UTF-8");
-            user_name = user_name.equals("") ? null : URLDecoder.decode(user_name, "UTF-8");
+            user_name = "".equals(user_name) ? null : URLDecoder.decode(user_name, "UTF-8");
         }
-        if(orderBy != null && orderBy.equals("")){
+        if (orderBy != null && "".equals(orderBy)) {
             orderBy = null;
         }
         //封装查询条件

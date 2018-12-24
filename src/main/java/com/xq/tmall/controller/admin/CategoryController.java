@@ -154,7 +154,7 @@ public class CategoryController extends BaseController {
         //移除不必要条件
         if (category_name != null) {
             //如果为非空字符串则解决中文乱码：URLDecoder.decode(String,"UTF-8");
-            category_name = category_name.equals("") ? null : URLDecoder.decode(category_name, "UTF-8");
+            category_name = "".equals(category_name) ? null : URLDecoder.decode(category_name, "UTF-8");
         }
 
         JSONObject object = new JSONObject();

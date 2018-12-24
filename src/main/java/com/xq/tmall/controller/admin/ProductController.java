@@ -173,7 +173,7 @@ public class ProductController extends BaseController{
             logger.info("整合产品子信息-产品属性");
             List<PropertyValue> propertyValueList = new ArrayList<>(5);
             for (String key : propertyIdSet) {
-                String value = object.getString(key.toString());
+                String value = object.getString(key);
                 PropertyValue propertyValue = new PropertyValue()
                         .setPropertyValue_value(value)
                         .setPropertyValue_property(new Property().setProperty_id(Integer.valueOf(key)))
@@ -279,7 +279,7 @@ public class ProductController extends BaseController{
             logger.info("整合产品子信息-需要添加的产品属性");
             List<PropertyValue> propertyValueList = new ArrayList<>(5);
             for (String key : propertyIdSet) {
-                String value = object.getString(key.toString());
+                String value = object.getString(key);
                 PropertyValue propertyValue = new PropertyValue()
                         .setPropertyValue_value(value)
                         .setPropertyValue_property(new Property().setProperty_id(Integer.valueOf(key)))
@@ -303,7 +303,7 @@ public class ProductController extends BaseController{
             logger.info("整合产品子信息-需要更新的产品属性");
             List<PropertyValue> propertyValueList = new ArrayList<>(5);
             for (String key : propertyIdSet) {
-                String value = object.getString(key.toString());
+                String value = object.getString(key);
                 PropertyValue propertyValue = new PropertyValue()
                         .setPropertyValue_value(value)
                         .setPropertyValue_id(Integer.valueOf(key));
@@ -401,9 +401,9 @@ public class ProductController extends BaseController{
         }
         if (product_name != null) {
             //如果为非空字符串则解决中文乱码：URLDecoder.decode(String,"UTF-8");
-            product_name = product_name.equals("") ? null : URLDecoder.decode(product_name, "UTF-8");
+            product_name = "".equals(product_name) ? null : URLDecoder.decode(product_name, "UTF-8");
         }
-        if(orderBy != null && orderBy.equals("")){
+        if (orderBy != null && "".equals(orderBy)) {
             orderBy = null;
         }
         //封装查询条件
@@ -480,7 +480,7 @@ public class ProductController extends BaseController{
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         String filePath;
         String fileName = UUID.randomUUID() + extension;
-        if (imageType.equals("single")) {
+        if ("single".equals(imageType)) {
             filePath = session.getServletContext().getRealPath("/") + "res/images/item/productSinglePicture/" + fileName;
         } else {
             filePath = session.getServletContext().getRealPath("/") + "res/images/item/productDetailsPicture/" + fileName;

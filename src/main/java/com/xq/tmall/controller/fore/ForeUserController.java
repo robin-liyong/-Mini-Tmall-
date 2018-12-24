@@ -108,7 +108,7 @@ public class ForeUserController extends BaseController{
             return "redirect:/login";
         }
         logger.info("创建用户对象");
-        if (user_profile_picture_src != null && user_profile_picture_src.equals("")) {
+        if (user_profile_picture_src != null && "".equals(user_profile_picture_src)) {
             user_profile_picture_src = null;
         }
         User userUpdate = new User()

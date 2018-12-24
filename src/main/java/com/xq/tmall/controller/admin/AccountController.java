@@ -101,7 +101,7 @@ public class AccountController extends BaseController{
         putAdmin.setAdmin_id(Integer.valueOf(admin_id));
         putAdmin.setAdmin_nickname(admin_nickname);
 
-        if (admin_password != null && !admin_password.equals("") && admin_newPassword != null && !admin_newPassword.equals("")) {
+        if (admin_password != null && !"".equals(admin_password) && admin_newPassword != null && !"".equals(admin_newPassword)) {
             logger.info("获取需要修改的管理员信息");
             Admin admin = adminService.get(null, Integer.valueOf(adminId.toString()));
             if (adminService.login(admin.getAdmin_name(), admin_password) != null) {
@@ -114,7 +114,7 @@ public class AccountController extends BaseController{
                 return jsonObject.toJSONString();
             }
         }
-        if (admin_profile_picture_src != null && !admin_profile_picture_src.equals("")) {
+        if (admin_profile_picture_src != null && !"".equals(admin_profile_picture_src)) {
             logger.info("管理员头像路径为{}", admin_profile_picture_src);
             putAdmin.setAdmin_profile_picture_src(admin_profile_picture_src.substring(admin_profile_picture_src.lastIndexOf("/") + 1));
         }

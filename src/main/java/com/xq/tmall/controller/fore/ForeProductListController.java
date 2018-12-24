@@ -55,7 +55,7 @@ public class ForeProductListController extends BaseController {
         if (category_id == null && product_name == null) {
             return "redirect:/";
         }
-        if (product_name != null && product_name.trim().equals("")) {
+        if (product_name != null && "".equals(product_name.trim())) {
             return "redirect:/";
         }
 

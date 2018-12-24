@@ -173,6 +173,8 @@ public class ForeOrderController extends BaseController {
                     case "detailsAddress":
                         detailsAddress = URLDecoder.decode(cookieValue, "UTF-8");
                         break;
+                    default:
+                        throw new RuntimeException("错误的cookie值！");
                 }
             }
         }
@@ -286,6 +288,8 @@ public class ForeOrderController extends BaseController {
                     case "detailsAddress":
                         detailsAddress = URLDecoder.decode(cookieValue, "UTF-8");
                         break;
+                    default:
+                        throw new RuntimeException("错误的Cookie值！");
                 }
             }
         }
@@ -824,7 +828,7 @@ public class ForeOrderController extends BaseController {
                     logger.warn("用户订单项不属于购物车，回到购物车页");
                     return "redirect:/cart";
                 }
-                Short number = Short.valueOf(orderItemString.getString(key.toString()));
+                Short number = Short.valueOf(orderItemString.getString(key));
                 if (number <= 0 || number > 500) {
                     logger.warn("订单项产品数量不合法！");
                     object.put("success", false);
@@ -883,7 +887,8 @@ public class ForeOrderController extends BaseController {
         Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
         Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
         Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
-        int maxAge = 60 * 60 * 24 * 365;  //设置过期时间为一年
+        //设置过期时间为一年
+        int maxAge = 60 * 60 * 24 * 365;
         cookie1.setMaxAge(maxAge);
         cookie2.setMaxAge(maxAge);
         cookie3.setMaxAge(maxAge);
@@ -996,7 +1001,8 @@ public class ForeOrderController extends BaseController {
         Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
         Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
         Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
-        int maxAge = 60 * 60 * 24 * 365;  //设置过期时间为一年
+        //设置过期时间为一年
+        int maxAge = 60 * 60 * 24 * 365;
         cookie1.setMaxAge(maxAge);
         cookie2.setMaxAge(maxAge);
         cookie3.setMaxAge(maxAge);

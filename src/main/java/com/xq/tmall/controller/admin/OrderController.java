@@ -156,12 +156,12 @@ public class OrderController extends BaseController{
             productOrder_status_array = null;
         }
         if (productOrder_code != null){
-            productOrder_code = productOrder_code.equals("") ? null : productOrder_code;
+            productOrder_code = "".equals(productOrder_code) ? null : productOrder_code;
         }
         if(productOrder_post != null){
-            productOrder_post = productOrder_post.equals("") ? null : productOrder_post;
+            productOrder_post = "".equals(productOrder_post) ? null : productOrder_post;
         }
-        if(orderBy != null && orderBy.equals("")){
+        if (orderBy != null && "".equals(orderBy)) {
             orderBy = null;
         }
         //封装查询条件
