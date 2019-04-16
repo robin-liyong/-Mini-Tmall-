@@ -54,7 +54,9 @@
                 浙公网安备 33010002000120号
             </a>
             <br/>
-            <b>© 2018 贤趣开发小组 版权所有</b>
+            <span style="font-weight: bold;">© 2018 贤趣开发小组 版权所有</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;你知道什么是996.ICU吗？</span>
+            <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu"/></a>
         </div>
     </div>
 </div>
