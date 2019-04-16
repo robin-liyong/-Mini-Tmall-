@@ -21,9 +21,9 @@
 ![产品详情](https://gitee.com/uploads/images/2018/0526/222457_7727da44_1616166.png "2018-05-26_221513.png")
 ![产品类别列表](https://gitee.com/uploads/images/2018/0526/222515_0f605a1a_1616166.png "2018-05-26_221522.png")
 ![用户列表](https://gitee.com/uploads/images/2018/0526/222531_2ddbba60_1616166.png "2018-05-26_221530.png")
-![用户详情](https://images.gitee.com/uploads/images/2018/1203/181218_be3cdcce_1616166.png "222628_e539faf6_1616166.png")
+![用户详情](https://gitee.com/uploads/images/2018/0526/222542_f816afc9_1616166.png "2018-05-26_221539.png")
 ![订单列表](https://gitee.com/uploads/images/2018/0526/222601_ac370928_1616166.png "2018-05-26_221547.png")
-![订单详情](https://gitee.com/uploads/images/2018/0526/222628_e539faf)
+![订单详情](https://gitee.com/uploads/images/2018/0526/222628_e539faf6_1616166.png "2018-05-26_221554.png")
 ![管理员详情](https://gitee.com/uploads/images/2018/0526/222839_911d4e0d_1616166.png "2018-05-26_221607.png")
 
 ---前台界面(部分)---
