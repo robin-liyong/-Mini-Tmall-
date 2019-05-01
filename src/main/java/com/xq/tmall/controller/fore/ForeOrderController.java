@@ -173,8 +173,6 @@ public class ForeOrderController extends BaseController {
                     case "detailsAddress":
                         detailsAddress = URLDecoder.decode(cookieValue, "UTF-8");
                         break;
-                    default:
-                        throw new RuntimeException("错误的cookie值！");
                 }
             }
         }
