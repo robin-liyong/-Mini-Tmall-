@@ -8,7 +8,7 @@
 1.项目使用IntelliJ IDEA开发，请使用IntelliJ IDEA的版本控制检出功能，输入“https://gitee.com/project_team/Tmall_demo.git”拉取项目即可。
 2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
 3.使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
-4.在IDEA中配置tomcat服务器，并启动项目，使用浏览器打开下列地址。
+4.在IDEA中配置tomcat服务器，关于评论中反馈的404问题，请确认idea中服务配置的地址如下图，配置完毕后即可启动服务
 ![注意IDEA的地址路径配置](https://images.gitee.com/uploads/images/2019/0711/120340_7d6ee764_1616166.png "TIM图片20190711120325.png")
 
 # 实施部署方式
