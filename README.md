@@ -8,12 +8,13 @@
 1.项目使用IntelliJ IDEA开发，请使用IntelliJ IDEA的版本控制检出功能，输入“https://gitee.com/project_team/Tmall_demo.git”拉取项目即可。
 2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
 3.使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
-4.在IDEA中配置tomcat服务器，并启动项目即可。
+4.在IDEA中配置tomcat服务器，并启动项目，使用浏览器打开下列地址。
 
 # 实施部署方式
-1.在附件中下载项目war包，并放入tomcat8.0及以上服务的webapps文件夹中
+1.在附件中下载项目war包，并放入tomcat8.0及以上服务的webapps文件夹中。
 2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
-3.启动项目即可。
+3.使用winrar等工具打开war包，将WEB-INF/classes中的jdbc.properties修改为你的数据库信息。
+4.启动项目，使用浏览器打开下列地址。
 
 # 项目地址
 前台地址：http://localhost:端口/tmall  
