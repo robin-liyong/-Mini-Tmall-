@@ -9,6 +9,7 @@
 2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
 3.使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
 4.在IDEA中配置tomcat服务器，并启动项目，使用浏览器打开下列地址。
+![注意IDEA的地址路径配置](https://images.gitee.com/uploads/images/2019/0711/120340_7d6ee764_1616166.png "TIM图片20190711120325.png")
 
 # 实施部署方式
 1.在附件中下载项目war包，并放入tomcat8.0及以上服务的webapps文件夹中。
