@@ -12,7 +12,10 @@
 ![IDEA项目配置](https://images.gitee.com/uploads/images/2019/0711/130625_a491485f_1616166.png "TIM图片20190711130526.png")
 
 # 实施部署方式
-1.在附件中下载项目war包，并放入tomcat8.0及以上服务的webapps文件夹中。
+链接: https://pan.baidu.com/s/1bzzaYdHC43Mo6f3fvMhJ-g 
+提取码: xr2a
+
+1.在上述地址中下载项目war包，并放入tomcat8.0及以上服务的webapps文件夹中。
 2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
 3.使用winrar等工具打开war包，将WEB-INF/classes中的jdbc.properties修改为你的数据库信息。
 4.启动项目，使用浏览器打开下列地址。
