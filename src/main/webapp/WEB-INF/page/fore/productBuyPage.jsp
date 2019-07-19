@@ -241,7 +241,7 @@
                 styleUtil.specialBasicErrorShow($("#label_order_receiver"));
                 yn = false;
             }
-            var re = /^(13[0-9]{9})|(15[89][0-9]{8})$/;
+            var re = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
             if (!re.test(productOrder_mobile)) {
                 styleUtil.specialBasicErrorShow($("#label_order_phone"));
                 yn = false;
