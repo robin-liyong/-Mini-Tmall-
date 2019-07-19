@@ -8,15 +8,14 @@
 所有页面均兼容IE10及以上现代浏览器。
 
 ### 开发/部署方式
-1.项目使用IntelliJ IDEA开发，请使用IntelliJ IDEA的版本控制检出功能，输入“<https://gitee.com/project_team/Tmall_demo.git>”拉取项目即可。
-2.项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
-3.使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
-4.在IDEA中配置tomcat服务器，关于评论中反馈的404问题，请确认idea中服务配置的地址如下图，配置完毕后即可启动服务
+1. 项目使用IntelliJ IDEA开发，请使用IntelliJ IDEA的版本控制检出功能，输入“<https://gitee.com/project_team/Tmall_demo.git>”拉取项目即可。
+2. 项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
+3. 使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
+4. 在IDEA中配置tomcat服务器，关于评论中反馈的404问题，请确认idea中服务配置的地址如下图，配置完毕后即可启动服务
 ![IDEA项目配置](https://images.gitee.com/uploads/images/2019/0711/130625_a491485f_1616166.png "TIM图片20190711130526.png")
 
 ### Tomcat直接部署方式
-链接: <https://pan.baidu.com/s/1bzzaYdHC43Mo6f3fvMhJ-g> 
-提取码: xr2a
++ 链接: <https://pan.baidu.com/s/1bzzaYdHC43Mo6f3fvMhJ-g> 提取码: xr2a
 
 1. 在上述地址中下载项目war包，并放入tomcat8.0及以上版本的webapps文件夹中。
 2. 项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
@@ -33,7 +32,7 @@
 3. 该项目是我们几个学生在校合作完成的一个练习项目，目的是让编程初学者和应届毕业生可以参考一下用较少的代码实现一个完整MVC模式，SSM框架体系的电商项目，相关领域大神们可以给我们建议，让我们做得更好。
 
 ### 项目界面
----后台界面(部分)---
++ 后台界面(部分)
 ![登录界面](https://gitee.com/uploads/images/2018/0526/222324_71d64249_1616166.png "2018-05-26_221417.png")
 ![首页](https://gitee.com/uploads/images/2018/0526/222349_00d5df29_1616166.png "2018-05-26_221445.png")
 ![产品列表](https://gitee.com/uploads/images/2018/0526/222414_c3a74f51_1616166.png "2018-05-26_221454.png")
@@ -46,7 +45,7 @@
 ![订单详情](https://gitee.com/uploads/images/2018/0526/222628_e539faf6_1616166.png "2018-05-26_221554.png")
 ![管理员详情](https://gitee.com/uploads/images/2018/0526/222839_911d4e0d_1616166.png "2018-05-26_221607.png")
 
----前台界面(部分)---
++ 前台界面(部分)---
 ![登陆界面](https://gitee.com/uploads/images/2018/0526/223030_17b28619_1616166.png "2018-05-26_221715.png")
 ![首页](https://gitee.com/uploads/images/2018/0526/223018_14e999f1_1616166.png "2018-05-26_221703.png")
 ![产品详情](https://gitee.com/uploads/images/2018/0526/223044_e481ec5f_1616166.png "2018-05-26_221725.png")
