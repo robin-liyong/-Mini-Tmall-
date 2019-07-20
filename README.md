@@ -16,7 +16,7 @@
 ![IDEA项目配置](https://images.gitee.com/uploads/images/2019/0711/130625_a491485f_1616166.png "TIM图片20190711130526.png")
 
 ### Tomcat直接部署方式
-+ 链接: <https://pan.baidu.com/s/1bzzaYdHC43Mo6f3fvMhJ-g> 提取码: xr2a
++ 链接: https://pan.baidu.com/s/115CP3fOkWXESQuGp64ddrQ 提取码: 2ahy
 
 1. 在上述地址中下载项目war包，并放入tomcat8.0及以上版本的webapps文件夹中。
 2. 项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
