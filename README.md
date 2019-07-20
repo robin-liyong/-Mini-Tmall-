@@ -34,18 +34,16 @@
 
 ### 项目界面
 + ##### 后台界面(部分)
-![登录界面](https://gitee.com/uploads/images/2018/0526/222324_71d64249_1616166.png "2018-05-26_221417.png")
-![首页](https://gitee.com/uploads/images/2018/0526/222349_00d5df29_1616166.png "2018-05-26_221445.png")
-![产品列表](https://gitee.com/uploads/images/2018/0526/222414_c3a74f51_1616166.png "2018-05-26_221454.png")
-![添加产品](https://gitee.com/uploads/images/2018/0526/222440_813cf8d7_1616166.png "2018-05-26_221504.png")
-![产品详情](https://gitee.com/uploads/images/2018/0526/222457_7727da44_1616166.png "2018-05-26_221513.png")
-![产品类别列表](https://gitee.com/uploads/images/2018/0526/222515_0f605a1a_1616166.png "2018-05-26_221522.png")
-![用户列表](https://gitee.com/uploads/images/2018/0526/222531_2ddbba60_1616166.png "2018-05-26_221530.png")
-![用户详情](https://images.gitee.com/uploads/images/2019/0718/170709_b7c1ca99_1616166.jpeg "222628_e539faf6_1616166.jpg")
-![订单列表](https://gitee.com/uploads/images/2018/0526/222601_ac370928_1616166.png "2018-05-26_221547.png")
-![订单详情](https://gitee.com/uploads/images/2018/0526/222628_e539faf6_1616166.png "2018-05-26_221554.png")
-![管理员详情](https://gitee.com/uploads/images/2018/0526/222839_911d4e0d_1616166.png "2018-05-26_221607.png")
-
+![主页](https://images.gitee.com/uploads/images/2019/0720/132736_629d409d_1616166.png "主页.png")
+![所有产品](https://images.gitee.com/uploads/images/2019/0720/132752_a9065bdc_1616166.png "所有产品.png")
+![产品详情](https://images.gitee.com/uploads/images/2019/0720/132804_07364d8e_1616166.png "产品详情.png")
+![产品分类](https://images.gitee.com/uploads/images/2019/0720/132815_4fa23e1c_1616166.png "产品分类.png")
+![分类详情](https://images.gitee.com/uploads/images/2019/0720/132824_0392314c_1616166.png "分类详情.png")
+![用户管理](https://images.gitee.com/uploads/images/2019/0720/132840_582530ca_1616166.png "用户管理.png")
+![用户详情](https://images.gitee.com/uploads/images/2019/0720/132849_481238d6_1616166.png "用户详情.png")
+![订单列表](https://images.gitee.com/uploads/images/2019/0720/132912_190142c1_1616166.png "订单详情.png")
+![订单详情](https://images.gitee.com/uploads/images/2019/0720/132926_0393d549_1616166.png "订单详情2.png")
+![我的账户](https://images.gitee.com/uploads/images/2019/0720/132934_e0132cc9_1616166.png "我的账户.png")
 + ##### 前台界面(部分)---
 ![登陆界面](https://gitee.com/uploads/images/2018/0526/223030_17b28619_1616166.png "2018-05-26_221715.png")
 ![首页](https://gitee.com/uploads/images/2018/0526/223018_14e999f1_1616166.png "2018-05-26_221703.png")
