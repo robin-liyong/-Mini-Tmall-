@@ -28,7 +28,7 @@ public class AccountController extends BaseController{
     //转到后台管理-账户页-ajax
     @RequestMapping(value = "admin/account", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map){
-        logger.info("检查管理员权限");
+        logger.info("获取管理员信息");
         Object adminId = checkAdmin(session);
         if(adminId == null){
             return "admin/include/loginMessage";
@@ -47,7 +47,7 @@ public class AccountController extends BaseController{
     public String logout(HttpSession session) {
         Object o = session.getAttribute("adminId");
         if (o == null) {
-            logger.info("无管理权限，返回管理员登陆页");
+            logger.info("无相关信息，返回管理员登陆页");
         } else {
             session.removeAttribute("adminId");
             session.invalidate();
@@ -91,7 +91,7 @@ public class AccountController extends BaseController{
                               @RequestParam(required = false) String admin_newPassword/*管理员新密码*/,
                               @RequestParam(required = false) String admin_profile_picture_src/*管理员头像路径*/,
                               @PathVariable("admin_id") String admin_id/*管理员编号*/) {
-        logger.info("检查管理员权限");
+        logger.info("获取管理员信息");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
             return "admin/include/loginMessage";

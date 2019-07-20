@@ -41,12 +41,6 @@ public class ProductController extends BaseController{
     //转到后台管理-产品页-ajax
     @RequestMapping(value = "admin/product",method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取产品分类列表");
         List<Category> categoryList = categoryService.getList(null, null);
         map.put("categoryList", categoryList);
@@ -68,12 +62,6 @@ public class ProductController extends BaseController{
     //转到后台管理-产品详情页-ajax
     @RequestMapping(value="admin/product/{pid}",method = RequestMethod.GET)
     public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer pid/* 产品ID */) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取product_id为{}的产品信息",pid);
         Product product = productService.get(pid);
         logger.info("获取产品详情-图片信息");
@@ -118,12 +106,6 @@ public class ProductController extends BaseController{
     //转到后台管理-产品添加页-ajax
     @RequestMapping(value = "admin/product/new",method = RequestMethod.GET)
     public String goToAddPage(HttpSession session,Map<String, Object> map){
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取分类列表");
         List<Category> categoryList = categoryService.getList(null,null);
         map.put("categoryList",categoryList);

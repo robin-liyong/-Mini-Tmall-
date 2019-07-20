@@ -44,12 +44,6 @@ public class OrderController extends BaseController{
     //转到后台管理-订单页-ajax
     @RequestMapping(value = "admin/order", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map){
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取前10条订单列表");
         PageUtil pageUtil = new PageUtil(0, 10);
         List<ProductOrder> productOrderList = productOrderService.getList(null, null, new OrderUtil("productOrder_id", true), pageUtil);
@@ -68,12 +62,6 @@ public class OrderController extends BaseController{
     //转到后台管理-订单详情页-ajax
     @RequestMapping(value = "admin/order/{oid}", method = RequestMethod.GET)
     public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer oid/* 订单ID */) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取order_id为{}的订单信息",oid);
         ProductOrder order = productOrderService.get(oid);
         logger.info("获取订单详情-地址信息");

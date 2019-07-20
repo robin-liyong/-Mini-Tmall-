@@ -38,6 +38,15 @@
         <filter-name>HttpPutFormContentFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!-- 后台权限过滤器 -->
+    <filter>
+        <filter-name>AdminPermissionFilter</filter-name>
+        <filter-class>com.xq.tmall.filter.AdminPermissionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminPermissionFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
     <!-- spring监听器 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

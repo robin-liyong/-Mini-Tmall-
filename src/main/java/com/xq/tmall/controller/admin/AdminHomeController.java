@@ -38,13 +38,11 @@ public class AdminHomeController extends BaseController {
     //转到后台管理-主页
     @RequestMapping(value = "admin", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) throws ParseException {
-        logger.info("检查管理员权限");
+        logger.info("获取管理员信息");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
             return "redirect:/admin/login";
         }
-
-        logger.info("获取管理员信息");
         Admin admin = adminService.get(null, Integer.parseInt(adminId.toString()));
         map.put("admin", admin);
         logger.info("获取统计信息");
@@ -64,13 +62,11 @@ public class AdminHomeController extends BaseController {
     //转到后台管理-主页-ajax
     @RequestMapping(value = "admin/home", method = RequestMethod.GET)
     public String goToPageByAjax(HttpSession session, Map<String, Object> map) throws ParseException {
-        logger.info("检查管理员权限");
+        logger.info("获取管理员信息");
         Object adminId = checkAdmin(session);
         if (adminId == null) {
             return "admin/include/loginMessage";
         }
-
-        logger.info("获取管理员信息");
         Admin admin = adminService.get(null, Integer.parseInt(adminId.toString()));
         map.put("admin", admin);
         logger.info("获取统计信息");

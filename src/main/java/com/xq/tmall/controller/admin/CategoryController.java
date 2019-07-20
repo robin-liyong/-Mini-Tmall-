@@ -40,12 +40,6 @@ public class CategoryController extends BaseController {
     //转到后台管理-分类页-ajax
     @RequestMapping(value = "admin/category", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if (adminId == null) {
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取前10条分类列表");
         PageUtil pageUtil = new PageUtil(0, 10);
         List<Category> categoryList = categoryService.getList(null, pageUtil);
@@ -64,11 +58,6 @@ public class CategoryController extends BaseController {
     //转到后台管理-分类详情页-ajax
     @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.GET)
     public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if (adminId == null) {
-            return "admin/include/loginMessage";
-        }
         logger.info("获取category_id为{}的分类信息", cid);
         Category category = categoryService.get(cid);
         logger.info("获取分类子信息-属性列表");
@@ -82,12 +71,6 @@ public class CategoryController extends BaseController {
     //转到后台管理-分类添加页-ajax
     @RequestMapping(value = "admin/category/new", method = RequestMethod.GET)
     public String goToAddPage(HttpSession session, Map<String, Object> map) {
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if (adminId == null) {
-            return "admin/include/loginMessage";
-        }
-
         logger.info("转到后台管理-分类添加页-ajax方式");
         return "admin/include/categoryDetails";
     }

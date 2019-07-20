@@ -10,16 +10,16 @@ import javax.servlet.http.HttpSession;
  */
 public class BaseController {
     //log4j2
-    protected Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+    protected Logger logger = LogManager.getLogger(BaseController.class);
 
-    //检查管理员权限
+    //获取管理员信息
     protected Object checkAdmin(HttpSession session){
         Object o = session.getAttribute("adminId");
         if(o==null){
             logger.info("无管理权限，返回管理员登陆页");
             return null;
         }
-        logger.info("权限验证成功，管理员ID：{}",o);
+        logger.info("当前登录管理员ID：{}",o);
         return o;
     }
 

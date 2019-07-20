@@ -43,12 +43,6 @@ public class UserController extends BaseController{
     //转到后台管理-用户页-ajax
     @RequestMapping(value = "admin/user", method = RequestMethod.GET)
     public String goUserManagePage(HttpSession session, Map<String, Object> map){
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取前十条用户信息");
         PageUtil pageUtil = new PageUtil(0, 10);
         List<User> userList = userService.getList(null, null, pageUtil);
@@ -68,12 +62,6 @@ public class UserController extends BaseController{
     //转到后台管理-用户详情页-ajax
     @RequestMapping(value = "admin/user/{uid}", method = RequestMethod.GET)
     public String getUserById(HttpSession session, Map<String,Object> map, @PathVariable Integer uid/* 用户ID */){
-        logger.info("检查管理员权限");
-        Object adminId = checkAdmin(session);
-        if(adminId == null){
-            return "admin/include/loginMessage";
-        }
-
         logger.info("获取user_id为{}的用户信息",uid);
         User user = userService.get(uid);
         logger.info("获取用户详情-所在地地址信息");
