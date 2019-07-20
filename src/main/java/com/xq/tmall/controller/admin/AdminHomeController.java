@@ -157,8 +157,6 @@ public class AdminHomeController extends BaseController {
                 case 3:
                     orderSuccessArray[index] = orderGroup.getProductOrder_count();
                     break;
-                default:
-                    throw new RuntimeException("错误的订单类型!");
             }
         }
         logger.info("获取总交易订单数组");

@@ -38,7 +38,8 @@
                         data: []
                     },
                     yAxis: {
-                        type: "value"
+                        type: "value",
+                        splitLine:{show: false}
                     },
                     series: [
                         {
@@ -47,30 +48,162 @@
                             label: {
                                 normal: {
                                     show: true,
-                                    position: 'top'
+                                    position: 'top',
+                                    fontSize : 14,
+                                    color : '#f89e9e'
                                 }
                             },
-                            data: []
+                            data: [],
+                            areaStyle: {},
+                            itemStyle: {
+                                normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                            offset: 0, color: '#f89e9e' // 0% 处的颜色
+                                        }, {
+                                            offset: 0.4, color: '#fccfcf' // 40% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#fff' // 100% 处的颜色
+                                        }]
+                                    ), //背景渐变色
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'solid',
+                                        color: "#f89e9e" //折线的颜色
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#f89e9e',
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'dotted',
+                                        color: "f89e9e"
+                                    }
+                                }
+                            }
                         },
                         {
                             name: '交易完成',
                             type: 'line',
-                            data: []
+                            data: [],
+                            areaStyle: {},
+                            itemStyle: {
+                                normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                            offset: 0, color: '#9ea7f5' // 0% 处的颜色
+                                        }, {
+                                            offset: 0.4, color: '#aecaf9' // 40% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#fff' // 100% 处的颜色
+                                        }]
+                                    ), //背景渐变色
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'solid',
+                                        color: "#9ea7f5" //折线的颜色
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#9ea7f5',
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'dotted',
+                                        color: "9ea7f5"
+                                    }
+                                }
+                            }
                         },
                         {
                             name: '等待买家确认',
                             type: 'line',
-                            data: []
+                            data: [],
+                            areaStyle: {},
+                            itemStyle: {
+                                normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                            offset: 0, color: '#ffdea4' // 0% 处的颜色
+                                        }, {
+                                            offset: 0.4, color: '#ffffc6' // 40% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#fff' // 100% 处的颜色
+                                        }]
+                                    ), //背景渐变色
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'solid',
+                                        color: "#ffdea4" //折线的颜色
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#ffdea4',
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'dotted',
+                                        color: "ffdea4"
+                                    }
+                                }
+                            }
                         },
                         {
                             name: '等待卖家发货',
                             type: 'line',
-                            data: []
+                            data: [],
+                            areaStyle: {},
+                            itemStyle: {
+                                normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                            offset: 0, color: '#b8ffb7' // 0% 处的颜色
+                                        }, {
+                                            offset: 0.4, color: '#daffd9' // 40% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#fff' // 100% 处的颜色
+                                        }]
+                                    ), //背景渐变色
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'solid',
+                                        color: "#b8ffb7" //折线的颜色
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#b8ffb7',
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'dotted',
+                                        color: "b8ffb7"
+                                    }
+                                }
+                            }
                         },
                         {
                             name: '等待买家付款',
                             type: 'line',
-                            data: []
+                            data: [],
+                            areaStyle: {},
+                            itemStyle: {
+                                normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                            offset: 0, color: '#dfbdd6' // 0% 处的颜色
+                                        }, {
+                                            offset: 0.4, color: '#efdee8' // 40% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#fff' // 100% 处的颜色
+                                        }]
+                                    ), //背景渐变色
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'solid',
+                                        color: "#dfbdd6" //折线的颜色
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#dfbdd6',
+                                    lineStyle: {        // 系列级个性化折线样式
+                                        width: 2,
+                                        type: 'dotted',
+                                        color: "dfbdd6"
+                                    }
+                                }
+                            }
                         }
                     ]
                 };
