@@ -24,9 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
- * 后台管理-分类页
+ * 后台管理-产品类型页
  */
 @Controller
 public class CategoryController extends BaseController {
@@ -37,14 +36,14 @@ public class CategoryController extends BaseController {
     @Resource(name = "propertyService")
     private PropertyService propertyService;
 
-    //转到后台管理-分类页-ajax
+    //转到后台管理-产品类型页-ajax
     @RequestMapping(value = "admin/category", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map) {
-        logger.info("获取前10条分类列表");
+        logger.info("获取前10条产品类型列表");
         PageUtil pageUtil = new PageUtil(0, 10);
         List<Category> categoryList = categoryService.getList(null, pageUtil);
         map.put("categoryList", categoryList);
-        logger.info("获取分类总数量");
+        logger.info("获取产品类型总数量");
         Integer categoryCount = categoryService.getTotal(null);
         map.put("categoryCount", categoryCount);
         logger.info("获取分页信息");
@@ -55,7 +54,7 @@ public class CategoryController extends BaseController {
         return "admin/categoryManagePage";
     }
 
-    //转到后台管理-分类详情页-ajax
+    //转到后台管理-产品类型详情页-ajax
     @RequestMapping(value = "admin/category/{cid}", method = RequestMethod.GET)
     public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer cid/* 分类ID */) {
         logger.info("获取category_id为{}的分类信息", cid);
@@ -68,14 +67,14 @@ public class CategoryController extends BaseController {
         return "admin/include/categoryDetails";
     }
 
-    //转到后台管理-分类添加页-ajax
+    //转到后台管理-产品类型添加页-ajax
     @RequestMapping(value = "admin/category/new", method = RequestMethod.GET)
     public String goToAddPage(HttpSession session, Map<String, Object> map) {
         logger.info("转到后台管理-分类添加页-ajax方式");
         return "admin/include/categoryDetails";
     }
 
-    //添加分类信息-ajax
+    //添加产品类型信息-ajax
     @ResponseBody
     @RequestMapping(value = "admin/category", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String addCategory(@RequestParam String category_name/* 分类名称 */,
@@ -101,7 +100,7 @@ public class CategoryController extends BaseController {
         return jsonObject.toJSONString();
     }
 
-    //更新分类信息-ajax
+    //更新产品类型信息-ajax
     @ResponseBody
     @RequestMapping(value = "admin/category/{category_id}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
     public String updateCategory(@RequestParam String category_name/* 分类名称 */,
@@ -128,7 +127,7 @@ public class CategoryController extends BaseController {
         return jsonObject.toJSONString();
     }
 
-    //按条件查询分类-ajax
+    //按条件查询产品类型-ajax
     @ResponseBody
     @RequestMapping(value = "admin/category/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getCategoryBySearch(@RequestParam(required = false) String category_name/* 分类名称 */,
@@ -156,7 +155,7 @@ public class CategoryController extends BaseController {
         return object.toJSONString();
     }
 
-    // 上传分类图片-ajax
+    // 上传产品类型图片-ajax
     @ResponseBody
     @RequestMapping(value = "admin/uploadCategoryImage", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String uploadCategoryImage(@RequestParam MultipartFile file, HttpSession session) {

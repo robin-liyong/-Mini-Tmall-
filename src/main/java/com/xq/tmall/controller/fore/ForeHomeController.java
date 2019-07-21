@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 前台天猫-主页
+ * 主页
+ * @author 贤趣项目小组
  */
 @Controller
 public class ForeHomeController extends BaseController {
@@ -51,18 +52,28 @@ public class ForeHomeController extends BaseController {
         List<Category> categoryList = categoryService.getList(null,null);
         logger.info("获取每个分类下的产品列表");
        for(Category category : categoryList){
-           List<Product> productList = productService.getList(new Product().setProduct_category(category), new Byte[]{0, 2}, new OrderUtil("product_id", true), new PageUtil(0, 8));
+           List<Product> productList = productService.getList(
+                   new Product().setProduct_category(category),
+                   new Byte[]{0, 2},
+                   new OrderUtil("product_id", true), new PageUtil(0, 8)
+           );
            if (productList != null) {
                for (Product product : productList) {
                    Integer product_id = product.getProduct_id();
-                   product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, new PageUtil(0, 1)));
+                   product.setSingleProductImageList(
+                           productImageService.getList(
+                                   product_id, (byte) 0, new PageUtil(0, 1)
+                           )
+                   );
                }
            }
            category.setProductList(productList);
        }
         map.put("categoryList",categoryList);
         logger.info("获取促销产品列表");
-        List<Product> specialProductList = productService.getList(null, new Byte[]{2}, null, new PageUtil(0, 6));
+        List<Product> specialProductList = productService.getList(
+                null, new Byte[]{2}, null, new PageUtil(0, 6)
+        );
         map.put("specialProductList", specialProductList);
 
         logger.info("转到前台主页");
@@ -85,7 +96,10 @@ public class ForeHomeController extends BaseController {
             return object.toJSONString();
         }
         logger.info("获取分类ID为{}的产品标题数据", category_id);
-        List<Product> productList = productService.getTitle(new Product().setProduct_category(new Category().setCategory_id(category_id)), new PageUtil(0, 40));
+        List<Product> productList = productService.getTitle(
+                new Product().setProduct_category(new Category().setCategory_id(category_id)),
+                new PageUtil(0, 40)
+        );
         List<List<Product>> complexProductList = new ArrayList<>(8);
         List<Product> products = new ArrayList<>(5);
         for (int i = 0; i < productList.size(); i++) {

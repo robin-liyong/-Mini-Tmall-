@@ -144,10 +144,11 @@
 
     <select id="getTotalByDate" resultType="orderGroup">
         SELECT
-        productOrder_pay_date,count(productOrder_id) as productOrder_count ,productOrder_status from productOrder
+        DATE_FORMAT(productOrder_pay_date,'%Y-%m-%d') productOrder_pay_date,count(productOrder_id) as productOrder_count ,productOrder_status from productOrder
         <where>
-            productOrder_pay_date BETWEEN #{beginDate} AND #{endDate}
+            productOrder_pay_date BETWEEN #{beginDate} AND #{endDate} AND productorder_status != 4
         </where>
         GROUP BY DATE_FORMAT(productOrder_pay_date,'%Y-%m-%d'),productOrder_status
+        ORDER BY productOrder_pay_date ASC,productOrder_status ASC
     </select>
 </mapper>

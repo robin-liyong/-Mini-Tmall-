@@ -1,9 +1,17 @@
 package com.xq.tmall.util;
 
+/**
+ * 查询分页工具
+ * @author 贤趣项目小组
+ */
 public final class PageUtil {
+    //当前页
     private Integer index;
+    //每页个数
     private Integer count;
+    //总数
     private Integer total;
+    //随机查询页数数值（猜你喜欢功能）
     private Integer pageStart;
 
     public PageUtil(Integer index, Integer count) {

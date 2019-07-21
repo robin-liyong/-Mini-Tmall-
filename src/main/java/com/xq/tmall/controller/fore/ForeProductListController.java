@@ -22,6 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 产品列表页
+ * @author 贤趣项目小组
+ */
 @Controller
 public class ForeProductListController extends BaseController {
     @Resource(name = "productService")
@@ -44,7 +48,7 @@ public class ForeProductListController extends BaseController {
     @RequestMapping(value = "product", method = RequestMethod.GET)
     public String goToPage(HttpSession session, Map<String, Object> map,
                            @RequestParam(value = "category_id", required = false) Integer category_id/* 分类ID */,
-                           @RequestParam(value = "product_name", required = false) String product_name/* 产品名称 */) throws UnsupportedEncodingException {
+                           @RequestParam(value = "product_name", required = false) String product_name/* 产品名称 */) {
         logger.info("检查用户是否登录");
         Object userId = checkUser(session);
         if (userId != null) {
@@ -78,7 +82,7 @@ public class ForeProductListController extends BaseController {
         //分页工具
         PageUtil pageUtil = new PageUtil(0, 20);
         if (product_name != null) {
-            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
+//            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
             logger.warn("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);
@@ -126,7 +130,7 @@ public class ForeProductListController extends BaseController {
                                 @RequestParam(value = "category_id", required = false) Integer category_id/* 分类ID */,
                                 @RequestParam(value = "product_name", required = false) String product_name/* 产品名称 */,
                                 @RequestParam(required = false) String orderBy/* 排序字段 */,
-                                @RequestParam(required = false, defaultValue = "true") Boolean isDesc/* 是否倒序 */) throws UnsupportedEncodingException {
+                                @RequestParam(required = false, defaultValue = "true") Boolean isDesc/* 是否倒序 */) {
         logger.info("整合搜索信息");
         Product product = new Product();
         OrderUtil orderUtil = null;
@@ -153,7 +157,7 @@ public class ForeProductListController extends BaseController {
         //分页工具
         PageUtil pageUtil = new PageUtil(0, 20);
         if (product_name != null) {
-            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
+//            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
             logger.warn("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);

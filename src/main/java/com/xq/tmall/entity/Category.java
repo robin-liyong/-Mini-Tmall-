@@ -2,16 +2,23 @@ package com.xq.tmall.entity;
 
 import java.util.List;
 
+/**
+ * 类型实体类
+ * @author 贤趣项目小组
+ */
+
 public class Category {
-    private Integer category_id;
-    private String category_name;
-    private String category_image_src;
-    //产品列表
-    private List<Product> productList;
-    //产品二维集合
-    private List<List<Product>> complexProductList;
-    //属性列表
-    private List<Property> propertyList;
+    private Integer category_id/*类型ID*/;
+
+    private String category_name/*类型名称*/;
+
+    private String category_image_src/*类型图片路径*/;
+
+    private List<Property> propertyList/*属性列表*/;
+
+    private List<Product> productList/*产品集合*/;
+
+    private List<List<Product>> complexProductList/*产品二维集合*/;
 
     @Override
     public String toString() {

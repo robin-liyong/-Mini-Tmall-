@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 用户信息管理
+ * @author 贤趣项目小组
+ */
 @Controller
 public class ForeUserController extends BaseController{
     @Resource(name = "addressService")
@@ -48,7 +52,9 @@ public class ForeUserController extends BaseController{
             Address cityAddress = addressService.get(districtAddress.getAddress_regionId().getAddress_areaId());
             logger.info("获取其他地址信息");
             List<Address> addressList = addressService.getRoot();
-            List<Address> cityList = addressService.getList(null,cityAddress.getAddress_regionId().getAddress_areaId());
+            List<Address> cityList = addressService.getList(
+                    null,cityAddress.getAddress_regionId().getAddress_areaId()
+            );
             List<Address> districtList = addressService.getList(null,cityAddress.getAddress_areaId());
 
             map.put("addressList", addressList);
@@ -95,7 +101,8 @@ public class ForeUserController extends BaseController{
                              @RequestParam(value = "user_gender") String user_gender  /*用户性别*/,
                              @RequestParam(value = "user_birthday") String user_birthday /*用户生日*/,
                              @RequestParam(value = "user_address") String user_address  /*用户所在地 */,
-                             @RequestParam(value = "user_profile_picture_src", required = false) String user_profile_picture_src /* 用户头像*/,
+                             @RequestParam(value = "user_profile_picture_src", required = false)
+                                         String user_profile_picture_src /* 用户头像*/,
                              @RequestParam(value = "user_password") String user_password/* 用户密码 */
     ) throws ParseException, UnsupportedEncodingException {
         logger.info("检查用户是否登录");

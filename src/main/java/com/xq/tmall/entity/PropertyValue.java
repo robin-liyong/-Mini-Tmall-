@@ -1,10 +1,14 @@
 package com.xq.tmall.entity;
 
+/**
+ * 属性值实体类
+ * @author 贤趣项目小组
+ */
 public class PropertyValue {
-    private Integer propertyValue_id;
-    private String propertyValue_value;
-    private Property propertyValue_property;
-    private Product propertyValue_product;
+    private Integer propertyValue_id/*属性值ID*/;
+    private String propertyValue_value/*属性值Value*/;
+    private Property propertyValue_property/*属性值对应属性*/;
+    private Product propertyValue_product/*属性值对应产品*/;
 
     public PropertyValue() {
     }

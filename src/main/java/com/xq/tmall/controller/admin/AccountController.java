@@ -19,6 +19,7 @@ import java.util.UUID;
 
 /**
  * 后台管理-账户页
+ * @author 贤趣项目小组
  */
 @Controller
 public class AccountController extends BaseController{
@@ -63,7 +64,9 @@ public class AccountController extends BaseController{
         String originalFileName = file.getOriginalFilename();
         logger.info("获取图片原始文件名：{}", originalFileName);
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        //生成随机名
         String fileName = UUID.randomUUID() + extension;
+        //获取上传路径
         String filePath = session.getServletContext().getRealPath("/") + "res/images/item/adminProfilePicture/" + fileName;
 
         logger.info("文件上传路径：{}", filePath);

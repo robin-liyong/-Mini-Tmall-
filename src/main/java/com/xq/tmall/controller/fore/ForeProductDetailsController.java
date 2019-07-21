@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * 前台天猫-产品详情页
+ * 产品详情页
+ * @author 贤趣项目小组
  */
 @Controller
 public class ForeProductDetailsController extends BaseController {
@@ -59,18 +60,11 @@ public class ForeProductDetailsController extends BaseController {
         }
         logger.info("获取产品子信息-分类信息");
         product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
-        logger.info("获取产品子信息-产品图片信息");
-        List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
-        List<ProductImage> singleProductImageList = new ArrayList<>(5);
-        List<ProductImage> detailsProductImageList = new ArrayList<>(8);
-        for (ProductImage productImage : productImageList) {
-            if (productImage.getProductImage_type() == 0) {
-                singleProductImageList.add(productImage);
-            } else {
-                detailsProductImageList.add(productImage);
-            }
-        }
+        logger.info("获取产品子信息-预览图片信息");
+        List<ProductImage> singleProductImageList = productImageService.getList(product_id, (byte) 0, null);
         product.setSingleProductImageList(singleProductImageList);
+        logger.info("获取产品子信息-详情图片信息");
+        List<ProductImage> detailsProductImageList = productImageService.getList(product_id, (byte) 1, null);
         product.setDetailProductImageList(detailsProductImageList);
         logger.info("获取产品子信息-产品属性值信息");
         List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product), null);
@@ -111,7 +105,12 @@ public class ForeProductDetailsController extends BaseController {
         if (i < 0) {
             i = 0;
         }
-        List<Product> loveProductList = productService.getList(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2}, null, new PageUtil().setCount(3).setPageStart(i));
+        List<Product> loveProductList = productService.getList(new Product().setProduct_category(
+                new Category().setCategory_id(category_id)),
+                new Byte[]{0, 2},
+                null,
+                new PageUtil().setCount(3).setPageStart(i)
+        );
         if (loveProductList != null) {
             logger.info("获取产品列表的相应的一张预览图片");
             for (Product loveProduct : loveProductList) {
@@ -208,7 +207,12 @@ public class ForeProductDetailsController extends BaseController {
         }
 
         logger.info("guessNumber值为{}，新guessNumber值为{}", guessNumber, i);
-        List<Product> loveProductList = productService.getList(new Product().setProduct_category(new Category().setCategory_id(cid)), new Byte[]{0, 2}, null, new PageUtil().setCount(3).setPageStart(i));
+        List<Product> loveProductList = productService.getList(new Product().setProduct_category(
+                new Category().setCategory_id(cid)),
+                new Byte[]{0, 2},
+                null,
+                new PageUtil().setCount(3).setPageStart(i)
+        );
         if (loveProductList != null) {
             logger.info("获取产品列表的相应的一张预览图片");
             for (Product loveProduct : loveProductList) {

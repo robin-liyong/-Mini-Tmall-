@@ -1,9 +1,15 @@
 package com.xq.tmall.entity;
 
+/**
+ * 地址实体类
+ * @author 贤趣项目小组
+ */
 public class Address {
-    private String address_areaId;
-    private String address_name;
-    private Address address_regionId;
+    private String address_areaId/*地址ID*/;
+
+    private String address_name/*地址名称*/;
+
+    private Address address_regionId/*父级地址ID*/;
 
     public Address() {
     }

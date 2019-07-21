@@ -64,26 +64,23 @@ public class ProductController extends BaseController{
     public String goToDetailsPage(HttpSession session, Map<String, Object> map, @PathVariable Integer pid/* 产品ID */) {
         logger.info("获取product_id为{}的产品信息",pid);
         Product product = productService.get(pid);
-        logger.info("获取产品详情-图片信息");
         Integer product_id =product.getProduct_id();
-        List<ProductImage> productImageList = productImageService.getList(product_id, null, null);
-        List<ProductImage> singleProductImageList = new ArrayList<>(5);
-        List<ProductImage> detailsProductImageList = new ArrayList<>(8);
-        for (ProductImage productImage : productImageList) {
-            if (productImage.getProductImage_type() == 0) {
-                singleProductImageList.add(productImage);
-            } else {
-                detailsProductImageList.add(productImage);
-            }
-        }
+        logger.info("获取产品预览图片信息");
+        List<ProductImage> singleProductImageList = productImageService.getList(product_id, (byte) 0, null);
         product.setSingleProductImageList(singleProductImageList);
+        logger.info("获取产品详情图片信息");
+        List<ProductImage> detailsProductImageList = productImageService.getList(product_id, (byte) 1, null);
         product.setDetailProductImageList(detailsProductImageList);
         map.put("product",product);
         logger.info("获取产品详情-属性值信息");
-        List<PropertyValue> propertyValueList = propertyValueService.getList(new PropertyValue().setPropertyValue_product(product),null);
+        List<PropertyValue> propertyValueList = propertyValueService.getList(
+                new PropertyValue().setPropertyValue_product(product),null
+        );
         logger.info("获取产品详情-分类信息对应的属性列表");
-        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(product.getProduct_category()),null);
-        logger.info("属性列表和属性值列表合并");
+        List<Property> propertyList = propertyService.getList(
+                new Property().setProperty_category(product.getProduct_category()),null
+        );
+        logger.info("属性列表和属性值列表信息合并");
         for(Property property : propertyList){
             for(PropertyValue propertyValue : propertyValueList){
                 if(property.getProperty_id().equals(propertyValue.getPropertyValue_property().getProperty_id())){
@@ -110,7 +107,9 @@ public class ProductController extends BaseController{
         List<Category> categoryList = categoryService.getList(null,null);
         map.put("categoryList",categoryList);
         logger.info("获取第一个分类信息对应的属性列表");
-        List<Property> propertyList = propertyService.getList(new Property().setProperty_category(categoryList.get(0)),null);
+        List<Property> propertyList = propertyService.getList(
+                new Property().setProperty_category(categoryList.get(0)),null
+        );
         map.put("propertyList",propertyList);
 
         logger.info("转到后台管理-产品添加页-ajax方式");
@@ -123,8 +122,8 @@ public class ProductController extends BaseController{
     public String addProduct(@RequestParam String product_name/* 产品名称 */,
                              @RequestParam String product_title/* 产品标题 */,
                              @RequestParam Integer product_category_id/* 产品类型ID */,
-                             @RequestParam Double product_sale_price/* 产品最低价 */,
-                             @RequestParam Double product_price/* 产品最高价 */,
+                             @RequestParam Double product_sale_price/* 产品促销价 */,
+                             @RequestParam Double product_price/* 产品原价 */,
                              @RequestParam Byte product_isEnabled/* 产品状态 */,
                              @RequestParam String propertyJson/* 产品属性JSON */,
                              @RequestParam(required = false) String[] productSingleImageList/*产品预览图片名称数组*/,
@@ -226,8 +225,8 @@ public class ProductController extends BaseController{
     public String updateProduct(@RequestParam String product_name/* 产品名称 */,
                                 @RequestParam String product_title/* 产品标题 */,
                                 @RequestParam Integer product_category_id/* 产品类型ID */,
-                                @RequestParam Double product_sale_price/* 产品最低价 */,
-                                @RequestParam Double product_price/* 产品最高价 */,
+                                @RequestParam Double product_sale_price/* 产品促销价 */,
+                                @RequestParam Double product_price/* 产品原价 */,
                                 @RequestParam Byte product_isEnabled/* 产品状态 */,
                                 @RequestParam String propertyAddJson/* 产品添加属性JSON */,
                                 @RequestParam String propertyUpdateJson/* 产品更新属性JSON */,
@@ -367,8 +366,8 @@ public class ProductController extends BaseController{
     @RequestMapping(value = "admin/product/{index}/{count}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getProductBySearch(@RequestParam(required = false) String product_name/* 产品名称 */,
                                      @RequestParam(required = false) Integer category_id/* 产品类型ID */,
-                                     @RequestParam(required = false) Double product_sale_price/* 产品最低价 */,
-                                     @RequestParam(required = false) Double product_price/* 产品最高价 */,
+                                     @RequestParam(required = false) Double product_sale_price/* 产品促销价 */,
+                                     @RequestParam(required = false) Double product_price/* 产品原价 */,
                                      @RequestParam(required = false) Byte[] product_isEnabled_array/* 产品状态数组 */,
                                      @RequestParam(required = false) String orderBy/* 排序字段 */,
                                      @RequestParam(required = false,defaultValue = "true") Boolean isDesc/* 是否倒序 */,

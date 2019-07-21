@@ -2,11 +2,15 @@ package com.xq.tmall.entity;
 
 import java.util.List;
 
+/**
+ * 属性实体类
+ * @author 贤趣项目小组
+ */
 public class Property {
-    private Integer property_id;
-    private String property_name;
-    private Category property_category;
-    private List<PropertyValue> propertyValueList;
+    private Integer property_id/*属性ID*/;
+    private String property_name/*属性名称*/;
+    private Category property_category/*属性对应分类*/;
+    private List<PropertyValue> propertyValueList/*属性值集合*/;
 
     public Property() {
     }

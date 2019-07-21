@@ -1,13 +1,17 @@
 package com.xq.tmall.entity;
 
+/**
+ * 订单项实体类
+ * @author 贤趣项目小组
+ */
 public class ProductOrderItem {
-    private Integer productOrderItem_id;
-    private Short productOrderItem_number;
-    private Double productOrderItem_price;
-    private Product productOrderItem_product;
-    private ProductOrder productOrderItem_order;
-    private User productOrderItem_user;
-    private String productOrderItem_userMessage;
+    private Integer productOrderItem_id/*订单项ID*/;
+    private Short productOrderItem_number/*订单项产品数量*/;
+    private Double productOrderItem_price/*订单项产品总价格*/;
+    private String productOrderItem_userMessage/*订单项备注*/;
+    private Product productOrderItem_product/*订单项对应产品*/;
+    private ProductOrder productOrderItem_order/*订单项对应订单*/;
+    private User productOrderItem_user/*订单项对应用户*/;
     //订单产品是否已经评价
     private Boolean isReview;
 

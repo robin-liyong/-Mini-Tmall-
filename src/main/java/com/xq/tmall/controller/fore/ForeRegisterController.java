@@ -18,6 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 注册页
+ * @author 贤趣项目小组
+ */
 @Controller
 public class ForeRegisterController extends BaseController{
     @Resource(name = "addressService")

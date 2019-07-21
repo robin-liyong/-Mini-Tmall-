@@ -5,20 +5,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * 产品实体类
+ * @author 贤趣项目小组
+ */
 public class Product {
-    private Integer product_id;
-    private String product_name;
-    private String product_title;
-    private Double product_price;
-    private Double product_sale_price;
-    private Date product_create_date;
-    private Category product_category;
-    private Byte product_isEnabled;
-    private List<PropertyValue> propertyValueList;
-    private List<ProductImage> singleProductImageList;
-    private List<ProductImage> detailProductImageList;
-    private List<Review> reviewList;
-    private List<ProductOrderItem> productOrderItemList;
+    private Integer product_id/*产品ID*/;
+    private String product_name/*产品名称*/;
+    private String product_title/*产品标题*/;
+    private Double product_price/*产品原价格*/;
+    private Double product_sale_price/*产品促销价格*/;
+    private Date product_create_date/*产品创建日期*/;
+    private Category product_category/*产品对应类型*/;
+    private Byte product_isEnabled/*产品状态*/;
+    private List<PropertyValue> propertyValueList/*产品属性值集合*/;
+    private List<ProductImage> singleProductImageList/*产品预览图片集合*/;
+    private List<ProductImage> detailProductImageList/*产品详细图片集合*/;
+    private List<Review> reviewList/*产品评论集合*/;
+    private List<ProductOrderItem> productOrderItemList/*产品订单项集合*/;
     //销量数
     private Integer product_sale_count;
     //评价数

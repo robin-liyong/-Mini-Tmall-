@@ -5,20 +5,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * 用户实体类
+ * @author 贤趣项目小组
+ */
 public class User {
-    private Integer user_id;
-    private String user_name;
-    private String user_nickname;
-    private String user_password;
-    private String user_realname;
-    private Byte user_gender;
-    private Date user_birthday;
-    private Address user_address;
-    private Address user_homeplace;
-    private String user_profile_picture_src;
-    private List<Review> reviewList;
-    private List<ProductOrderItem> productOrderItemList;
-    private List<ProductOrder> productOrderList;
+    private Integer user_id/*用户ID*/;
+    private String user_name/*用户登录名*/;
+    private String user_nickname/*用户昵称*/;
+    private String user_password/*用户密码*/;
+    private String user_realname/*用户姓名*/;
+    private Byte user_gender/*用户性别*/;
+    private Date user_birthday/*用户生日*/;
+    private Address user_address/*用户现居地*/;
+    private Address user_homeplace/*用户家乡地址*/;
+    private String user_profile_picture_src/*用户头像路径*/;
+    private List<Review> reviewList/*评论集合*/;
+    private List<ProductOrderItem> productOrderItemList/*订单项（购物车）集合*/;
+    private List<ProductOrder> productOrderList/*订单集合*/;
 
     @Override
     public String toString() {

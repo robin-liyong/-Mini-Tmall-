@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 地址信息管理
+ * @author 贤趣项目小组
+ */
 @Controller
 public class ForeAddressController extends BaseController {
     @Resource(name = "addressService")

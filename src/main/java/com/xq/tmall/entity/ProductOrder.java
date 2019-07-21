@@ -5,20 +5,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * 订单实体类
+ * @author 贤趣项目小组
+ */
 public class ProductOrder {
-    private Integer productOrder_id;
-    private String productOrder_code;
-    private Address productOrder_address;
-    private String productOrder_detail_address;
-    private String productOrder_post;
-    private String productOrder_receiver;
-    private String productOrder_mobile;
-    private Date productOrder_pay_date;
-    private Date productOrder_delivery_date;
-    private Date productOrder_confirm_date;
-    private Byte productOrder_status;
-    private User productOrder_user;
-    private List<ProductOrderItem> productOrderItemList;
+    private Integer productOrder_id/*订单ID*/;
+    private String productOrder_code/*订单流水号*/;
+    private Address productOrder_address/*订单地址*/;
+    private String productOrder_detail_address/*订单详细地址*/;
+    private String productOrder_post/*订单邮政编码*/;
+    private String productOrder_receiver/*订单收货人名称*/;
+    private String productOrder_mobile/*订单收货人号码*/;
+    private Date productOrder_pay_date/*订单支付日期*/;
+    private Date productOrder_delivery_date/*订单发货日期*/;
+    private Date productOrder_confirm_date/*订单确认日期*/;
+    private Byte productOrder_status/*订单状态*/;
+    private User productOrder_user/*订单对应用户*/;
+    private List<ProductOrderItem> productOrderItemList/*订单项集合*/;
 
     @Override
     public String toString() {

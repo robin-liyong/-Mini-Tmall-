@@ -25,7 +25,8 @@ import java.util.Stack;
  * 后台管理-订单页
  */
 @Controller
-public class OrderController extends BaseController{
+public class
+OrderController extends BaseController{
     @Resource(name="productOrderService")
     private ProductOrderService productOrderService;
     @Resource(name = "addressService")
@@ -46,7 +47,12 @@ public class OrderController extends BaseController{
     public String goToPage(HttpSession session, Map<String, Object> map){
         logger.info("获取前10条订单列表");
         PageUtil pageUtil = new PageUtil(0, 10);
-        List<ProductOrder> productOrderList = productOrderService.getList(null, null, new OrderUtil("productOrder_id", true), pageUtil);
+        List<ProductOrder> productOrderList =
+                productOrderService.getList(
+                        null,
+                        null,
+                        new OrderUtil("productOrder_id",
+                                true), pageUtil);
         map.put("productOrderList",productOrderList);
         logger.info("获取订单总数量");
         Integer productOrderCount = productOrderService.getTotal(null, null);
@@ -71,7 +77,7 @@ public class OrderController extends BaseController{
         addressStack.push(order.getProductOrder_detail_address());
         //最后一级地址
         addressStack.push(address.getAddress_name() + " ");
-        //如果不是第一级地址
+        //如果不是第一级地址，循环拼接地址信息
         while (!address.getAddress_areaId().equals(address.getAddress_regionId().getAddress_areaId())) {
             address = addressService.get(address.getAddress_regionId().getAddress_areaId());
             addressStack.push(address.getAddress_name() + " ");

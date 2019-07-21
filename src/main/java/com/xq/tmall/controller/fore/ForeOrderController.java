@@ -21,6 +21,10 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * 订单列表页
+ * @author 贤趣项目小组
+ */
 @Controller
 public class ForeOrderController extends BaseController {
     @Resource(name = "productService")
@@ -69,7 +73,11 @@ public class ForeOrderController extends BaseController {
 
         PageUtil pageUtil = new PageUtil(index, count);
         logger.info("根据用户ID:{}获取订单列表", userId);
-        List<ProductOrder> productOrderList = productOrderService.getList(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array, new OrderUtil("productOrder_id", true), pageUtil);
+        List<ProductOrder> productOrderList = productOrderService.getList(
+                new ProductOrder().setProductOrder_user(
+                        new User().setUser_id(Integer.valueOf(userId.toString()))
+                ), status_array, new OrderUtil("productOrder_id", true), pageUtil
+        );
 
         //订单总数量
         Integer orderCount = 0;
@@ -77,15 +85,21 @@ public class ForeOrderController extends BaseController {
             orderCount = productOrderService.getTotal(new ProductOrder().setProductOrder_user(new User().setUser_id(Integer.valueOf(userId.toString()))), status_array);
             logger.info("获取订单项信息及对应的产品信息");
             for (ProductOrder order : productOrderList) {
-                List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByOrderId(order.getProductOrder_id(), null);
+                List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByOrderId(
+                        order.getProductOrder_id(), null
+                );
                 if (productOrderItemList != null) {
                     for (ProductOrderItem productOrderItem : productOrderItemList) {
                         Integer product_id = productOrderItem.getProductOrderItem_product().getProduct_id();
                         Product product = productService.get(product_id);
-                        product.setSingleProductImageList(productImageService.getList(product_id, (byte) 0, new PageUtil(0, 1)));
+                        product.setSingleProductImageList(productImageService.getList(
+                                product_id, (byte) 0, new PageUtil(0, 1)
+                        ));
                         productOrderItem.setProductOrderItem_product(product);
                         if (order.getProductOrder_status() == 3) {
-                            productOrderItem.setIsReview(reviewService.getTotalByOrderItemId(productOrderItem.getProductOrderItem_id()) > 0);
+                            productOrderItem.setIsReview(reviewService.getTotalByOrderItemId(
+                                    productOrderItem.getProductOrderItem_id()) > 0
+                            );
                         }
                     }
                 }
@@ -139,6 +153,7 @@ public class ForeOrderController extends BaseController {
         productOrderItem.setProductOrderItem_price(product.getProduct_sale_price() * product_number);
         productOrderItem.setProductOrderItem_user(new User().setUser_id(Integer.valueOf(userId.toString())));
 
+        //初始化订单地址信息
         String addressId = "110000";
         String cityAddressId = "110100";
         String districtAddressId = "110101";
@@ -147,6 +162,7 @@ public class ForeOrderController extends BaseController {
         String order_receiver = null;
         String order_phone = null;
         Cookie[] cookies = request.getCookies();
+        //如果读取到了浏览器Cookie
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
@@ -875,31 +891,23 @@ public class ForeOrderController extends BaseController {
             object.put("url", "/");
             return object.toJSONString();
         }
-        logger.info("将收货地址等相关信息存入Cookie中");
-        Cookie cookie1 = new Cookie("addressId", addressId);
-        Cookie cookie2 = new Cookie("cityAddressId", cityAddressId);
-        Cookie cookie3 = new Cookie("districtAddressId", districtAddressId);
-        Cookie cookie4 = new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8"));
-        Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
-        Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
-        Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
-        //设置过期时间为一年
+        logger.info("将收货地址等相关信息存入Cookie中,便于下次使用");
+        Cookie[] cookies = new Cookie[]{
+                new Cookie("addressId", addressId),
+                new Cookie("cityAddressId", cityAddressId),
+                new Cookie("districtAddressId", districtAddressId),
+                new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8")),
+                new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8")),
+                new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8")),
+                new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"))
+        };
         int maxAge = 60 * 60 * 24 * 365;
-        cookie1.setMaxAge(maxAge);
-        cookie2.setMaxAge(maxAge);
-        cookie3.setMaxAge(maxAge);
-        cookie4.setMaxAge(maxAge);
-        cookie5.setMaxAge(maxAge);
-        cookie6.setMaxAge(maxAge);
-        cookie7.setMaxAge(maxAge);
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
-        response.addCookie(cookie3);
-        response.addCookie(cookie4);
-        response.addCookie(cookie5);
-        response.addCookie(cookie6);
-        response.addCookie(cookie7);
-
+        for(Cookie cookie : cookies){
+            //设置过期时间为一年
+            cookie.setMaxAge(maxAge);
+            //存储Cookie
+            response.addCookie(cookie);
+        }
         StringBuffer productOrder_code = new StringBuffer()
                 .append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()))
                 .append(0)
@@ -989,30 +997,23 @@ public class ForeOrderController extends BaseController {
             object.put("url", "/cart");
             return object.toJSONString();
         }
-        logger.info("将收货地址等相关信息存入Cookie中");
-        Cookie cookie1 = new Cookie("addressId", addressId);
-        Cookie cookie2 = new Cookie("cityAddressId", cityAddressId);
-        Cookie cookie3 = new Cookie("districtAddressId", districtAddressId);
-        Cookie cookie4 = new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8"));
-        Cookie cookie5 = new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8"));
-        Cookie cookie6 = new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8"));
-        Cookie cookie7 = new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"));
-        //设置过期时间为一年
+        logger.info("将收货地址等相关信息存入Cookie中,便于下次使用");
+        Cookie[] cookies = new Cookie[]{
+                new Cookie("addressId", addressId),
+                new Cookie("cityAddressId", cityAddressId),
+                new Cookie("districtAddressId", districtAddressId),
+                new Cookie("order_post", URLEncoder.encode(productOrder_post, "UTF-8")),
+                new Cookie("order_receiver", URLEncoder.encode(productOrder_receiver, "UTF-8")),
+                new Cookie("order_phone", URLEncoder.encode(productOrder_mobile, "UTF-8")),
+                new Cookie("detailsAddress", URLEncoder.encode(productOrder_detail_address, "UTF-8"))
+        };
         int maxAge = 60 * 60 * 24 * 365;
-        cookie1.setMaxAge(maxAge);
-        cookie2.setMaxAge(maxAge);
-        cookie3.setMaxAge(maxAge);
-        cookie4.setMaxAge(maxAge);
-        cookie5.setMaxAge(maxAge);
-        cookie6.setMaxAge(maxAge);
-        cookie7.setMaxAge(maxAge);
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
-        response.addCookie(cookie3);
-        response.addCookie(cookie4);
-        response.addCookie(cookie5);
-        response.addCookie(cookie6);
-        response.addCookie(cookie7);
+        for(Cookie cookie : cookies){
+            //设置过期时间为一年
+            cookie.setMaxAge(maxAge);
+            //存储Cookie
+            response.addCookie(cookie);
+        }
         StringBuffer productOrder_code = new StringBuffer()
                 .append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()))
                 .append(0)

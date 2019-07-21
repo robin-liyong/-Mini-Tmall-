@@ -98,7 +98,9 @@ public class UserController extends BaseController{
         user.setUser_homeplace(new Address().setAddress_name(builder.toString()));
 
         logger.info("获取用户详情-购物车订单项信息");
-        List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByUserId(user.getUser_id(), null);
+        List<ProductOrderItem> productOrderItemList = productOrderItemService.getListByUserId(
+                user.getUser_id(), null
+        );
         if (productOrderItemList != null) {
             logger.info("获取用户详情-购物车订单项对应的产品信息");
             for (ProductOrderItem productOrderItem : productOrderItemList) {
@@ -107,7 +109,9 @@ public class UserController extends BaseController{
                 Product product = productService.get(productId);
                 if (product != null) {
                     logger.warn("获取产品ID为{}的第一张预览图片信息", productId);
-                    product.setSingleProductImageList(productImageService.getList(productId, (byte) 0, new PageUtil(0, 1)));
+                    product.setSingleProductImageList(productImageService.getList(
+                            productId, (byte) 0, new PageUtil(0, 1))
+                    );
                 }
                 productOrderItem.setProductOrderItem_product(product);
             }

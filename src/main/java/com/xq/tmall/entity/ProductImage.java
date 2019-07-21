@@ -1,10 +1,14 @@
 package com.xq.tmall.entity;
 
+/**
+ * 产品图片实体类
+ * @author 贤趣项目小组
+ */
 public class ProductImage {
-    private Integer productImage_id;
-    private Byte productImage_type;
-    private String productImage_src;
-    private Product productImage_product;
+    private Integer productImage_id/*产品图片ID*/;
+    private Byte productImage_type/*产品图片类型*/;
+    private String productImage_src/*产品图片路径*/;
+    private Product productImage_product/*产品图片对应产品*/;
 
     public ProductImage(){
 

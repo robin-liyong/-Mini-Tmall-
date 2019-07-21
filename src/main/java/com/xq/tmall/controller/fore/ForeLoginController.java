@@ -15,7 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
- * 前台天猫-登陆页
+ * 登陆页
+ * @author 贤趣项目小组
  */
 @Controller
 public class ForeLoginController extends BaseController {

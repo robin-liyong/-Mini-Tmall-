@@ -1,11 +1,19 @@
 package com.xq.tmall.entity;
 
+/**
+ * 管理员实体类
+ * @author 贤趣项目小组
+ */
 public class Admin {
-    private Integer admin_id;
-    private String admin_name;
-    private String admin_nickname;
-    private String admin_password;
-    private String admin_profile_picture_src;
+    private Integer admin_id/*管理员ID*/;
+
+    private String admin_name/*管理员登录名*/;
+
+    private String admin_nickname/*管理员昵称*/;
+
+    private String admin_password/*管理员密码*/;
+
+    private String admin_profile_picture_src/*管理员头像路径*/;
 
     @Override
     public String toString() {
