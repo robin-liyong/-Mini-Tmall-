@@ -2,10 +2,12 @@ package com.xq.tmall.dao;
 
 import com.xq.tmall.entity.Category;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface CategoryMapper {
     Integer insertOne(@Param("category") Category category);
     Integer updateOne(@Param("category") Category category);

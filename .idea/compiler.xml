@@ -14,4 +14,9 @@
       <module name="tmall" target="1.8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="tmall" options="-parameters" />
+    </option>
+  </component>
 </project>

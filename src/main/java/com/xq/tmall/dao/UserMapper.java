@@ -3,10 +3,12 @@ package com.xq.tmall.dao;
 import com.xq.tmall.entity.User;
 import com.xq.tmall.util.OrderUtil;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface UserMapper {
     Integer insertOne(@Param("user") User user);
     Integer updateOne(@Param("user") User user);

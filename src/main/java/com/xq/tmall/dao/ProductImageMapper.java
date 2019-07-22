@@ -2,10 +2,12 @@ package com.xq.tmall.dao;
 
 import com.xq.tmall.entity.ProductImage;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface ProductImageMapper {
     Integer insertOne(@Param("productImage") ProductImage productImage);
 

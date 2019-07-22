@@ -2,10 +2,12 @@ package com.xq.tmall.dao;
 
 import com.xq.tmall.entity.PropertyValue;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface PropertyValueMapper {
     Integer insertOne(@Param("propertyValue") PropertyValue propertyValue);
 

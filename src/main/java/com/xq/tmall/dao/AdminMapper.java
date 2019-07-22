@@ -2,10 +2,12 @@ package com.xq.tmall.dao;
 
 import com.xq.tmall.entity.Admin;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface AdminMapper {
     Integer insertOne(@Param("admin") Admin admin);
     Integer updateOne(@Param("admin") Admin admin);

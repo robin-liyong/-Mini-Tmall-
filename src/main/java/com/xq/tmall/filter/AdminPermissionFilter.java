@@ -2,14 +2,17 @@ package com.xq.tmall.filter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
  * 后台权限过滤器
  */
+@WebFilter(filterName="adminPermissionFilter",urlPatterns= {"/admin/*"})
 public class AdminPermissionFilter implements Filter {
     //log4j2
     protected Logger logger = LogManager.getLogger(AdminPermissionFilter.class);

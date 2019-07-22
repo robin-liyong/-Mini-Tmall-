@@ -3,12 +3,14 @@ package com.xq.tmall.dao;
 import com.xq.tmall.entity.OrderGroup;
 import com.xq.tmall.entity.ProductOrderItem;
 import com.xq.tmall.util.PageUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface ProductOrderItemMapper {
     Integer insertOne(@Param("productOrderItem") ProductOrderItem productOrderItem);
     Integer updateOne(@Param("productOrderItem") ProductOrderItem productOrderItem);

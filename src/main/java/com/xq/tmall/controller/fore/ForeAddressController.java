@@ -4,11 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xq.tmall.controller.BaseController;
 import com.xq.tmall.entity.Address;
 import com.xq.tmall.service.AddressService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,13 +13,12 @@ import java.util.List;
  * 地址信息管理
  * @author 贤趣项目小组
  */
-@Controller
+@RestController
 public class ForeAddressController extends BaseController {
     @Resource(name = "addressService")
     private AddressService addressService;
 
     //根据address_areaId获取地址信息-ajax
-    @ResponseBody
     @RequestMapping(value = "address/{areaId}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     protected String getAddressByAreaId(@PathVariable String areaId) {
         JSONObject object = new JSONObject();
