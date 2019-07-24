@@ -5,12 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 @SpringBootApplication
 @EnableTransactionManagement
