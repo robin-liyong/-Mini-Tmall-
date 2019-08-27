@@ -23,8 +23,10 @@ public class AdminPermissionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
-        //如果是登录界面，直接放行
-        if(servletRequest.getRequestURI().contains("/admin/login")){
+        //如果是(登录界面,登录态失效界面)，直接放行
+        if(servletRequest.getRequestURI().contains("/admin/login") ||
+                servletRequest.getRequestURI().contains("/admin/account")
+        ){
             chain.doFilter(request, response);
         } else {
             logger.info("检查管理员权限");

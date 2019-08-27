@@ -214,7 +214,7 @@ public class AdminHomeController extends BaseController {
         jsonObject.put("orderSuccessArray", orderSuccessArray);
         jsonObject.put("dateStr",dateStr);
         long endTime = new Date().getTime();
-        logger.error("花费时间："+(endTime-beginTime));
+        logger.info("图表数据生成花费时间："+(endTime-beginTime));
         return jsonObject;
     }
 }

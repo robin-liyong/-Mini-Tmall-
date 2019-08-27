@@ -3,10 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xq.tmall</groupId>
   <artifactId>tmall</artifactId>
-  <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>tmall Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -44,23 +43,6 @@
       <groupId>org.apache.taglibs</groupId>
       <artifactId>taglibs-standard-impl</artifactId>
       <version>1.2.5</version>
-    </dependency>
-
-    <!-- commons -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.6</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
     </dependency>
 
     <!-- Mybatis -->

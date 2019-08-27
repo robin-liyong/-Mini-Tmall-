@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="${pageContext.request.contextPath}/res/images/admin/tmall_48px_1193412_easyicon.net.ico" rel="icon" type="image/x-ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/bootstrap-select.min.css"/>
     <script src="${pageContext.request.contextPath}/res/js/jquery-1.11.3.min.js"></script>

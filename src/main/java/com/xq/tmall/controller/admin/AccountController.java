@@ -63,6 +63,7 @@ public class AccountController extends BaseController{
     public String uploadAdminHeadImage(@RequestParam MultipartFile file, HttpSession session) {
         String originalFileName = file.getOriginalFilename();
         logger.info("获取图片原始文件名：{}", originalFileName);
+        assert originalFileName != null;
         String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         //生成随机名
         String fileName = UUID.randomUUID() + extension;
