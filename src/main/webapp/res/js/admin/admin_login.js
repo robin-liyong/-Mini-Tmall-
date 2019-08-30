@@ -85,7 +85,7 @@ function initialCookie() {
         if(url !== null) {
             $("#div_background").css("background-image", url);
         } else {
-            $("#div_background").css("background-image", "url(/tmall/res/images/admin/loginPage/background-1.jpg)");
+            $("#div_background").css("background-image", "url(/tmall/res/images/admin/loginPage/background-4.jpg)");
         }
         if(username !== null){
             $("#input_username").val(username);
