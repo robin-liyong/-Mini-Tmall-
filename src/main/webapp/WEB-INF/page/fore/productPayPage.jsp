@@ -16,8 +16,6 @@
 </nav>
 <div class="content">
     <div class="order_div">
-        <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/payCode.png" width="100px"
-             height="100px"/>
         <c:choose>
             <c:when test="${fn:length(requestScope.productOrder.productOrderItemList)==1}">
                 <div class="order_name">
@@ -35,8 +33,19 @@
         </c:choose>
         <div class="order_price">
             <span class="price_value">${requestScope.orderTotalPrice}</span>
-            <span class="price_unit">元</span>
+            <span class="price_unit">元（不会真实付款）</span>
         </div>
+    </div>
+    <div class="order_reward_div">
+        <div class="order_reward_alipay_div">
+            <p class="order_reward_name" id="reward_alipay_name">支付宝</p>
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/alipay.jpg"/>
+        </div>
+        <div class="order_reward_weixinpay_div">
+            <p class="order_reward_name" id="reward_weixin_name">微信</p>
+            <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/weixinpay.png">
+        </div>
+        <p>制作不易，欢迎打赏，客官请随意</p>
     </div>
     <div class="order_pay_div">
         <script>

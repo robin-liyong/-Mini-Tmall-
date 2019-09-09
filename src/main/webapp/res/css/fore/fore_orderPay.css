@@ -104,3 +104,43 @@
     transition: background-color 0.5s;
     text-decoration: none;
 }
+
+.content > .order_reward_div {
+    overflow: hidden;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.order_reward_div img {
+    display: inline-block;
+    width: 190px;
+    height: 190px;
+}
+
+.order_reward_div > .order_reward_alipay_div,.order_reward_weixinpay_div {
+    display: inline-block;
+    margin: 10px 30px;
+    width: 220px;
+    height: 220px;
+}
+
+.order_reward_div .order_reward_name {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.order_reward_div > p {
+    margin-top: 50px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#reward_alipay_name {
+    color: #019fe8;
+}
+
+#reward_weixin_name {
+    color: #22AB38;
+}
