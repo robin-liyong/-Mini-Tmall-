@@ -11,7 +11,7 @@ public final class PageUtil {
     private Integer count;
     //总数
     private Integer total;
-    //随机查询页数数值（猜你喜欢功能）
+    //行数起始值
     private Integer pageStart;
 
     public PageUtil(Integer index, Integer count) {

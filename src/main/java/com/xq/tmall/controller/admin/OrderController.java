@@ -166,8 +166,10 @@ OrderController extends BaseController{
         if (orderBy != null) {
             logger.info("根据{}排序，是否倒序:{}",orderBy,isDesc);
             orderUtil = new OrderUtil(orderBy, isDesc);
+        } else {
+            orderUtil = new OrderUtil("productOrder_id",
+                    true);
         }
-
         JSONObject object = new JSONObject();
         logger.info("按条件获取第{}页的{}条订单", index + 1, count);
         PageUtil pageUtil = new PageUtil(index, count);
