@@ -86,7 +86,7 @@ OrderController extends BaseController{
         while (!addressStack.empty()) {
             builder.append(addressStack.pop());
         }
-        logger.warn("订单地址字符串：{}", builder);
+        logger.info("订单地址字符串：{}", builder);
         order.setProductOrder_detail_address(builder.toString());
         logger.info("获取订单详情-用户信息");
         order.setProductOrder_user(userService.get(order.getProductOrder_user().getUser_id()));
@@ -96,10 +96,10 @@ OrderController extends BaseController{
             logger.info("获取订单详情-订单项对应的产品信息");
             for (ProductOrderItem productOrderItem : productOrderItemList) {
                 Integer productId = productOrderItem.getProductOrderItem_product().getProduct_id();
-                logger.warn("获取产品ID为{}的产品信息", productId);
+                logger.info("获取产品ID为{}的产品信息", productId);
                 Product product = productService.get(productId);
                 if (product != null) {
-                    logger.warn("获取产品ID为{}的第一张预览图片信息", productId);
+                    logger.info("获取产品ID为{}的第一张预览图片信息", productId);
                     product.setSingleProductImageList(productImageService.getList(productId, (byte) 0, new PageUtil(0, 1)));
                 }
                 productOrderItem.setProductOrderItem_product(product);

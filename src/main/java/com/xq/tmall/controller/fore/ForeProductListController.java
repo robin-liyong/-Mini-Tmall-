@@ -84,7 +84,7 @@ public class ForeProductListController extends BaseController {
         if (product_name != null) {
 //            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
-            logger.warn("提取的关键词有{}", Arrays.toString(product_name_split));
+            logger.info("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);
             searchValue = product_name;
         }
@@ -159,7 +159,7 @@ public class ForeProductListController extends BaseController {
         if (product_name != null) {
 //            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
-            logger.warn("提取的关键词有{}", Arrays.toString(product_name_split));
+            logger.info("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);
             searchValue = product_name;
         }

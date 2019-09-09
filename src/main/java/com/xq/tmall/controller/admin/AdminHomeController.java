@@ -166,9 +166,10 @@ public class AdminHomeController extends BaseController {
         //按指定的天数进行循环
         for (int i = 0; i < days; i++) {
             //格式化日期串（MM/dd）并放入日期数组中
+            int subDays = i + 1;
             Calendar cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            cal.add(Calendar.DATE, i);
+            cal.add(Calendar.DATE, subDays);
             String formatDate = time2.format(cal.getTime());
             dateStr.add(formatDate);
             //该天的订单总数
