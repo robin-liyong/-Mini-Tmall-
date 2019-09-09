@@ -39,24 +39,16 @@
             <a href="https://www.alipay.com" target="_blank">支付宝</a>
         </p>
         <div class="copyright">
-            增值电信业务经营许可证：
-            <a href="http://www.miibeian.gov.cn/state/outPortal/loginPortal.action" target="_blank">浙B2-20110446</a>
-            网络文化经营许可证：
-            <a href="http://sq.ccm.gov.cn/ccnt/sczr/service/business/emark/toDetail/CB964ABC7B904B7BA3472DDF700A2D6D"
-               target="_blank">浙网文[2015]0295-065号</a>
-            <a href="http://jb.ccm.gov.cn/" target="_blank">12318举报</a>
-            <br/>
-            互联网药品信息服务资质证书编号：
-            <a href="http://img.alicdn.com/tps/TB1vi6vPVXXXXbVXVXXXXXXXXXX-927-653.png"
-               target="_blank">浙-（经营性）-2017-0005</a>
-            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010002000120" target="_blank">
-                <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png">
-                浙公网安备 33010002000120号
-            </a>
-            <br/>
-            <span style="font-weight: bold;">© 2018 贤趣开发小组 版权所有</span>
+            <span style="font-weight: bold;">© 2019 贤趣开发小组 版权所有</span>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;你知道什么是996.ICU吗？</span>
             <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu"/></a>
+            <br/>
+            <span style="font-weight: bold;">严正声明：此系统仅供个人学习、研究之用,请勿用于商业用途</span>
+            <br/>
+            <a href="http://www.beian.miit.gov.cn/" target="_blank" style="text-align: center;display: block;">
+                <img src="${pageContext.request.contextPath}/res/images/fore/WebsiteImage/TB1yEqRPXXXXXXPXpXXXXXXXXXX-20-20.png">
+                陕ICP备19018406号-1
+            </a>
         </div>
     </div>
 </div>
