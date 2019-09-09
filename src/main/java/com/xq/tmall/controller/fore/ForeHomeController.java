@@ -55,7 +55,7 @@ public class ForeHomeController extends BaseController {
            List<Product> productList = productService.getList(
                    new Product().setProduct_category(category),
                    new Byte[]{0, 2},
-                   new OrderUtil("product_id", true), new PageUtil(0, 8)
+                   new OrderUtil("product_sale_count", true), new PageUtil(0, 8)
            );
            if (productList != null) {
                for (Product product : productList) {

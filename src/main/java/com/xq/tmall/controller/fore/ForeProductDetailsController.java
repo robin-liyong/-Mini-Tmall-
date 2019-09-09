@@ -89,10 +89,6 @@ public class ForeProductDetailsController extends BaseController {
             }
         }
 
-        logger.info("获取产品子信息-销量数和评论数信息");
-        product.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(product_id));
-        product.setProduct_review_count(reviewService.getTotalByProductId(product_id));
-
         logger.info("获取猜你喜欢列表");
         Integer category_id = product.getProduct_category().getCategory_id();
         Integer total = productService.getTotal(new Product().setProduct_category(new Category().setCategory_id(category_id)), new Byte[]{0, 2});

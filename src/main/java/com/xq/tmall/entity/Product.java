@@ -18,16 +18,13 @@ public class Product {
     private Date product_create_date/*产品创建日期*/;
     private Category product_category/*产品对应类型*/;
     private Byte product_isEnabled/*产品状态*/;
+    private Integer product_sale_count/*销量数*/;
+    private Integer product_review_count/*评价数*/;
     private List<PropertyValue> propertyValueList/*产品属性值集合*/;
     private List<ProductImage> singleProductImageList/*产品预览图片集合*/;
     private List<ProductImage> detailProductImageList/*产品详细图片集合*/;
     private List<Review> reviewList/*产品评论集合*/;
     private List<ProductOrderItem> productOrderItemList/*产品订单项集合*/;
-    //销量数
-    private Integer product_sale_count;
-    //评价数
-    private Integer product_review_count;
-    public Object setProduct_sale_co;
 
     @Override
     public String toString() {

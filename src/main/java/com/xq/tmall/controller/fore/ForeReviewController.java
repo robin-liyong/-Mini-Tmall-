@@ -73,7 +73,6 @@ public class ForeReviewController extends BaseController {
         }
         logger.info("获取订单项所属产品信息和产品评论信息");
         Product product = productService.get(orderItem.getProductOrderItem_product().getProduct_id());
-        product.setProduct_review_count(reviewService.getTotalByProductId(product.getProduct_id()));
         product.setSingleProductImageList(productImageService.getList(product.getProduct_id(), (byte) 0, new PageUtil(0, 1)));
         orderItem.setProductOrderItem_product(product);
 
@@ -124,7 +123,7 @@ public class ForeReviewController extends BaseController {
         logger.info("整合评论信息");
         Review review = new Review()
                 .setReview_product(orderItem.getProductOrderItem_product())
-                .setReview_content(new String(review_content.getBytes("ISO-8859-1"), "UTF-8"))
+                .setReview_content(review_content)
                 .setReview_createDate(new Date())
                 .setReview_user(user)
                 .setReview_orderItem(orderItem);
@@ -133,7 +132,18 @@ public class ForeReviewController extends BaseController {
         if (!yn) {
             throw new RuntimeException();
         }
-
+        Product product = productService.get(review.getReview_product().getProduct_id());
+        logger.info("更新产品评论信息");
+        Product updateProduct = new Product()
+                .setProduct_id(product.getProduct_id())
+                .setProduct_review_count(product.getProduct_review_count() + 1);
+        logger.info("更新产品信息，产品ID值为：{}", product.getProduct_id());
+        yn = productService.update(updateProduct);
+        if (!yn) {
+            logger.info("产品评论信息更新失败！事务回滚");
+            throw new RuntimeException();
+        }
+        logger.info("产品评论信息更新成功！");
         return "redirect:/product/" + orderItem.getProductOrderItem_product().getProduct_id();
     }
 

@@ -65,7 +65,6 @@ public class ForeProductListController extends BaseController {
 
         logger.info("整合搜索信息");
         Product product = new Product();
-        OrderUtil orderUtil = null;
         String searchValue = null;
         Integer searchType = null;
 
@@ -82,7 +81,6 @@ public class ForeProductListController extends BaseController {
         //分页工具
         PageUtil pageUtil = new PageUtil(0, 20);
         if (product_name != null) {
-//            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
             logger.info("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);
@@ -102,8 +100,6 @@ public class ForeProductListController extends BaseController {
         logger.info("获取商品列表的对应信息");
         for (Product p : productList) {
             p.setSingleProductImageList(productImageService.getList(p.getProduct_id(), (byte) 0, null));
-            p.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(p.getProduct_id()));
-            p.setProduct_review_count(reviewService.getTotalByProductId(p.getProduct_id()));
             p.setProduct_category(categoryService.get(p.getProduct_category().getCategory_id()));
         }
         logger.info("获取分类列表");
@@ -157,7 +153,6 @@ public class ForeProductListController extends BaseController {
         //分页工具
         PageUtil pageUtil = new PageUtil(0, 20);
         if (product_name != null) {
-//            product_name = new String(product_name.getBytes("ISO8859-1"), "UTF-8");
             product_name_split = product_name.split(" ");
             logger.info("提取的关键词有{}", Arrays.toString(product_name_split));
             product.setProduct_name(product_name);
@@ -177,8 +172,6 @@ public class ForeProductListController extends BaseController {
         logger.info("获取商品列表的对应信息");
         for (Product p : productList) {
             p.setSingleProductImageList(productImageService.getList(p.getProduct_id(), (byte) 0, null));
-            p.setProduct_sale_count(productOrderItemService.getSaleCountByProductId(p.getProduct_id()));
-            p.setProduct_review_count(reviewService.getTotalByProductId(p.getProduct_id()));
             p.setProduct_category(categoryService.get(p.getProduct_category().getCategory_id()));
         }
         logger.info("获取分类列表");

@@ -120,8 +120,8 @@ public class ForeUserController extends BaseController{
         }
         User userUpdate = new User()
                 .setUser_id(Integer.parseInt(userId.toString()))
-                .setUser_nickname(new String(user_nickname.getBytes("ISO8859-1"),"UTF-8"))
-                .setUser_realname(new String(user_realname.getBytes("ISO8859-1"),"UTF-8"))
+                .setUser_nickname(user_nickname)
+                .setUser_realname(user_realname)
                 .setUser_gender(Byte.valueOf(user_gender))
                 .setUser_birthday(new SimpleDateFormat("yyyy-MM-dd").parse(user_birthday))
                 .setUser_address(new Address().setAddress_areaId(user_address))

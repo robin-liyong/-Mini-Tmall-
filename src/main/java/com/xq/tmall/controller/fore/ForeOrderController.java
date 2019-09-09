@@ -654,8 +654,33 @@ public class ForeOrderController extends BaseController {
             product.setProduct_category(categoryService.get(product.getProduct_category().getCategory_id()));
             productOrderItem.setProductOrderItem_product(product);
             orderTotalPrice = productOrderItem.getProductOrderItem_price();
+            logger.info("更新产品销量信息");
+            Product updateProduct = new Product()
+                    .setProduct_id(product.getProduct_id())
+                    .setProduct_sale_count(product.getProduct_sale_count() + productOrderItem.getProductOrderItem_number());
+            logger.info("更新产品信息，产品ID值为：{}", product.getProduct_id());
+            boolean yn = productService.update(updateProduct);
+            if (!yn) {
+                logger.info("产品销量信息更新失败！事务回滚");
+                object.put("success", false);
+                throw new RuntimeException();
+            }
+            logger.info("产品销量信息更新成功！");
         } else {
             for (ProductOrderItem productOrderItem : order.getProductOrderItemList()) {
+                Product product = productService.get(productOrderItem.getProductOrderItem_product().getProduct_id());
+                logger.info("更新产品销量信息");
+                Product updateProduct = new Product()
+                        .setProduct_id(product.getProduct_id())
+                        .setProduct_sale_count(product.getProduct_sale_count() + productOrderItem.getProductOrderItem_number());
+                logger.info("更新产品信息，产品ID值为：{}", product.getProduct_id());
+                boolean yn = productService.update(updateProduct);
+                if (!yn) {
+                    logger.info("产品销量信息更新失败！事务回滚");
+                    object.put("success", false);
+                    throw new RuntimeException();
+                }
+                logger.info("产品销量信息更新成功！");
                 orderTotalPrice += productOrderItem.getProductOrderItem_price();
             }
         }
