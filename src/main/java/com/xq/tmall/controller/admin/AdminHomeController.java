@@ -138,7 +138,7 @@ public class AdminHomeController extends BaseController {
         if (beginDate == null || endDate == null) {
             //指定一周前的日期为开始日期
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, 0-days);
+            cal.add(Calendar.DATE, 1-days);
             beginDate = time.parse(time.format(cal.getTime()));
             //指定当前日期为结束日期
             cal = Calendar.getInstance();
@@ -147,7 +147,6 @@ public class AdminHomeController extends BaseController {
             beginDate = time.parse(time.format(beginDate));
             endDate = timeSpecial.parse(time.format(endDate) + " 23:59:59");
         }
-        long beginTime = new Date().getTime();
         logger.info("根据订单状态分类");
         //未付款订单数统计数组
         int[] orderUnpaidArray = new int[7];
@@ -166,10 +165,9 @@ public class AdminHomeController extends BaseController {
         //按指定的天数进行循环
         for (int i = 0; i < days; i++) {
             //格式化日期串（MM/dd）并放入日期数组中
-            int subDays = i + 1;
             Calendar cal = Calendar.getInstance();
             cal.setTime(beginDate);
-            cal.add(Calendar.DATE, subDays);
+            cal.add(Calendar.DATE, i);
             String formatDate = time2.format(cal.getTime());
             dateStr.add(formatDate);
             //该天的订单总数
@@ -214,8 +212,6 @@ public class AdminHomeController extends BaseController {
         jsonObject.put("orderUnconfirmedArray", orderUnconfirmedArray);
         jsonObject.put("orderSuccessArray", orderSuccessArray);
         jsonObject.put("dateStr",dateStr);
-        long endTime = new Date().getTime();
-        logger.info("图表数据生成花费时间："+(endTime-beginTime));
         return jsonObject;
     }
 }
