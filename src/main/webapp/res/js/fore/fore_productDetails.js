@@ -159,7 +159,6 @@ function SelectorMousemove(e) {
     x = x > $imgWidth - $selectorWidth ? $imgWidth - $selectorWidth : x;
     y = y > $imgHeight - $selectorHeight ? $imgHeight - $selectorHeight : y;
     $selector.css({left: x, top: y});
-    var naturalNumber = $('.context_img_ks').width() / $selectorWidth;
     //1.917为转换系数
     $('.context_img_ks>img').css({
         left: -x * 1.917,

@@ -7,7 +7,6 @@ $(function () {
         }
     });
     $(".tbody_checkbox>.cbx_select").click(function () {
-        var obj = $(this).parents("tr.orderItem_info").toggleClass("orderItem_selected");
         sumPrice();
     });
     $("#cbx_select_all,#J_SelectAllCbx2").click(function () {
