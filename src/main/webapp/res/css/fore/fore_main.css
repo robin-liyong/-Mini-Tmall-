@@ -8,8 +8,13 @@ input {
     outline: none;
 }
 
+html{
+    min-width: 1270px;
+}
+
 body {
-    min-width: 990px;
+    min-width: 1270px;
+    position: relative;
 }
 
 li {
