@@ -12,24 +12,26 @@
     <version>2.1.6.RELEASE</version>
   </parent>
   <dependencies>
+    <!-- Database -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.47</version>
     </dependency>
-
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>druid</artifactId>
       <version>1.1.19</version>
     </dependency>
 
+    <!-- Json -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
       <version>1.2.58</version>
     </dependency>
 
+    <!-- Jsp compatible-->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
@@ -100,6 +102,7 @@
       <version>2.10.0</version>
     </dependency>
   </dependencies>
+
   <build>
     <finalName>tmall</finalName>
     <plugins>
@@ -111,6 +114,11 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
     </plugins>
   </build>
 </project>
