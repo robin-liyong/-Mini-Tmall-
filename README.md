@@ -11,7 +11,7 @@
 
 ### 部署方式
 1. 项目使用IntelliJ IDEA开发，请使用IntelliJ IDEA的版本控制检出功能，输入“<https://gitee.com/project_team/Tmall_demo.git>”拉取项目即可。
-2. 项目数据库为MySQL 5.7版本，请在码云附件上下载SQL文件并导入到数据库中。
+2. 项目数据库为MySQL 5.7版本，请在**码云附件**或**问题交流群文件**上下载SQL文件并导入到数据库中。
 3. 使用IDEA打开项目后，在maven面板刷新项目，下载依赖包。
 4. 配置数据库连接并启动SpringBootApplication即可。
 
