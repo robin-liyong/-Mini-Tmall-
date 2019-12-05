@@ -132,6 +132,24 @@ html,body,#div_background{
     display: block;
     outline: none;
 }
+#div_background>#div_foot{
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    overflow: hidden;
+    text-align: center;
+    padding: 10px 6px 0px 6px;
+    height: 33px;
+    font-size: 0.7rem !important;
+    color: #FFF;
+    letter-spacing: 0.8px;
+    font-family: Arial, sans-serif !important;
+    z-index: 99;
+    width: 100%;
+}
+#div_foot a {
+    color: #FFF;
+}
 
 .form_control::-webkit-input-placeholder{
     color:#444;
