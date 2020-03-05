@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.tmall.dao.RewardMapper">
+    <resultMap id="rewardMap" type="reward">
+        <id column="reward_id" property="reward_id"/>
+        <result column="reward_name" property="reward_name"/>
+        <result column="reward_content" property="reward_content"/>
+        <result column="reward_createDate" property="reward_createDate"/>
+        <result column="reward_state" property="reward_state"/>
+        <result column="reward_amount" property="reward_amount"/>
+        <association property="reward_user" javaType="com.xq.tmall.entity.User">
+            <id property="user_id" column="reward_user_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertOne" parameterType="reward">
+        INSERT reward (reward_id,reward_name,reward_content,reward_createDate,reward_user_id,reward_state,reward_amount)
+            VALUES (
+            null,
+            #{reward.reward_name},
+            #{reward.reward_content},
+            #{reward.reward_createDate},
+        #{reward.reward_user.user_id},
+        #{reward.reward_state},
+        #{reward.reward_amount})
+    </insert>
+    <update id="updateOne" parameterType="reward">
+        UPDATE reward
+        <set>
+            <if test="reward.reward_content != null">reward_content = #{reward.reward_content},</if>
+            <if test="reward.reward_state != null">reward_content = #{reward.reward_state},</if>
+            <if test="reward.reward_amount != null">reward_amount = #{reward.reward_amount}</if>
+        </set>
+        <where>
+            reward_id = #{reward.reward_id}
+        </where>
+    </update>
+    <delete id="deleteList" parameterType="java.util.ArrayList">
+        DELETE FROM reward
+        <where>
+            reward_id IN
+            <foreach collection="reward_id_list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+    <select id="select" resultMap="rewardMap">
+        SELECT
+            reward_id,
+            reward_name,
+            reward_content,
+            reward_createDate,
+            reward_user_id,
+            reward_state,
+            reward_amount
+        FROM reward
+        <where>
+            <if test="reward != null">
+                <if test="reward.reward_name != null">reward_name LIKE concat('%',#{reward.reward_name},'%')</if>
+                <if test="reward.reward_lowest_amount != null">and reward_amount &gt;= #{reward.reward_lowest_amount}</if>
+                <if test="reward.reward_amount != null">and reward_amount &lt;= #{reward.reward_amount}</if>
+            </if>
+            <if test="reward_isEnabled_array != null">
+                and reward_state IN
+                <foreach collection="reward_isEnabled_array" index="index" item="item" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <if test="orderUtil != null">
+            ORDER BY ${orderUtil.orderBy}
+            <if test="orderUtil.isDesc">desc</if>
+        </if>
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
+    </select>
+    <select id="selectByUserId" resultMap="rewardMap">
+        SELECT reward_id,reward_name,reward_content,reward_createDate,reward_user_id,reward_state,reward_amount FROM reward
+        <where>
+            reward_user_id = #{user_id}
+        </where>
+    </select>
+    <select id="selectOne" resultMap="rewardMap" parameterType="int">
+        SELECT
+        reward_id,
+        reward_name,
+        reward_content,
+        reward_createDate,
+        reward_user_id,
+        reward_state,
+        reward_amount
+        FROM reward
+        <where>
+            reward_id = #{reward_id}
+        </where>
+    </select>
+    <select id="selectTotal" resultType="int" parameterType="reward">
+        SELECT COUNT(reward_id)
+        FROM reward
+        <where>
+            <if test="reward != null">
+                <if test="reward.reward_name != null">reward_name LIKE concat('%',#{reward.reward_name},'%')</if>
+                <if test="reward.reward_lowest_amount != null">and reward_amount &gt;= #{reward.reward_lowest_amount}</if>
+                <if test="reward.reward_amount != null">and reward_amount &lt;= #{reward.reward_amount}</if>
+            </if>
+            <if test="reward_isEnabled_array != null">
+                and reward_state IN
+                <foreach collection="reward_isEnabled_array" index="index" item="item" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

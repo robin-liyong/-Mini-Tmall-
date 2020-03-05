@@ -124,12 +124,13 @@
         <div class="order-dashboard">
             <div class="bd">
                 <ul>
-                    <li>请收到货后，再确认收货！否则您可能钱货两空！</li>
-                    <li class="message">提示：本系统不会进行真实交易，请放心测试</li>
+<%--                    <li>请收到货后，再确认收货！否则您可能钱货两空！</li>--%>
+                    <li>提示：本系统不会进行真实交易，请放心测试</li>
                 </ul>
                 <script>
                     function confirmOrder() {
-                        var yn = confirm("点击确认后，您之前付款到支付宝的 ${requestScope.orderTotalPrice}0 元将直接到卖家账户里，请务必收到货再确认！");
+                        <%--var yn = confirm("点击确认后，您之前付款到支付宝的 ${requestScope.orderTotalPrice}0 元将直接到卖家账户里，请务必收到货再确认！");--%>
+                        var yn = confirm("点击确认后，您的订单流程即完成，您后续可以进行商品评价和提醒发货。");
                         if (yn) {
                             $.ajax({
                                 url: "/tmall/order/success/${requestScope.productOrder.productOrder_code}",

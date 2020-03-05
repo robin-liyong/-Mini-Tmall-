@@ -76,6 +76,10 @@
     font-size: 22px;
 }
 
+.order_price > .price_unit {
+    font-weight: 700;
+}
+
 .content > .order_pay_div {
     overflow: hidden;
     margin-top: 50px;
@@ -107,7 +111,7 @@
 
 .content > .order_reward_div {
     overflow: hidden;
-    margin-top: 50px;
+    margin-top: 200px;
     text-align: center;
 }
 
@@ -132,9 +136,13 @@
 }
 
 .order_reward_div > p {
-    margin-top: 50px;
-    font-size: 16px;
+    font-size: 14px;
+    margin-top: 10px;
     font-weight: bold;
+}
+
+.order_reward_div > p.order_reward_header{
+    font-size: 16px;
 }
 
 #reward_alipay_name {

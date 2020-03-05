@@ -51,7 +51,7 @@
         SELECT review_id,review_content,review_createDate,review_user_id,review_product_id FROM review
         <if test="review != null">
             <where>
-                <if test="review.review_content != null">review_content = #{review.review_content}</if>
+                <if test="review.review_content != null">review_content LIKE concat('%',#{review.review_content},'%')</if>
             </where>
         </if>
         <if test="pageUtil != null">
