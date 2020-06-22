@@ -4,6 +4,7 @@
   <groupId>com.xq.tmall</groupId>
   <artifactId>tmall</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>tmall Maven Webapp</name>
   <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
   <parent>
@@ -105,20 +106,25 @@
 
   <build>
     <finalName>tmall</finalName>
+    <resources>
+      <!--引入配置文件-->
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+      <!--引入静态文件-->
+      <resource>
+        <directory>src/main/webapp</directory>
+        <targetPath>META-INF/resources</targetPath>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>1.4.2.RELEASE</version>
       </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
     </plugins>
   </build>
 </project>
